@@ -4,3 +4,6 @@ public class UserService {
 
 sdwdswsws
 }
+// getByid, get all, crud,
+//student rollId=2
+//
