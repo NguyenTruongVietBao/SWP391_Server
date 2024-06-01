@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 @AllArgsConstructor
@@ -15,14 +17,34 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController {
 
     private CourseService courseService;
-    @GetMapping("/hello-world")
-    String helloWorld(){
-        return ("hello123");
-    }
-    //Add new Course
+
     @PostMapping
     public ResponseEntity<CourseDTO> createCourse (@RequestBody CourseDTO courseDTO){
         CourseDTO savedCourse = courseService.createCourse(courseDTO);
         return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
+    }
+
+    @GetMapping("{course_id}")
+    public ResponseEntity<CourseDTO> getCourseById (@PathVariable("course_id") Integer course_id){
+        CourseDTO courseDTO = courseService.getCourseById(course_id);
+        return ResponseEntity.ok(courseDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CourseDTO>> getCourseAll(){
+        List<CourseDTO> courses = courseService.getCourseAll();
+        return ResponseEntity.ok(courses);
+    }
+
+    @PutMapping("/update/{course_id}")
+    public ResponseEntity<CourseDTO> updateCourse (@RequestBody CourseDTO updatedCourse, @PathVariable("course_id") Integer courseId){
+        CourseDTO courseDTO = courseService.updateCourse(updatedCourse, courseId );
+        return ResponseEntity.ok(courseDTO);
+    }
+
+    @DeleteMapping("{course_id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable("course_id") Integer course_id){
+        courseService.deleteCourse(course_id);
+        return ResponseEntity.ok("Delete successfully !");
     }
 }
