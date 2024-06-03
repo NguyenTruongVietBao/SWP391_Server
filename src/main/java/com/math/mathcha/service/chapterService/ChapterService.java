@@ -14,4 +14,6 @@ public interface ChapterService {
     ChapterDTO updateChapter (ChapterDTO chapterDTO, Integer chapter_id);
 
     void deleteChapter (Integer chapter_id);
+
+//    List<ChapterDTO> getChapterByCourseId (ChapterDTO chapterDTO, Integer course_id);
 }

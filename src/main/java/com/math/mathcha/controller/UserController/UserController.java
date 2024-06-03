@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     private UserService userService;
-
+    int a = 2;
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO){
         UserDTO savedUser = userService.createUser(userDTO);
