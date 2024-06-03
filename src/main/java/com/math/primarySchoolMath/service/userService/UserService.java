@@ -1,18 +1,21 @@
 package com.math.primarySchoolMath.service.userService;
 
-import com.math.primarySchoolMath.dto.request.StudentDTO;
-import com.math.primarySchoolMath.dto.request.UserDTO;
+
+import com.math.primarySchoolMath.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
-    UserDTO createUser(UserDTO userDTO);
+    User createUser(User user);
 
-    UserDTO getUserById ( Integer user_id);
+    User getUserById ( Integer user_id);
 
-    List<UserDTO> getUserAll();
+    List<User> getUserAll();
 
-    UserDTO updateUser (UserDTO userDTO, Integer user_id);
+    User updateUser (User reqUser);
 
     void deleteUser (Integer user_id);
+
+    User handleGetUserByUsername(String username);
 }

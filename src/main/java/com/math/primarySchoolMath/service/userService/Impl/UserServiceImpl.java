@@ -1,67 +1,68 @@
 package com.math.primarySchoolMath.service.userService.Impl;
 
-import com.math.primarySchoolMath.dto.request.UserDTO;
-import com.math.primarySchoolMath.entity.Student;
+
+
 import com.math.primarySchoolMath.entity.User;
-import com.math.primarySchoolMath.mapper.StudentMapper;
-import com.math.primarySchoolMath.mapper.UserMapper;
 import com.math.primarySchoolMath.repository.UserRepository.UserRepository;
 import com.math.primarySchoolMath.service.userService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
 
-    private UserRepository userRepository;
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
-        User user = UserMapper.mapToUser(userDTO);
-        User savedUser= userRepository.save(user);
-        return UserMapper.mapToUserDTO(savedUser);
+    public User createUser(User user) {
+        return this.userRepository.save(user);
     }
 
     @Override
-    public UserDTO getUserById(Integer user_id) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new RuntimeException("User "+user_id+" not found"));
-        return UserMapper.mapToUserDTO(user);
+    public User getUserById(Integer user_id) {
+        Optional<User> userOptional = this.userRepository.findById(user_id);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        }
+        return null;
     }
 
     @Override
-    public List<UserDTO> getUserAll() {
-            List<User> userss = userRepository.findAll();
-            return userss.stream().map(
-                    (user) -> UserMapper.mapToUserDTO(user)).collect(Collectors.toList()
-            );
+    public List<User> getUserAll() {
+        return this.userRepository.findAll();
     }
 
     @Override
-    public UserDTO updateUser(UserDTO updateUser, Integer user_id) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(()-> new RuntimeException("User "+user_id+" not found"));
-        user.setFirst_name(updateUser.getFirst_name());
-        user.setLast_name(updateUser.getLast_name());
-        user.setPhone(updateUser.getPhone());
-        user.setEmail(updateUser.getEmail());
-        user.setAddress(updateUser.getAddress());
-        user.setImage(updateUser.getImage());
-        user.setUsername(updateUser.getUsername());
-        user.setPassword(updateUser.getPassword());
-        user.setIs_deleted(updateUser.getIs_deleted());
-        user.setRole_id(updateUser.getRole_id());
-        User updateUserObj = userRepository.save(user);
-        return UserMapper.mapToUserDTO(updateUserObj);
+    public User updateUser(User reqUser) {
+        User currentUser = this.getUserById(reqUser.getUser_id());
+        if (currentUser != null) {
+            currentUser.setFirst_name(reqUser.getFirst_name());
+            currentUser.setLast_name(reqUser.getLast_name());
+            currentUser.setPhone(reqUser.getPhone());
+            currentUser.setEmail(reqUser.getEmail());
+            currentUser.setAddress(reqUser.getAddress());
+            currentUser.setImage(reqUser.getImage());
+            currentUser.setUsername(reqUser.getUsername());
+            currentUser.setPassword(reqUser.getPassword());
+            currentUser.setIs_deleted(reqUser.getIs_deleted());
+            currentUser.setRole_id(reqUser.getRole_id());
+            // update
+            currentUser = this.userRepository.save(currentUser);
+        }
+        return currentUser;
     }
 
     @Override
     public void deleteUser(Integer user_id) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new RuntimeException("Not exits"+user_id));
-        userRepository.deleteById(user_id);
+        this.userRepository.deleteById(user_id);
+    }
+
+    @Override
+    public User handleGetUserByUsername(String username) {
+        return this.userRepository.findByUsername(username);
     }
 }
