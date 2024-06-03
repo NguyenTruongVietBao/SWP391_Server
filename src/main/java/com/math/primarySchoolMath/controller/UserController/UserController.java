@@ -13,18 +13,23 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@AllArgsConstructor
+
 @RequestMapping("/user")
 public class UserController {
     private UserService userService;
 
     private final PasswordEncoder passwordEncoder;
+
+    public UserController(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user){
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
         user.setPassword(hashPassword);
         User savedUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
     @GetMapping("{user_id}")
@@ -35,13 +40,13 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<User>> getUserAll(){
-        List<User> student = userService.getUserAll();
-        return ResponseEntity.ok(student);
+
+        return ResponseEntity.ok(this.userService.getUserAll());
     }
 
     @PutMapping("/update/{user_id}")
-    public ResponseEntity<User> updateUser(@RequestBody User updatedStudent){
-        User user = userService.updateUser(updatedStudent);
+    public ResponseEntity<User> updateUser(@RequestBody User updatedUser){
+        User user = userService.updateUser(updatedUser);
         return ResponseEntity.ok(user);
     }
 
