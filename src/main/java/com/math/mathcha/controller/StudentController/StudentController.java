@@ -27,7 +27,7 @@ public class StudentController {
         StudentDTO studentDTO = studentService.getStudentById(student_id);
         return ResponseEntity.ok(studentDTO);
     }
-
+dasudakshdfasjd
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getStudentAll(){
         List<StudentDTO> student = studentService.getStudentAll();
