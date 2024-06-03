@@ -15,10 +15,9 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
     private StudentService studentService;
-123123
-    232323
+
     @PostMapping
-    public ResponseEntity<StudentDTO>  (@RequestBody StudentDTO studentDTO){
+    public ResponseEntity<StudentDTO> createStudent (@RequestBody StudentDTO studentDTO){
         StudentDTO savedStudent = studentService.createStudent(studentDTO);
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
