@@ -62,4 +62,14 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("Not exits"+user_id));
         userRepository.deleteById(user_id);
     }
+
+    @Override
+    public UserDTO handleGetUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+//        if (user == null) {
+//            throw new UsernameNotFoundException("User not found");
+//        }
+
+        return UserMapper.mapToUserDTO(user);
+    }
 }
