@@ -1,6 +1,9 @@
 package com.math.mathcha.controller;
 
+import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
+import com.math.mathcha.dto.response.ResLoginDTO;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-//    private final SecurityUtil securityUtil;
+    private final SecurityUtil securityUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginDTO> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
 
 //        // Nạp input gồm username/password vào Security
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
@@ -27,11 +30,11 @@ public class AuthController {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
 //         create a token
-//        String access_token = this.securityUtil.createToken(authentication);
+          String access_token = this.securityUtil.createToken(authentication);
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        ResLoginDTO res = new ResLoginDTO();
-//        res.setAccessToken(access_token);
-        return ResponseEntity.ok().body(loginDTO);
+        ResLoginDTO res = new ResLoginDTO();
+        res.setAccessToken(access_token);
+        return ResponseEntity.ok().body(res);
     }
 
 }
