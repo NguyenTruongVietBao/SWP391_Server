@@ -5,6 +5,7 @@ import com.math.mathcha.service.userService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +16,12 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     private UserService userService;
-    int a = 2;
+    private PasswordEncoder passwordEncoder;
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO){
+        String hashPassword = this.passwordEncoder.encode(userDTO.getPassword());
+        userDTO.setPassword(hashPassword);
+
         UserDTO savedUser = userService.createUser(userDTO);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }

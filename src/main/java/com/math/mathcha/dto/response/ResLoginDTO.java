@@ -1,4 +1,4 @@
-package com.math.primarySchoolMath.dto.response;
+package com.math.mathcha.dto.response;
 
 public class ResLoginDTO {
     private String accessToken;
