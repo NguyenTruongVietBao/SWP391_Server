@@ -15,14 +15,14 @@ import lombok.Setter;
 public class Topic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "topic_id")
     private int topic_id;
-
+    @Column(name = "title")
     private String title;
-
+    @Column(name = "number")
     private int number;
-
+    @Column(name = "is_progress_limited")
     private Boolean is_progress_limited;
-
+    @Column(name = "chapter_id")
     private int chapter_id;
 }

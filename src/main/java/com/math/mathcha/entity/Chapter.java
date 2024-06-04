@@ -15,13 +15,13 @@ import lombok.Setter;
 public class Chapter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
+    @Column(name = "chapter_id")
     private int chapter_id;
-
+    @Column(name = "title")
     private String title;
-
+    @Column(name = "number")
     private int number;
-
+    @Column(name = "course_id")
     private int course_id;
 
 }

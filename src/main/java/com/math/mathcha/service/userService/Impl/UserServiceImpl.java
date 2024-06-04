@@ -1,6 +1,9 @@
 package com.math.mathcha.service.userService.Impl;
 
 import com.math.mathcha.dto.request.UserDTO;
+import com.math.mathcha.dto.response.ResCreateUserDTO;
+import com.math.mathcha.dto.response.ResUpdateUserDTO;
+import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.UserRepository.UserRepository;
@@ -9,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,9 +29,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Integer user_id) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new RuntimeException("User "+user_id+" not found"));
-        return UserMapper.mapToUserDTO(user);
+        Optional<User> user = userRepository.findById(user_id);
+        if (user.isPresent()) {
+            return UserMapper.mapToUserDTO(user.get());
+        }
+        return null;
     }
 
     @Override
@@ -39,9 +45,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO updateUser, Integer user_id) {
-        User user = userRepository.findById(user_id)
-                .orElseThrow(()-> new RuntimeException("User "+user_id+" not found"));
+    public UserDTO updateUser(UserDTO updateUser) {
+        UserDTO user = getUserById(updateUser.getUser_id());
+
         user.setFirst_name(updateUser.getFirst_name());
         user.setLast_name(updateUser.getLast_name());
         user.setPhone(updateUser.getPhone());
@@ -52,8 +58,10 @@ public class UserServiceImpl implements UserService {
         user.setPassword(updateUser.getPassword());
         user.setIs_deleted(updateUser.getIs_deleted());
         user.setRole_id(updateUser.getRole_id());
-        User updateUserObj = userRepository.save(user);
-        return UserMapper.mapToUserDTO(updateUserObj);
+        User updatedUserEntity = UserMapper.mapToUser(user);
+        User savedUser = userRepository.save(updatedUserEntity);
+
+        return UserMapper.mapToUserDTO(savedUser);
     }
 
     @Override
@@ -71,5 +79,46 @@ public class UserServiceImpl implements UserService {
 //        }
 
         return UserMapper.mapToUserDTO(user);
+    }
+
+    public boolean isUsernameExist(String username) {
+        return this.userRepository.existsByUsername(username);
+    }
+    @Override
+    public ResCreateUserDTO convertToResCreateUserDTO(UserDTO user) {
+        ResCreateUserDTO res = new ResCreateUserDTO();
+        res.setUser_id(user.getUser_id());
+        res.setFirst_name(user.getFirst_name());
+        res.setLast_name(user.getLast_name());
+        res.setPhone(user.getPhone());
+        res.setEmail(user.getEmail());
+        res.setAddress(user.getAddress());
+        res.setImage(user.getImage());
+        res.setUsername(user.getUsername());
+        return res;
+    }
+@Override
+    public ResUpdateUserDTO convertToResUpdateUserDTO(UserDTO user) {
+        ResUpdateUserDTO res = new ResUpdateUserDTO();
+        res.setUser_id(user.getUser_id());
+        res.setFirst_name(user.getFirst_name());
+        res.setLast_name(user.getLast_name());
+        res.setPhone(user.getPhone());
+        res.setEmail(user.getEmail());
+        res.setAddress(user.getAddress());
+        res.setImage(user.getImage());
+        return res;
+    }
+@Override
+    public ResUserDTO convertToResUserDTO(UserDTO user) {
+        ResUserDTO res = new ResUserDTO();
+    res.setUser_id(user.getUser_id());
+    res.setFirst_name(user.getFirst_name());
+    res.setLast_name(user.getLast_name());
+    res.setPhone(user.getPhone());
+    res.setEmail(user.getEmail());
+    res.setAddress(user.getAddress());
+    res.setImage(user.getImage());
+        return res;
     }
 }

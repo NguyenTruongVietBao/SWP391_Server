@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/topic")
 public class TopicController {
     private TopicService topicService;
-123123
+
     @PostMapping
     public ResponseEntity<TopicDTO> createTopic(@RequestBody TopicDTO topicDTO){
         TopicDTO savedTopic = topicService.createTopic(topicDTO);
