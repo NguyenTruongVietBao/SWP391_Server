@@ -22,8 +22,7 @@ import java.util.List;
 public class UserController {
     private UserService userService;
     private PasswordEncoder passwordEncoder;
-    @PostMapping
-
+    @PostMapping("/create")
     public ResponseEntity<ResCreateUserDTO> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
@@ -37,7 +36,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertToResCreateUserDTO(savedUser));
     }
 
-    @GetMapping("{user_id}")
+    @GetMapping("/get/{user_id}")
     public ResponseEntity<ResUserDTO> getUserById (@PathVariable("user_id") Integer user_id) throws IdInvalidException{
         UserDTO userDTO = userService.getUserById(user_id);
         if (userDTO == null) {
@@ -48,7 +47,7 @@ public class UserController {
                 .body(this.userService.convertToResUserDTO(userDTO));
     }
 
-    @GetMapping
+    @GetMapping("/get/all")
     public ResponseEntity<List<UserDTO>> getUserAll(){
         List<UserDTO> student = userService.getUserAll();
         return ResponseEntity.ok(student);
@@ -63,7 +62,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(userDTO));
     }
 
-    @DeleteMapping("{user_id}")
+    @DeleteMapping("/delete/{user_id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("user_id") Integer user_id) throws IdInvalidException{
         UserDTO currentUser = this.userService.getUserById(user_id);
         if (currentUser == null) {

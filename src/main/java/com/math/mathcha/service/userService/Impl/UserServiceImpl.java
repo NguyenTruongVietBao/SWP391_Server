@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO updateUser) {
+        //UserDTO user = getUserById(updateUser.getUser_id());
         UserDTO user = getUserById(updateUser.getUser_id());
-
         user.setFirst_name(updateUser.getFirst_name());
         user.setLast_name(updateUser.getLast_name());
         user.setPhone(updateUser.getPhone());
@@ -119,6 +119,8 @@ public class UserServiceImpl implements UserService {
     res.setEmail(user.getEmail());
     res.setAddress(user.getAddress());
     res.setImage(user.getImage());
+    //them
+
         return res;
     }
 }
