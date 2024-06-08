@@ -5,12 +5,14 @@ import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.entity.User;
+import com.math.mathcha.enums.Role;
 import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.userService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,7 +24,11 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+
         User user = UserMapper.mapToUser(userDTO);
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.PARENT.name());
+        user.setRoles(roles);
         User savedUser= userRepository.save(user);
         return UserMapper.mapToUserDTO(savedUser);
     }
@@ -57,7 +63,10 @@ public class UserServiceImpl implements UserService {
         user.setUsername(updateUser.getUsername());
         user.setPassword(updateUser.getPassword());
         user.setIs_deleted(updateUser.getIs_deleted());
-        user.setRole_id(updateUser.getRole_id());
+
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.PARENT.name());
+        user.setRoles(roles);
         User updatedUserEntity = UserMapper.mapToUser(user);
         User savedUser = userRepository.save(updatedUserEntity);
 
@@ -95,6 +104,7 @@ public class UserServiceImpl implements UserService {
         res.setAddress(user.getAddress());
         res.setImage(user.getImage());
         res.setUsername(user.getUsername());
+        res.setRoles(user.getRoles());
         return res;
     }
 @Override

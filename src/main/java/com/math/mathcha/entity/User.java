@@ -1,15 +1,14 @@
 package com.math.mathcha.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.Set;
 
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -37,6 +36,9 @@ public class User {
     private String password;
     @Column(name = "is_deleted")
     private Boolean is_deleted;
-    @Column(name = "role_id")
-    private int role_id;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "roles")
+    private Set<String> roles;
 }

@@ -4,6 +4,8 @@ package com.math.mathcha.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 public class ResCreateUserDTO {
@@ -22,6 +24,8 @@ public class ResCreateUserDTO {
     private String image;
 
     private String username;
+
+    private Set<String> roles;
 
 
 }

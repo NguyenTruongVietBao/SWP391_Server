@@ -4,6 +4,7 @@ import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.entity.User;
 
 public class UserMapper {
+
     public static UserDTO mapToUserDTO(User user){
         return new UserDTO(
                 user.getUser_id(),
@@ -16,7 +17,7 @@ public class UserMapper {
                 user.getUsername(),
                 user.getPassword(),
                 user.getIs_deleted(),
-                user.getRole_id()
+                user.getRoles()
         );
 
     }
@@ -32,7 +33,7 @@ public class UserMapper {
                 userDTO.getUsername(),
                 userDTO.getPassword(),
                 userDTO.getIs_deleted(),
-                userDTO.getRole_id()
+                userDTO.getRoles()
         );
 
     }

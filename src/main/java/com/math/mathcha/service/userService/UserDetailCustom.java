@@ -9,9 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component("userDetailsService")
-
 public class UserDetailCustom implements UserDetailsService {
     private final UserService userService;
 
@@ -22,10 +23,21 @@ public class UserDetailCustom implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserDTO userDTO = this.userService.handleGetUserByUsername(username);
-
+        if (userDTO == null) {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+        Set<SimpleGrantedAuthority> authorities = userDTO.getRoles().stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
         return new User(
                 userDTO.getUsername(),
                 userDTO.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+                authorities);
+
+//        return new User(
+//                userDTO.getUsername(),
+//                userDTO.getPassword(),
+//                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+//
     }
 }

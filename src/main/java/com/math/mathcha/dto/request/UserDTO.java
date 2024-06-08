@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,5 +32,5 @@ public class UserDTO {
 
     private Boolean is_deleted;
 
-    private int role_id;
+    private Set<String> roles;
 }
