@@ -1,14 +1,13 @@
 package com.math.mathcha.service.userService;
 
 import com.math.mathcha.dto.request.UserDTO;
+import com.math.mathcha.entity.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,15 +28,22 @@ public class UserDetailCustom implements UserDetailsService {
         Set<SimpleGrantedAuthority> authorities = userDTO.getRoles().stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toSet());
-        return new User(
+
+        // Chuyển đổi UserDTO sang User
+        User user = new User(
+                userDTO.getUser_id(),
+                userDTO.getFirst_name(),
+                userDTO.getLast_name(),
+                userDTO.getPhone(),
+                userDTO.getEmail(),
+                userDTO.getAddress(),
+                userDTO.getImage(),
                 userDTO.getUsername(),
                 userDTO.getPassword(),
-                authorities);
+                userDTO.getIs_deleted() != null ? userDTO.getIs_deleted() : false,
+                userDTO.getRoles()
+        );
 
-//        return new User(
-//                userDTO.getUsername(),
-//                userDTO.getPassword(),
-//                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
-//
+        return new CustomUserDetails(user);
     }
 }

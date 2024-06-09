@@ -35,7 +35,7 @@ public class User {
     @Column(name = "password")
     private String password;
     @Column(name = "is_deleted")
-    private Boolean is_deleted;
+    private Boolean is_deleted = false;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
