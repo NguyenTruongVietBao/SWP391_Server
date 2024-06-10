@@ -1,7 +1,9 @@
 package com.math.mathcha.entity;
 
+import com.math.mathcha.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
@@ -13,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,15 +33,18 @@ public class User {
     private String address;
     @Column(name = "image")
     private String image;
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
     @Column(name = "password")
     private String password;
     @Column(name = "is_deleted")
-    private Boolean is_deleted;
+    private Boolean is_deleted = false;
+    @Enumerated(EnumType.STRING)
+    Role role;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "roles")
-    private Set<String> roles;
+
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+//    @Column(name = "roles")
+//    private Set<String> roles;
 }
