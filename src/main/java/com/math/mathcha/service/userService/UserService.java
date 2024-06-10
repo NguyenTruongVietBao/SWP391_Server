@@ -11,6 +11,8 @@ import java.util.List;
 public interface UserService {
     UserDTO createUser(UserDTO userDTO);
 
+    UserDTO createContentManager(UserDTO userDTO);
+
     UserDTO getUserById ( Integer user_id);
 
     List<UserDTO> getUserAll();

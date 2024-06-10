@@ -1,9 +1,9 @@
 package com.math.mathcha.entity;
 
+import com.math.mathcha.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
+import lombok.experimental.FieldDefaults;
 
 
 @Getter
@@ -13,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,23 +23,26 @@ public class User {
     private String first_name;
     @Column(name = "last_name")
     private String last_name;
-    @Column(name = "phone")
+    @Column(name = "phone",unique = true)
     private String phone;
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
     @Column(name = "address")
     private String address;
     @Column(name = "image")
     private String image;
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
     @Column(name = "is_deleted")
-    private Boolean is_deleted;
+    private Boolean is_deleted = false;
+    @Enumerated(EnumType.STRING)
+    Role role;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "roles")
-    private Set<String> roles;
+
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+//    @Column(name = "roles")
+//    private Set<String> roles;
 }

@@ -22,13 +22,23 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+
+
     @Override
     public UserDTO createUser(UserDTO userDTO) {
 
         User user = UserMapper.mapToUser(userDTO);
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.PARENT.name());
-        user.setRoles(roles);
+
+        user.setRole(userDTO.getRole());
+        User savedUser= userRepository.save(user);
+        return UserMapper.mapToUserDTO(savedUser);
+    }
+
+    @Override
+    public UserDTO createContentManager(UserDTO userDTO) {
+
+        User user = UserMapper.mapToUser(userDTO);
+        user.setRole(user.getRole());
         User savedUser= userRepository.save(user);
         return UserMapper.mapToUserDTO(savedUser);
     }
@@ -64,9 +74,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(updateUser.getPassword());
         user.setIs_deleted(updateUser.getIs_deleted());
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.PARENT.name());
-        user.setRoles(roles);
+        user.setRole(updateUser.getRole());
         User updatedUserEntity = UserMapper.mapToUser(user);
         User savedUser = userRepository.save(updatedUserEntity);
 
@@ -82,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO handleGetUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("Not exits"+username));
 //        if (user == null) {
 //            throw new UsernameNotFoundException("User not found");
 //        }
@@ -104,7 +112,7 @@ public class UserServiceImpl implements UserService {
         res.setAddress(user.getAddress());
         res.setImage(user.getImage());
         res.setUsername(user.getUsername());
-        res.setRoles(user.getRoles());
+        res.setRole(user.getRole());
         return res;
     }
 @Override
@@ -129,7 +137,7 @@ public class UserServiceImpl implements UserService {
     res.setEmail(user.getEmail());
     res.setAddress(user.getAddress());
     res.setImage(user.getImage());
-    //them
+
 
         return res;
     }

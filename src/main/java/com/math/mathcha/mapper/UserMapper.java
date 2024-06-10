@@ -17,7 +17,7 @@ public class UserMapper {
                 user.getUsername(),
                 user.getPassword(),
                 user.getIs_deleted(),
-                user.getRoles()
+                user.getRole()
         );
 
     }
@@ -27,13 +27,10 @@ public class UserMapper {
                 userDTO.getFirst_name(),
                 userDTO.getLast_name(),
                 userDTO.getPhone(),
-                userDTO.getEmail(),
-                userDTO.getAddress(),
-                userDTO.getImage(),
-                userDTO.getUsername(),
-                userDTO.getPassword(),
-                userDTO.getIs_deleted(),
-                userDTO.getRoles()
+                userDTO.getEmail(),userDTO.getAddress()
+                ,userDTO.getImage(),userDTO.getUsername()
+                ,userDTO.getPassword(),userDTO.getIs_deleted()
+                ,userDTO.getRole()
         );
 
     }

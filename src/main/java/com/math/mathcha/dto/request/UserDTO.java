@@ -1,5 +1,6 @@
 package com.math.mathcha.dto.request;
 
+import com.math.mathcha.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,5 +33,5 @@ public class UserDTO {
 
     private Boolean is_deleted;
 
-    private Set<String> roles;
+    private Role role;
 }
