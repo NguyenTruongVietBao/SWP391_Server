@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 
 @Getter
 @Setter
@@ -25,15 +23,15 @@ public class User {
     private String first_name;
     @Column(name = "last_name")
     private String last_name;
-    @Column(name = "phone")
+    @Column(name = "phone",unique = true)
     private String phone;
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     private String email;
     @Column(name = "address")
     private String address;
     @Column(name = "image")
     private String image;
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;

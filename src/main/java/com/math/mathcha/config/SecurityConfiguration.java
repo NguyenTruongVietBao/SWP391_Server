@@ -32,7 +32,7 @@ public class SecurityConfiguration {
     @Value("${mathcha_edu.jwt.base64-secret}")
     private String jwtKey;
 
-    private final String[] PUBLIC_ENDPOINTS = {"/","/api/v1/login", "/user/create"};
+    private final String[] PUBLIC_ENDPOINTS = {"/api/login","/api/register"};
 
 
     @Bean
@@ -40,6 +40,7 @@ public class SecurityConfiguration {
 
         return new BCryptPasswordEncoder();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http

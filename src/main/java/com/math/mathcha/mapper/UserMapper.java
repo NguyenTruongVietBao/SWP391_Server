@@ -27,13 +27,10 @@ public class UserMapper {
                 userDTO.getFirst_name(),
                 userDTO.getLast_name(),
                 userDTO.getPhone(),
-                userDTO.getEmail(),
-                userDTO.getAddress(),
-                userDTO.getImage(),
-                userDTO.getUsername(),
-                userDTO.getPassword(),
-                userDTO.getIs_deleted(),
-                userDTO.getRole()
+                userDTO.getEmail(),userDTO.getAddress()
+                ,userDTO.getImage(),userDTO.getUsername()
+                ,userDTO.getPassword(),userDTO.getIs_deleted()
+                ,userDTO.getRole()
         );
 
     }

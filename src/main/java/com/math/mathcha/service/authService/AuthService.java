@@ -4,10 +4,14 @@ package com.math.mathcha.service.authService;
 import com.math.mathcha.Util.Error.NotFoundException;
 import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
+import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
 import com.math.mathcha.entity.User;
+import com.math.mathcha.enums.Role;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +19,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
+    @Autowired
     UserRepository userRepository;
-
+@Autowired
     PasswordEncoder passwordEncoder;
-
+@Autowired
     SecurityUtil securityUtil;
 
 
     public ResLoginDTO login(LoginDTO loginDTO) {
-        User user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
+        var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new NotFoundException("Wrong password");
 
         String token = securityUtil.createToken(user);
@@ -42,5 +47,24 @@ public class AuthService {
         resLoginDTO.setUser_id(user.getUser_id());
 
         return resLoginDTO;
+    }
+
+    public User register(UserDTO userDTO) {
+        User user = new User(userDTO.getUser_id(),userDTO.getFirst_name()
+                ,userDTO.getLast_name(),userDTO.getPhone()
+                ,userDTO.getEmail(),userDTO.getAddress()
+                ,userDTO.getImage(),userDTO.getUsername()
+                ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
+                , Role.PARENT);
+
+        try {
+            return userRepository.save(user);
+        }catch (DataIntegrityViolationException e){
+            if(e.getMessage().contains("user.UK_sb8bbouer5wak8vyiiy4pf2bx")) throw new DataIntegrityViolationException("Duplicate UserName");
+            else if(e.getMessage().contains("user.UK_ob8kqyqqgmefl0aco34akdtpe"))throw new DataIntegrityViolationException("Duplicate Email");
+            else throw new DataIntegrityViolationException("Duplicate Phone");
+        }
+
+
     }
 }
