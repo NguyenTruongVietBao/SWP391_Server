@@ -1,6 +1,9 @@
 package com.math.mathcha.Util;
 
 import com.math.mathcha.entity.User;
+import com.nimbusds.jose.*;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jwt.JWTClaimsSet;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -13,6 +16,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.StringJoiner;
 
 @Service
@@ -31,7 +35,7 @@ public class SecurityUtil {
     @Value("${mathcha_edu.jwt.token-validity-in-seconds}")
     private long jwtExpiration;
 
-//    public String createToken(Authentication authentication) {
+    //    public String createToken(Authentication authentication) {
 //        Instant now = Instant.now();
 //        Instant validity = now.plus(this.jwtExpiration, ChronoUnit.SECONDS);
 //
@@ -46,25 +50,23 @@ public class SecurityUtil {
 //        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader,claims)).getTokenValue();
 //    }
         public String createToken(User user) {
-            Instant now = Instant.now();
-            Instant validity = now.plus(this.jwtExpiration, ChronoUnit.SECONDS);
 
-            // @formatter:off
-            JwtClaimsSet claims = JwtClaimsSet.builder()
-                    .issuedAt(now)
-                    .expiresAt(validity)
+            JWTClaimsSet claims = new JWTClaimsSet.Builder()
                     .subject(user.getUsername())
-                    .claim("scope", buildScope(user))
+                    .issueTime(new Date(System.currentTimeMillis()))
+                    .expirationTime(new Date(System.currentTimeMillis() + 1000*60*60*24*1))
+                    .claim("scope", "ROLE_"+user.getRole())
                     .build();
-            JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
-            return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader,claims)).getTokenValue();
+            JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
+            Payload payload = new Payload(claims.toJSONObject());
+            JWSObject jwsObject = new JWSObject(jwsHeader, payload);
+            try{
+                jwsObject.sign(new MACSigner(jwtKey.getBytes()));
+                return jwsObject.serialize();
+            }catch(JOSEException e){
+                throw new RuntimeException(e);
+            }
         }
-        private String buildScope(User user){
-            StringJoiner stringJoiner = new StringJoiner(" ");
-            if (!CollectionUtils.isEmpty(user.getRoles()))
-                user.getRoles().forEach(stringJoiner::add);
 
-            return stringJoiner.toString();
-        }
 
 }

@@ -2,6 +2,7 @@ package com.math.mathcha.config;
 
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.entity.User;
+import com.math.mathcha.enums.Role;
 import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import org.springframework.boot.ApplicationRunner;
@@ -27,7 +28,7 @@ public class ApplicationInitConfig {
                 User admin = new User();
                 admin.setUsername("admin");
                 admin.setPassword(passwordEncoder.encode("admin"));
-                admin.setRoles(Set.of("ADMIN"));
+                admin.setRole(Role.ADMIN);
                 userRepository.save(admin);
             }
 
