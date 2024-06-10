@@ -5,24 +5,22 @@ import com.math.mathcha.entity.Lesson;
 
 public class LessonMapper {
     public static LessonDTO mapToLessonDTO(Lesson lesson){
-        return new LessonDTO(
-                lesson.getLesson_id(),
-                lesson.getTitle(),
-                lesson.getNumber(),
-                lesson.getDocument(),
-                lesson.getVideo_url(),
-                lesson.getTopic_id()
-        );
+        LessonDTO lessonDTO = new LessonDTO();
+            lessonDTO.setLesson_id(lesson.getLesson_id());
+            lessonDTO.setTitle(lesson.getTitle());
+            lessonDTO.setNumber(lesson.getNumber());
+            lessonDTO.setDocument(lesson.getDocument());
+            lessonDTO.setVideo_url(lesson.getVideo_url());
+        return lessonDTO;
     }
 
     public static Lesson mapToLesson(LessonDTO lessonDTO){
-        return new Lesson(
-                lessonDTO.getLesson_id(),
-                lessonDTO.getTitle(),
-                lessonDTO.getNumber(),
-                lessonDTO.getDocument(),
-                lessonDTO.getVideo_url(),
-                lessonDTO.getTopic_id()
-        );
+        Lesson lesson = new Lesson();
+            lesson.setLesson_id(lessonDTO.getLesson_id());
+            lesson.setTitle(lessonDTO.getTitle());
+            lesson.setNumber(lessonDTO.getNumber());
+            lesson.setDocument(lessonDTO.getDocument());
+            lesson.setVideo_url(lessonDTO.getVideo_url());
+        return lesson;
     }
 }

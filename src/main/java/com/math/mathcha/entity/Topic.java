@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,6 +25,17 @@ public class Topic {
     private int number;
     @Column(name = "is_progress_limited")
     private Boolean is_progress_limited;
-    @Column(name = "chapter_id")
-    private int chapter_id;
+
+    @ManyToOne
+    @JoinColumn(name = "chapter_id", nullable = false)
+    private Chapter chapter;
+
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Lesson> lessons;
+
+//    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private List<Quiz> quizs;
+
+//    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private List<TopicInProgress> topicInProgress;
 }

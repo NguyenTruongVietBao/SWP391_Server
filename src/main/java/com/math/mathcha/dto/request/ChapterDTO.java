@@ -1,21 +1,21 @@
 package com.math.mathcha.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.math.mathcha.entity.Course;
+import com.math.mathcha.entity.Quiz;
+import com.math.mathcha.entity.Topic;
+import lombok.*;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChapterDTO {
-
     private int chapter_id;
-
     private String title;
-
     private int number;
-
-    private int course_id;
+//    private Course course;
+//    private List<Topic> topics;
+//    private List<Quiz> quizs;
 }

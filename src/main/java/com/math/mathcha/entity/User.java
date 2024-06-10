@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 
 
 @Getter
@@ -37,6 +38,14 @@ public class User {
     private String password;
     @Column(name = "is_deleted")
     private Boolean is_deleted;
-    @Column(name = "role_id")
-    private int role_id;
+
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Role> roles;
+
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Student> students;
+
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Payment> payments;
+
 }

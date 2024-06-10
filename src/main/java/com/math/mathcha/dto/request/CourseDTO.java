@@ -1,12 +1,14 @@
 package com.math.mathcha.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.math.mathcha.entity.Chapter;
+import com.math.mathcha.entity.Enrollment;
+import com.math.mathcha.entity.Quiz;
+import lombok.*;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseDTO {
@@ -16,4 +18,8 @@ public class CourseDTO {
     private String image;
     private String original_price;
     private String discount_price;
+
+//    private List<Chapter> chapters;
+//    private List<Quiz> quizs;
+//    private List<Enrollment> enrollments;
 }

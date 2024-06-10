@@ -12,12 +12,8 @@ import lombok.Setter;
 public class TopicDTO {
 
     private int topic_id;
-
     private String title;
-
     private int number;
-
     private Boolean is_progress_limited;
 
-    private int chapter_id;
 }

@@ -12,37 +12,45 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @AllArgsConstructor
-@RequestMapping("/chapter")
+@RequestMapping("/course")
 public class ChapterController {
     private ChapterService chapterService;
-
-    @PostMapping
-    public ResponseEntity<ChapterDTO> createChapter (@RequestBody ChapterDTO chapterDTO){
-        ChapterDTO savedChapter = chapterService.createChapter(chapterDTO);
+    @PostMapping("/{course_id}/chapters")
+    public ResponseEntity<ChapterDTO> createChapter (@PathVariable("course_id") Integer course_id,
+                                                     @RequestBody ChapterDTO chapterDTO){
+        ChapterDTO savedChapter = chapterService.createChapter( chapterDTO, course_id);
         return new ResponseEntity<>(savedChapter, HttpStatus.CREATED);
     }
 
-    @GetMapping("{chapter_id}")
+    @GetMapping("/{course_id}/chapters")
+    public ResponseEntity<List<ChapterDTO>> getChapterByCourseId (@PathVariable("course_id") int course_id){
+        List<ChapterDTO> chapterDTOs = chapterService.getChapterByCourseId(course_id);
+        return ResponseEntity.ok(chapterDTOs);
+    }
+
+    @GetMapping("/{course_id}/chapters/{chapter_id}")
     public ResponseEntity<ChapterDTO> getChapterById (@PathVariable("chapter_id") Integer chapter_id){
         ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
         return ResponseEntity.ok(chapterDTO);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ChapterDTO>> getChapterAll(){
-        List<ChapterDTO> chapter = chapterService.getChapterAll();
-        return ResponseEntity.ok(chapter);
-    }
-
-    @PutMapping("/update/{chapter_id}")
+    @PutMapping("/{course_id}/chapters/{chapter_id}")
     public ResponseEntity<ChapterDTO> updateChapter (@RequestBody ChapterDTO updatedChapter, @PathVariable("chapter_id") Integer chapterId){
         ChapterDTO chapterDTO = chapterService.updateChapter(updatedChapter, chapterId );
         return ResponseEntity.ok(chapterDTO);
     }
 
-    @DeleteMapping("{chapter_id}")
+    @DeleteMapping("/{course_id}/chapters/{chapter_id}")
     public ResponseEntity<String> deleteChapter(@PathVariable("chapter_id") Integer chapter_id){
         chapterService.deleteChapter(chapter_id);
         return ResponseEntity.ok("Delete successfully !");
     }
+
+//    @GetMapping("/{course_id}")
+//    public ResponseEntity<List<ChapterDTO>> getChapterAll(){
+//        List<ChapterDTO> chapter = chapterService.getChapterAll();
+//        return ResponseEntity.ok(chapter);
+//    }
+
+
 }
