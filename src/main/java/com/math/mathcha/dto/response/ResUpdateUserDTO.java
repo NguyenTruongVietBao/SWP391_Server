@@ -1,6 +1,7 @@
 package com.math.mathcha.dto.response;
 
 
+import com.math.mathcha.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,8 @@ public class ResUpdateUserDTO {
 
     private String image;
 
+    private String username;
 
+    private Role role;
 
 }
