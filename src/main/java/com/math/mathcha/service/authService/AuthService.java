@@ -6,8 +6,10 @@ import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
+import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.enums.Role;
+import com.math.mathcha.repository.StudentRepository.StudentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +28,16 @@ public class AuthService {
 @Autowired
     SecurityUtil securityUtil;
 
+@Autowired
+    StudentRepository studentRepository;
+
 
     public ResLoginDTO login(LoginDTO loginDTO) {
-        var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
+        User user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("Account not found"));
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new NotFoundException("Wrong password");
-
         String token = securityUtil.createToken(user);
-
         ResLoginDTO resLoginDTO = new ResLoginDTO();
+
         resLoginDTO.setToken(token);
         resLoginDTO.setUsername(user.getUsername());
         resLoginDTO.setRole(user.getRole());
@@ -48,6 +52,8 @@ public class AuthService {
 
         return resLoginDTO;
     }
+
+
 
     public User register(UserDTO userDTO) {
         User user = new User(userDTO.getUser_id(),userDTO.getFirst_name()

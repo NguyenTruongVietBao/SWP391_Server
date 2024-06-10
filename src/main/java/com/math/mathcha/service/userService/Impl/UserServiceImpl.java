@@ -1,5 +1,6 @@
 package com.math.mathcha.service.userService.Impl;
 
+import com.math.mathcha.Util.Error.NotFoundException;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO handleGetUserByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("Not exits"+username));
+        User user = userRepository.findByUsername(username).orElseThrow(()->new NotFoundException("User not found"));
 //        if (user == null) {
 //            throw new UsernameNotFoundException("User not found");
 //        }
