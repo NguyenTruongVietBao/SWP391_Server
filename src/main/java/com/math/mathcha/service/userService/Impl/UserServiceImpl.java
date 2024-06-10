@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO handleGetUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("Not exits"+username));
 //        if (user == null) {
 //            throw new UsernameNotFoundException("User not found");
 //        }
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
     res.setEmail(user.getEmail());
     res.setAddress(user.getAddress());
     res.setImage(user.getImage());
-    //them
+
 
         return res;
     }

@@ -21,11 +21,9 @@ import java.util.StringJoiner;
 
 @Service
 public class SecurityUtil {
-    private final JwtEncoder jwtEncoder;
 
-    public SecurityUtil(JwtEncoder jwtEncoder) {
-        this.jwtEncoder = jwtEncoder;
-    }
+
+
 
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
 
