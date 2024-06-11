@@ -1,6 +1,7 @@
 package com.math.mathcha.service.authService;
 
 
+import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.Util.Error.NotFoundException;
 import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
@@ -11,6 +12,7 @@ import com.math.mathcha.entity.User;
 import com.math.mathcha.enums.Role;
 import com.math.mathcha.repository.StudentRepository.StudentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
+import com.math.mathcha.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,6 +33,8 @@ public class AuthService {
 @Autowired
     StudentRepository studentRepository;
 
+@Autowired
+    UserService userService;
 
     public ResLoginDTO login(LoginDTO loginDTO) {
         User user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("Account not found"));
@@ -55,7 +59,7 @@ public class AuthService {
 
 
 
-    public User register(UserDTO userDTO) {
+    public User register(UserDTO userDTO) throws IdInvalidException {
         User user = new User(userDTO.getUser_id(),userDTO.getFirst_name()
                 ,userDTO.getLast_name(),userDTO.getPhone()
                 ,userDTO.getEmail(),userDTO.getAddress()
@@ -63,6 +67,11 @@ public class AuthService {
                 ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
                 , Role.PARENT);
 
+        boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
+        if (isUsernameExist) {
+            throw new IdInvalidException(
+                    "Username " + userDTO.getUsername() + " đã tồn tại, vui lòng nhập Username khác.");
+        }
         try {
             return userRepository.save(user);
         }catch (DataIntegrityViolationException e){
