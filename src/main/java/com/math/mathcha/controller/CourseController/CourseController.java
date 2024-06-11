@@ -1,5 +1,7 @@
 package com.math.mathcha.controller.CourseController;
 
+import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.service.courseService.CourseService;
 
@@ -43,8 +45,12 @@ public class CourseController {
     }
 
     @DeleteMapping("{course_id}")
-    public ResponseEntity<String> deleteCourse(@PathVariable("course_id") Integer course_id){
-        courseService.deleteCourse(course_id);
-        return ResponseEntity.ok("Delete successfully !");
+    public ResponseEntity<Void> deleteCourse(@PathVariable("course_id") Integer course_id) throws IdInvalidException{
+        CourseDTO currentUser = this.courseService.getCourseById(course_id);
+        if (currentUser == null) {
+            throw new IdInvalidException("Course với id = " + course_id + " không tồn tại");
+        }
+        this.courseService.deleteCourse(course_id);
+        return ResponseEntity.ok(null);
     }
 }

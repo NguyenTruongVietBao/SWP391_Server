@@ -5,24 +5,23 @@ import com.math.mathcha.entity.Course;
 
 public class CourseMapper {
     public static CourseDTO mapToCourseDTO(Course course){
-        return new CourseDTO(
-                course.getCourse_id(),
-                course.getTitle(),
-                course.getDescription(),
-                course.getImage(),
-                course.getOriginal_price(),
-                course.getDiscount_price()
-        );
+        CourseDTO courseDTO = new CourseDTO();
+        courseDTO.setCourse_id(course.getCourse_id());
+        courseDTO.setTitle(course.getTitle());
+        courseDTO.setDescription(course.getDescription());
+        courseDTO.setImage(course.getImage());
+        courseDTO.setOriginal_price(course.getOriginal_price());
+        courseDTO.setDiscount_price(course.getDiscount_price());
+        return courseDTO;
     }
 
     public static Course mapToCourse(CourseDTO courseDTO){
-        return new Course(
-            courseDTO.getCourse_id(),
-            courseDTO.getTitle(),
-            courseDTO.getDescription(),
-            courseDTO.getImage(),
-            courseDTO.getOriginal_price(),
-            courseDTO.getDiscount_price()
-        );
+        Course course = new Course();
+        course.setTitle(courseDTO.getTitle());
+        course.setDescription(courseDTO.getDescription());
+        course.setImage(courseDTO.getImage());
+        course.setOriginal_price(courseDTO.getOriginal_price());
+        course.setDiscount_price(courseDTO.getDiscount_price());
+        return course;
     }
 }
