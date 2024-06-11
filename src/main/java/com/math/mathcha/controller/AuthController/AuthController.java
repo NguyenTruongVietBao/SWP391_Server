@@ -7,8 +7,7 @@ import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.service.authService.AuthService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import com.math.mathcha.service.userService.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +21,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api")
-@SecurityRequirement(name = "api")
 public class AuthController {
 
     @Autowired
     AuthService authService;
+
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
@@ -37,6 +37,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {
       User user = authService.register(userDTO);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 

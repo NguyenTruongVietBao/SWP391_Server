@@ -4,24 +4,22 @@ import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.entity.Topic;
 
 public class TopicMapper {
-    public static TopicDTO mapToLessonDTO(Topic topic){
-        return new TopicDTO(
-                topic.getTopic_id(),
-                topic.getTitle(),
-                topic.getNumber(),
-                topic.getIs_progress_limited(),
-                topic.getChapter_id()
-
-        );
+    public static TopicDTO mapToTopicDTO(Topic topic){
+        TopicDTO topicDTO = new TopicDTO();
+        topicDTO.setTopic_id(topic.getTopic_id());
+        topicDTO.setTitle(topic.getTitle());
+        topicDTO.setNumber(topic.getNumber());
+        topicDTO.setIs_progress_limited(topic.getIs_progress_limited());
+        return topicDTO;
     }
 
-    public static Topic mapToLesson(TopicDTO topicDTO){
-        return new Topic(
-                topicDTO.getTopic_id(),
-                topicDTO.getTitle(),
-                topicDTO.getNumber(),
-                topicDTO.getIs_progress_limited(),
-                topicDTO.getChapter_id()
-        );
+    public static Topic mapToTopic(TopicDTO topicDTO) {
+        Topic topic = new Topic();
+        topic.setTopic_id(topicDTO.getTopic_id());
+        topic.setTitle(topicDTO.getTitle());
+        topic.setNumber(topicDTO.getNumber());
+        topic.setIs_progress_limited(topicDTO.getIs_progress_limited());
+        return topic;
     }
+
 }

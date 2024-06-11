@@ -7,10 +7,8 @@ import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
-import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.enums.Role;
-import com.math.mathcha.repository.StudentRepository.StudentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,19 +27,17 @@ public class AuthService {
     PasswordEncoder passwordEncoder;
 @Autowired
     SecurityUtil securityUtil;
-
-@Autowired
-    StudentRepository studentRepository;
-
 @Autowired
     UserService userService;
 
-    public ResLoginDTO login(LoginDTO loginDTO) {
-        User user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("Account not found"));
-        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new NotFoundException("Wrong password");
-        String token = securityUtil.createToken(user);
-        ResLoginDTO resLoginDTO = new ResLoginDTO();
 
+    public ResLoginDTO login(LoginDTO loginDTO) {
+        var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new NotFoundException("Wrong password");
+
+        String token = securityUtil.createToken(user);
+
+        ResLoginDTO resLoginDTO = new ResLoginDTO();
         resLoginDTO.setToken(token);
         resLoginDTO.setUsername(user.getUsername());
         resLoginDTO.setRole(user.getRole());
@@ -57,8 +53,6 @@ public class AuthService {
         return resLoginDTO;
     }
 
-
-
     public User register(UserDTO userDTO) throws IdInvalidException {
         User user = new User(userDTO.getUser_id(),userDTO.getFirst_name()
                 ,userDTO.getLast_name(),userDTO.getPhone()
@@ -66,12 +60,12 @@ public class AuthService {
                 ,userDTO.getImage(),userDTO.getUsername()
                 ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
                 , Role.PARENT);
-
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
             throw new IdInvalidException(
-                    "Username " + userDTO.getUsername() + " đã tồn tại, vui lòng nhập Username khác.");
+                    "Username " + userDTO.getUsername() + " đã tồn tại, vui lòng sử dụng email khác.");
         }
+
         try {
             return userRepository.save(user);
         }catch (DataIntegrityViolationException e){

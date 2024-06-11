@@ -126,6 +126,8 @@ public class UserServiceImpl implements UserService {
         res.setEmail(user.getEmail());
         res.setAddress(user.getAddress());
         res.setImage(user.getImage());
+        res.setUsername(user.getUsername());
+        res.setRole(user.getRole());
         return res;
     }
 @Override

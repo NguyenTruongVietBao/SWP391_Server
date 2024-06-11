@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@Table(name = "lesson")
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,8 @@ public class Lesson {
     private String document;
     @Column(name = "video_url")
     private String video_url;
-    @Column(name = "topic_id")
-    private int topic_id;
+
+    @ManyToOne
+    @JoinColumn(name = "topic_id", nullable = false)
+    private Topic topic;
 }
