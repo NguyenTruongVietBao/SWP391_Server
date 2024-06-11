@@ -1,8 +1,6 @@
 package com.math.mathcha.service.lessonService.Impl;
 
 import com.math.mathcha.dto.request.LessonDTO;
-import com.math.mathcha.dto.request.TopicDTO;
-import com.math.mathcha.entity.Chapter;
 import com.math.mathcha.entity.Lesson;
 import com.math.mathcha.entity.Topic;
 import com.math.mathcha.mapper.LessonMapper;
@@ -14,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,9 +34,11 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonDTO getLessonById(Integer lesson_id) {
-        Lesson lesson = lessonRepository.findById(lesson_id)
-                .orElseThrow(() -> new RuntimeException("Lesson "+lesson_id+" not found"));
-        return LessonMapper.mapToLessonDTO(lesson);
+        Optional<Lesson> lesson = lessonRepository.findById(lesson_id);
+        if (lesson.isPresent()) {
+            return LessonMapper.mapToLessonDTO(lesson.get());
+        }
+        return null;
     }
 
     @Override
