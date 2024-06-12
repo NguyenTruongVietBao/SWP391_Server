@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -39,7 +41,8 @@ public class User {
     private Boolean is_deleted = false;
     @Enumerated(EnumType.STRING)
     Role role;
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Student> students;
 
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))

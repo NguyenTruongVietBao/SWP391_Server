@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ChapterController {
     private ChapterService chapterService;
     private CourseService courseService;
     @PostMapping("/{course_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> createChapter (@PathVariable("course_id") Integer course_id,
                                                      @RequestBody ChapterDTO chapterDTO){
         ChapterDTO savedChapter = chapterService.createChapter( chapterDTO, course_id);
@@ -30,6 +32,7 @@ public class ChapterController {
     }
 
     @GetMapping("/course/{course_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<ChapterDTO>> getChapterByCourseId (@PathVariable("course_id") int course_id) throws IdInvalidException {
         List<ChapterDTO> chapterDTOs = chapterService.getChapterByCourseId(course_id);
         CourseDTO courseDTO = courseService.getCourseById(course_id);
@@ -40,6 +43,7 @@ public class ChapterController {
     }
 
     @GetMapping("/{chapter_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> getChapterById (@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException {
         ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
 
@@ -50,12 +54,14 @@ public class ChapterController {
     }
 
     @PutMapping("/{chapter_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> updateChapter (@RequestBody ChapterDTO updatedChapter, @PathVariable("chapter_id") Integer chapterId){
         ChapterDTO chapterDTO = chapterService.updateChapter(updatedChapter, chapterId );
         return ResponseEntity.ok(chapterDTO);
     }
 
     @DeleteMapping("/{chapter_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteChapter(@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException{
         ChapterDTO currentChapter = this.chapterService.getChapterById(chapter_id);
         if (currentChapter == null) {

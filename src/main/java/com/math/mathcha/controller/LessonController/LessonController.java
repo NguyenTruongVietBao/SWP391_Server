@@ -8,6 +8,7 @@ import com.math.mathcha.service.topicService.TopicService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class LessonController {
     private TopicService topicService ;
 
     @PostMapping("/{topic_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonDTO lessonDTO,
                                                   @PathVariable("topic_id") Integer topic_id){
         LessonDTO savedLesson = lessonService.createLesson(lessonDTO, topic_id);
@@ -28,6 +30,7 @@ public class LessonController {
     }
 
     @GetMapping("/topic/{topic_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<LessonDTO>> getLessonsByTopicId(@PathVariable("topic_id") int topic_id) throws IdInvalidException {
         List<LessonDTO> lesson = lessonService.getLessonsByTopicId(topic_id);
         TopicDTO topicDTO = topicService.getTopicById(topic_id);
@@ -38,6 +41,7 @@ public class LessonController {
     }
 
     @GetMapping("/{lesson_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<LessonDTO> getLessonById (@PathVariable("lesson_id") Integer lesson_id) throws IdInvalidException {
         LessonDTO lessonDTO = lessonService.getLessonById(lesson_id);
 
@@ -54,12 +58,14 @@ public class LessonController {
 //    }
 
     @PutMapping("/{lesson_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<LessonDTO> updateLesson (@RequestBody LessonDTO updatedLesson, @PathVariable("lesson_id") Integer lessonId){
         LessonDTO lessonDTO = lessonService.updateLesson(updatedLesson, lessonId );
         return ResponseEntity.ok(lessonDTO);
     }
 
     @DeleteMapping("/{lesson_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteLesson(@PathVariable("lesson_id") Integer lesson_id) throws IdInvalidException {
         LessonDTO currentTopic = this.lessonService.getLessonById(lesson_id);
         if (currentTopic == null) {

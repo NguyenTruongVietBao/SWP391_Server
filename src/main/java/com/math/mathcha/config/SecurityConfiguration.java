@@ -32,7 +32,13 @@ public class SecurityConfiguration {
     @Value("${mathcha_edu.jwt.base64-secret}")
     private String jwtKey;
 
-    private final String[] PUBLIC_ENDPOINTS = {"/api/login","/api/register"};
+    private final String[] PUBLIC_ENDPOINTS = {
+            "/api/login",
+            "/api/register",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**"
+    };
 
 
     @Bean
