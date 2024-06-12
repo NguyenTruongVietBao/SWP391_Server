@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UserDTO updateUser) {
-        //UserDTO user = getUserById(updateUser.getUser_id());
         UserDTO user = getUserById(updateUser.getUser_id());
         user.setFirst_name(updateUser.getFirst_name());
         user.setLast_name(updateUser.getLast_name());
@@ -74,7 +73,6 @@ public class UserServiceImpl implements UserService {
         user.setUsername(updateUser.getUsername());
         user.setPassword(updateUser.getPassword());
         user.setIs_deleted(updateUser.getIs_deleted());
-
         user.setRole(updateUser.getRole());
         User updatedUserEntity = UserMapper.mapToUser(user);
         User savedUser = userRepository.save(updatedUserEntity);
@@ -140,8 +138,6 @@ public class UserServiceImpl implements UserService {
     res.setEmail(user.getEmail());
     res.setAddress(user.getAddress());
     res.setImage(user.getImage());
-
-
-        return res;
+    return res;
     }
 }

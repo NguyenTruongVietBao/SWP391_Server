@@ -2,13 +2,16 @@ package com.math.mathcha.service.courseService.Impl;
 
 import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.entity.Course;
+import com.math.mathcha.entity.User;
 import com.math.mathcha.mapper.CourseMapper;
+import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.CourseRepository.CourseRepository;
 import com.math.mathcha.service.courseService.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,9 +28,11 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseDTO getCourseById( Integer course_id) {
-        Course course = courseRepository.findById(course_id)
-                .orElseThrow(() -> new RuntimeException("Course "+course_id+" not found"));
-        return CourseMapper.mapToCourseDTO(course);
+        Optional<Course> course = courseRepository.findById(course_id);
+        if (course.isPresent()) {
+            return CourseMapper.mapToCourseDTO(course.get());
+        }
+        return null;
     }
 
     @Override

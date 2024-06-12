@@ -3,7 +3,9 @@ package com.math.mathcha.service.chapterService.Impl;
 import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.entity.Chapter;
 import com.math.mathcha.entity.Course;
+import com.math.mathcha.entity.User;
 import com.math.mathcha.mapper.ChapterMapper;
+import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.ChapterRepository.ChapterRepository;
 import com.math.mathcha.repository.CourseRepository.CourseRepository;
 import com.math.mathcha.service.chapterService.ChapterService;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +35,11 @@ public class ChapterServiceImpl implements ChapterService {
 
     @Override
     public ChapterDTO getChapterById(Integer chapter_id) {
-        Chapter chapter = chapterRepository.findById(chapter_id)
-                .orElseThrow(() -> new RuntimeException("Chapter "+chapter_id+" not found"));
-        return ChapterMapper.mapToChapterDTO(chapter);
+        Optional<Chapter> chapter = chapterRepository.findById(chapter_id);
+        if (chapter.isPresent()) {
+            return ChapterMapper.mapToChapterDTO(chapter.get());
+        }
+        return null;
     }
 
     @Override

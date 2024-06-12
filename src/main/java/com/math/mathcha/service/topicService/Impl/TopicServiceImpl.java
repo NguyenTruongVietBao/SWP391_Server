@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,9 +37,11 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public TopicDTO getTopicById(Integer topic_id) {
-        Topic topic = topicRepository.findById(topic_id)
-                .orElseThrow(() -> new RuntimeException("Topic "+topic_id+" not found"));
-        return TopicMapper.mapToTopicDTO(topic);
+        Optional<Topic> topic = topicRepository.findById(topic_id);
+        if (topic.isPresent()) {
+            return TopicMapper.mapToTopicDTO(topic.get());
+        }
+        return null;
     }
 
 
