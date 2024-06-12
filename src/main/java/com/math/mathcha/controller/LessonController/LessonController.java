@@ -21,7 +21,7 @@ public class LessonController {
     private LessonService lessonService;
     private TopicService topicService ;
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @PostMapping("/{topic_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<LessonDTO> createLesson(@RequestBody LessonDTO lessonDTO,
@@ -30,7 +30,7 @@ public class LessonController {
         return new ResponseEntity<>(savedLesson, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @GetMapping("/topic/{topic_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<LessonDTO>> getLessonsByTopicId(@PathVariable("topic_id") int topic_id) throws IdInvalidException {
@@ -42,7 +42,7 @@ public class LessonController {
         return ResponseEntity.ok(lesson);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @GetMapping("/{lesson_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<LessonDTO> getLessonById (@PathVariable("lesson_id") Integer lesson_id) throws IdInvalidException {
@@ -60,7 +60,7 @@ public class LessonController {
 //        return ResponseEntity.ok(lesson);
 //    }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @PutMapping("/{lesson_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<LessonDTO> updateLesson (@RequestBody LessonDTO updatedLesson, @PathVariable("lesson_id") Integer lessonId){
@@ -68,7 +68,7 @@ public class LessonController {
         return ResponseEntity.ok(lessonDTO);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @DeleteMapping("/{lesson_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteLesson(@PathVariable("lesson_id") Integer lesson_id) throws IdInvalidException {

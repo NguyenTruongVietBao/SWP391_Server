@@ -2,7 +2,7 @@ package com.math.mathcha.mapper;
 
 import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.entity.Student;
-import com.math.mathcha.entity.Topic;
+
 
 public class StudentMapper {
     public static StudentDTO mapToStudentDTO(Student student){

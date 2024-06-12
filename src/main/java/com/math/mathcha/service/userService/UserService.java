@@ -1,5 +1,6 @@
 package com.math.mathcha.service.userService;
 
+import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
@@ -30,4 +31,6 @@ public interface UserService {
     ResUpdateUserDTO convertToResUpdateUserDTO(UserDTO user);
 
     ResUserDTO convertToResUserDTO(UserDTO user);
+
+
 }

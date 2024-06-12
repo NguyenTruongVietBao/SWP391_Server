@@ -23,7 +23,7 @@ public class CourseController {
 
     private CourseService courseService;
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @PostMapping
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<CourseDTO> createCourse (@RequestBody CourseDTO courseDTO){
@@ -31,7 +31,6 @@ public class CourseController {
         return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("{course_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<CourseDTO> getCourseById (@PathVariable("course_id") Integer course_id) throws IdInvalidException {
@@ -44,7 +43,7 @@ public class CourseController {
                 .body(courseDTO);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @GetMapping
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<CourseDTO>> getCourseAll(){
@@ -52,7 +51,7 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @PutMapping("/{course_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<CourseDTO> updateCourse (@RequestBody CourseDTO updatedCourse, @PathVariable("course_id") Integer courseId){
@@ -60,7 +59,6 @@ public class CourseController {
         return ResponseEntity.ok(courseDTO);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @DeleteMapping("{course_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteCourse( @PathVariable("course_id") Integer course_id) throws IdInvalidException {

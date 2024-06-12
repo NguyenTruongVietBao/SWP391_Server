@@ -6,14 +6,13 @@ import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.entity.User;
-import com.math.mathcha.enums.Role;
+import com.math.mathcha.mapper.ChapterMapper;
 import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.userService.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -140,4 +139,5 @@ public class UserServiceImpl implements UserService {
     res.setImage(user.getImage());
     return res;
     }
+
 }

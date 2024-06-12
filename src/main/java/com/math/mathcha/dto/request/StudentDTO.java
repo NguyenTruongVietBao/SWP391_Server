@@ -30,5 +30,4 @@ public class StudentDTO {
 
     private Boolean is_deleted;
 
-    private int user_id;
 }

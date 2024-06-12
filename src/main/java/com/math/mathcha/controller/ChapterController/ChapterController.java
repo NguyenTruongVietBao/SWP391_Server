@@ -24,7 +24,7 @@ public class ChapterController {
     private ChapterService chapterService;
     private CourseService courseService;
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @PostMapping("/{course_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> createChapter (@PathVariable("course_id") Integer course_id,
@@ -33,7 +33,7 @@ public class ChapterController {
         return new ResponseEntity<>(savedChapter, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @GetMapping("/course/{course_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<ChapterDTO>> getChapterByCourseId (@PathVariable("course_id") int course_id) throws IdInvalidException {
@@ -45,7 +45,7 @@ public class ChapterController {
         return ResponseEntity.ok(chapterDTOs);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @GetMapping("/{chapter_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> getChapterById (@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException {
@@ -57,7 +57,6 @@ public class ChapterController {
         return ResponseEntity.ok(chapterDTO);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PutMapping("/{chapter_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> updateChapter (@RequestBody ChapterDTO updatedChapter, @PathVariable("chapter_id") Integer chapterId){
@@ -65,7 +64,7 @@ public class ChapterController {
         return ResponseEntity.ok(chapterDTO);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @DeleteMapping("/{chapter_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteChapter(@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException{

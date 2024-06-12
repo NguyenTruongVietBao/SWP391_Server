@@ -1,10 +1,12 @@
 package com.math.mathcha.controller.UserController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
+import com.math.mathcha.service.studentService.StudentService;
 import com.math.mathcha.service.userService.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
     private PasswordEncoder passwordEncoder;
+    private StudentService studentService;
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ResCreateUserDTO> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {
@@ -81,4 +84,12 @@ public class UserController {
         this.userService.deleteUser(user_id);
         return ResponseEntity.ok(null);
     }
+
+    @GetMapping("/user/{user_id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<StudentDTO>> getStudentByUserId (@PathVariable("user_id") int user_id) throws IdInvalidException {
+        List<StudentDTO> studentDTOs = studentService.getStudentByUserId(user_id);
+        return ResponseEntity.ok(studentDTOs);
+    }
+
 }

@@ -23,17 +23,18 @@ public class AuthService {
 
     @Autowired
     UserRepository userRepository;
-@Autowired
+    @Autowired
     PasswordEncoder passwordEncoder;
-@Autowired
+    @Autowired
     SecurityUtil securityUtil;
-@Autowired
+    @Autowired
     UserService userService;
 
 
     public ResLoginDTO login(LoginDTO loginDTO) {
         var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
-        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new NotFoundException("Wrong password");
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword()))
+            throw new NotFoundException("Wrong password");
 
         String token = securityUtil.createToken(user);
 
@@ -48,7 +49,7 @@ public class AuthService {
         resLoginDTO.setLast_name(user.getLast_name());
         resLoginDTO.setImage(user.getImage());
         resLoginDTO.setIs_deleted(user.getIs_deleted());
-        resLoginDTO.setUser_id(user.getUser_id());
+
 
         return resLoginDTO;
     }

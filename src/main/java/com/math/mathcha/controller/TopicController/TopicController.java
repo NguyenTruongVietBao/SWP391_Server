@@ -21,7 +21,7 @@ public class TopicController {
     private TopicService topicService;
     private ChapterService chapterService;
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @PostMapping("/chapter/{chapter_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<TopicDTO> createTopic(@PathVariable("chapter_id") Integer chapter_id,
@@ -30,7 +30,7 @@ public class TopicController {
         return new ResponseEntity<>(savedTopic, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @GetMapping("/chapter/{chapter_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<TopicDTO>> getTopicByChapterId (@PathVariable("chapter_id") int chapter_id) throws IdInvalidException {
@@ -42,7 +42,7 @@ public class TopicController {
         return ResponseEntity.ok(TopicDTOs);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @GetMapping("/{topic_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<TopicDTO> getTopicById (@PathVariable("topic_id") Integer topic_id) throws IdInvalidException {
@@ -54,7 +54,7 @@ public class TopicController {
         return ResponseEntity.ok(topicDTO);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @PutMapping("/{topic_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<TopicDTO> updateTopic(@RequestBody TopicDTO updatedTopic, @PathVariable("topic_id") Integer topicId){
@@ -62,7 +62,7 @@ public class TopicController {
         return ResponseEntity.ok(topicDTO);
     }
 
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     @DeleteMapping("/{topic_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteTopic(@PathVariable("topic_id") Integer topic_id) throws IdInvalidException {
