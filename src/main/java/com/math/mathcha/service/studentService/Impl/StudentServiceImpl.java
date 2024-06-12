@@ -82,4 +82,8 @@ public class StudentServiceImpl implements StudentService {
                 (student) -> StudentMapper.mapToStudentDTO(student)).collect(Collectors.toList()
         );
     }
+
+    public boolean isUsernameExist(String username) {
+        return this.studentRepository.existsByUsername(username);
+    }
 }

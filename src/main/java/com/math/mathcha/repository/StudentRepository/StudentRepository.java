@@ -11,4 +11,5 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student,Integer> {
     @Query("SELECT t FROM Student t WHERE t.user.user_id = :user_id")
     List<Student> findStudentByUserId(@Param(value = "user_id") int user_id);
+    boolean existsByUsername(String username);
 }

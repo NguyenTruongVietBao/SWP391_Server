@@ -17,4 +17,7 @@ public interface StudentService {
     void deleteStudent (Integer student_id);
 
     List<StudentDTO> getStudentByUserId (int user_id);
+
+    boolean isUsernameExist (String username);
+
 }

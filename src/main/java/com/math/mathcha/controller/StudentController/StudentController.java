@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,12 +20,20 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
     private StudentService studentService;
-
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/user/{user_id}")
     @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<StudentDTO> createStudent(@PathVariable("user_id") Integer user_id,
-                                                @RequestBody StudentDTO studentDTO){
+                                                @RequestBody StudentDTO studentDTO) throws IdInvalidException {
+
+        boolean isUsernameExist = this.studentService.isUsernameExist(studentDTO.getUsername());
+        if (isUsernameExist) {
+            throw new IdInvalidException(
+                    "Username " + studentDTO.getUsername() + " đã tồn tại, vui lòng sử dụng email khác.");
+        }
+        String hashPassword = this.passwordEncoder.encode(studentDTO.getPassword());
+        studentDTO.setPassword(hashPassword);
         StudentDTO savedStudent = studentService.createStudent(studentDTO, user_id);
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
