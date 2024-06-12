@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class CourseController {
 
     private CourseService courseService;
 
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PostMapping
     public ResponseEntity<CourseDTO> createCourse (@RequestBody CourseDTO courseDTO){
         CourseDTO savedCourse = courseService.createCourse(courseDTO);
         return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("{course_id}")
     public ResponseEntity<CourseDTO> getCourseById (@PathVariable("course_id") Integer course_id) throws IdInvalidException {
         CourseDTO courseDTO = courseService.getCourseById(course_id);
@@ -39,18 +42,21 @@ public class CourseController {
                 .body(courseDTO);
     }
 
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping
     public ResponseEntity<List<CourseDTO>> getCourseAll(){
         List<CourseDTO> courses = courseService.getCourseAll();
         return ResponseEntity.ok(courses);
     }
 
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PutMapping("/{course_id}")
     public ResponseEntity<CourseDTO> updateCourse (@RequestBody CourseDTO updatedCourse, @PathVariable("course_id") Integer courseId){
         CourseDTO courseDTO = courseService.updateCourse(updatedCourse, courseId );
         return ResponseEntity.ok(courseDTO);
     }
 
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @DeleteMapping("{course_id}")
     public ResponseEntity<Void> deleteCourse( @PathVariable("course_id") Integer course_id) throws IdInvalidException {
         CourseDTO currentCourse = courseService.getCourseById(course_id);
