@@ -1,8 +1,12 @@
 package com.math.mathcha.mapper;
 
+import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserMapper {
 
@@ -18,6 +22,9 @@ public class UserMapper {
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setIs_deleted(user.getIs_deleted());
+        userDTO.setRole(user.getRole());
+        userDTO.setStudents(user.getStudents());
+
         return userDTO;
 
     }

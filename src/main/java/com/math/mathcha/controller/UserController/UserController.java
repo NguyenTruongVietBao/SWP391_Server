@@ -1,10 +1,12 @@
 package com.math.mathcha.controller.UserController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
+import com.math.mathcha.service.studentService.StudentService;
 import com.math.mathcha.service.userService.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,7 @@ public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
     private PasswordEncoder passwordEncoder;
+    private StudentService studentService;
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ResCreateUserDTO> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {
@@ -56,11 +59,11 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get/all")
     public ResponseEntity<List<UserDTO>> getUserAll(){
-        List<UserDTO> student = userService.getUserAll();
+        List<UserDTO> user = userService.getUserAll();
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username : {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(user);
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update")
@@ -80,5 +83,15 @@ public class UserController {
         }
         this.userService.deleteUser(user_id);
         return ResponseEntity.ok(null);
+    }
+    @GetMapping("/student/{user_id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<StudentDTO>> getStudentByUserId (@PathVariable("user_id") int user_id) throws IdInvalidException {
+        List<StudentDTO> studentDTOS = studentService.getStudentByUserId(user_id);
+        UserDTO userDTO = userService.getUserById(user_id);
+        if (userDTO == null) {
+            throw new IdInvalidException("Trong user id = " + user_id + " hiện không có student");
+        }
+        return ResponseEntity.ok(studentDTOS);
     }
 }

@@ -4,6 +4,7 @@ import com.math.mathcha.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     Role role;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+
     private List<Student> students;
 
 //    @ElementCollection(fetch = FetchType.EAGER)

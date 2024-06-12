@@ -7,6 +7,7 @@ import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
+import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.enums.Role;
 import com.math.mathcha.repository.UserRepository.UserRepository;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+//import static jdk.internal.org.jline.reader.impl.LineReaderImpl.CompletionType.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +52,6 @@ public class AuthService {
         resLoginDTO.setImage(user.getImage());
         resLoginDTO.setIs_deleted(user.getIs_deleted());
         resLoginDTO.setUser_id(user.getUser_id());
-
         return resLoginDTO;
     }
 
@@ -59,7 +61,7 @@ public class AuthService {
                 ,userDTO.getEmail(),userDTO.getAddress()
                 ,userDTO.getImage(),userDTO.getUsername()
                 ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
-                , Role.PARENT,userDTO.getStudents());
+                , Role.PARENT, userDTO.getStudents());
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
             throw new IdInvalidException(

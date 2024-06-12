@@ -17,6 +17,7 @@ public class StudentMapper {
         studentDTO.setUsername(student.getUsername());
         studentDTO.setPassword(student.getPassword());
         studentDTO.setIs_deleted(student.getIs_deleted());
+
         return studentDTO;
 
     }
