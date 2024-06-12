@@ -26,6 +26,7 @@ public class ChapterController {
 
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PostMapping("/{course_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> createChapter (@PathVariable("course_id") Integer course_id,
                                                      @RequestBody ChapterDTO chapterDTO){
         ChapterDTO savedChapter = chapterService.createChapter( chapterDTO, course_id);
@@ -34,6 +35,7 @@ public class ChapterController {
 
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/course/{course_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<ChapterDTO>> getChapterByCourseId (@PathVariable("course_id") int course_id) throws IdInvalidException {
         List<ChapterDTO> chapterDTOs = chapterService.getChapterByCourseId(course_id);
         CourseDTO courseDTO = courseService.getCourseById(course_id);
@@ -45,6 +47,7 @@ public class ChapterController {
 
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/{chapter_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> getChapterById (@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException {
         ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
 
@@ -56,6 +59,7 @@ public class ChapterController {
 
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PutMapping("/{chapter_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<ChapterDTO> updateChapter (@RequestBody ChapterDTO updatedChapter, @PathVariable("chapter_id") Integer chapterId){
         ChapterDTO chapterDTO = chapterService.updateChapter(updatedChapter, chapterId );
         return ResponseEntity.ok(chapterDTO);
@@ -63,6 +67,7 @@ public class ChapterController {
 
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @DeleteMapping("/{chapter_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteChapter(@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException{
         ChapterDTO currentChapter = this.chapterService.getChapterById(chapter_id);
         if (currentChapter == null) {

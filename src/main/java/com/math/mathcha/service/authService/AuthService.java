@@ -59,7 +59,7 @@ public class AuthService {
                 ,userDTO.getEmail(),userDTO.getAddress()
                 ,userDTO.getImage(),userDTO.getUsername()
                 ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
-                , Role.PARENT);
+                , Role.PARENT,userDTO.getStudents());
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
             throw new IdInvalidException(

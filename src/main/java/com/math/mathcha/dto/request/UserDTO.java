@@ -1,11 +1,13 @@
 package com.math.mathcha.dto.request;
 
+import com.math.mathcha.entity.Student;
 import com.math.mathcha.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -34,4 +36,6 @@ public class UserDTO {
     private Boolean is_deleted;
 
     private Role role;
+
+    private List<Student> students;
 }

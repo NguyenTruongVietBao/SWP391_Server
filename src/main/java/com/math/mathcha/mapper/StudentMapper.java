@@ -2,38 +2,37 @@ package com.math.mathcha.mapper;
 
 import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.entity.Student;
+import com.math.mathcha.entity.Topic;
 
 public class StudentMapper {
     public static StudentDTO mapToStudentDTO(Student student){
-        return new StudentDTO(
-                student.getStudent_id(),
-                student.getFirst_name(),
-                student.getLast_name(),
-                student.getPhone(),
-                student.getEmail(),
-                student.getAddress(),
-                student.getImage(),
-                student.getUsername(),
-                student.getPassword(),
-                student.getIs_deleted(),
-                student.getUser_id()
-        );
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setStudent_id(student.getStudent_id());
+        studentDTO.setFirst_name(student.getFirst_name());
+        studentDTO.setLast_name(student.getLast_name());
+        studentDTO.setPhone(student.getPhone());
+        studentDTO.setEmail(student.getEmail());
+        studentDTO.setAddress(student.getAddress());
+        studentDTO.setImage(student.getImage());
+        studentDTO.setUsername(student.getUsername());
+        studentDTO.setPassword(student.getPassword());
+        studentDTO.setIs_deleted(student.getIs_deleted());
+        return studentDTO;
 
     }
     public static Student mapToStudent(StudentDTO studentDTO){
-        return new Student(
-                studentDTO.getStudent_id(),
-                studentDTO.getFirst_name(),
-                studentDTO.getLast_name(),
-                studentDTO.getPhone(),
-                studentDTO.getEmail(),
-                studentDTO.getAddress(),
-                studentDTO.getImage(),
-                studentDTO.getUsername(),
-                studentDTO.getPassword(),
-                studentDTO.getIs_deleted(),
-                studentDTO.getUser_id()
-        );
+        Student student = new Student();
+        student.setStudent_id(studentDTO.getStudent_id());
+        student.setFirst_name(studentDTO.getFirst_name());
+        student.setLast_name(studentDTO.getLast_name());
+        student.setPhone(studentDTO.getPhone());
+        student.setEmail(studentDTO.getEmail());
+        student.setAddress(studentDTO.getAddress());
+        student.setImage(studentDTO.getImage());
+        student.setUsername(studentDTO.getUsername());
+        student.setPassword(studentDTO.getPassword());
+        student.setIs_deleted(studentDTO.getIs_deleted());
+        return student;
 
     }
 }
