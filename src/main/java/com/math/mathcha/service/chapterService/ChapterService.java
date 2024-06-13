@@ -7,7 +7,7 @@ import java.util.List;
 public interface ChapterService {
     ChapterDTO createChapter(ChapterDTO chapterDTO, Integer course_id);
 
-    ChapterDTO getChapterById ( Integer chapter_id);
+    ChapterDTO getChapterById (Integer chapter_id);
 
     ChapterDTO updateChapter (ChapterDTO chapterDTO, Integer chapter_id);
 

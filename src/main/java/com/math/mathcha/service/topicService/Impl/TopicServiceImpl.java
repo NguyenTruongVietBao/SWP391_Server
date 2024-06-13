@@ -1,12 +1,9 @@
 package com.math.mathcha.service.topicService.Impl;
 
 
-import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.entity.Chapter;
-import com.math.mathcha.entity.Course;
 import com.math.mathcha.entity.Topic;
-import com.math.mathcha.mapper.ChapterMapper;
 import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.repository.ChapterRepository.ChapterRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;

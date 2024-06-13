@@ -1,6 +1,7 @@
 package com.math.mathcha.mapper;
 
 import com.math.mathcha.dto.request.ChapterDTO;
+import com.math.mathcha.dto.request.QuizDTO;
 
 import com.math.mathcha.entity.Chapter;
 

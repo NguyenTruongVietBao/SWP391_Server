@@ -2,7 +2,9 @@ package com.math.mathcha.controller.ChapterController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.ChapterDTO;
+import com.math.mathcha.dto.request.QuizDTO;
 import com.math.mathcha.dto.request.CourseDTO;
+import com.math.mathcha.entity.Chapter;
 import com.math.mathcha.service.chapterService.ChapterService;
 import com.math.mathcha.service.courseService.CourseService;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,13 +25,14 @@ public class ChapterController {
     private static final Logger log = LoggerFactory.getLogger(ChapterController.class);
     private ChapterService chapterService;
     private CourseService courseService;
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PostMapping("/{course_id}")
     public ResponseEntity<ChapterDTO> createChapter (@PathVariable("course_id") Integer course_id,
-                                                     @RequestBody ChapterDTO chapterDTO){
+                                                  @RequestBody ChapterDTO chapterDTO){
         ChapterDTO savedChapter = chapterService.createChapter( chapterDTO, course_id);
         return new ResponseEntity<>(savedChapter, HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/course/{course_id}")
     public ResponseEntity<List<ChapterDTO>> getChapterByCourseId (@PathVariable("course_id") int course_id) throws IdInvalidException {
         List<ChapterDTO> chapterDTOs = chapterService.getChapterByCourseId(course_id);
@@ -38,7 +42,7 @@ public class ChapterController {
         }
         return ResponseEntity.ok(chapterDTOs);
     }
-
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/{chapter_id}")
     public ResponseEntity<ChapterDTO> getChapterById (@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException {
         ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
@@ -48,13 +52,13 @@ public class ChapterController {
         }
         return ResponseEntity.ok(chapterDTO);
     }
-
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PutMapping("/{chapter_id}")
     public ResponseEntity<ChapterDTO> updateChapter (@RequestBody ChapterDTO updatedChapter, @PathVariable("chapter_id") Integer chapterId){
         ChapterDTO chapterDTO = chapterService.updateChapter(updatedChapter, chapterId );
         return ResponseEntity.ok(chapterDTO);
     }
-
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @DeleteMapping("/{chapter_id}")
     public ResponseEntity<Void> deleteChapter(@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException{
         ChapterDTO currentChapter = this.chapterService.getChapterById(chapter_id);
