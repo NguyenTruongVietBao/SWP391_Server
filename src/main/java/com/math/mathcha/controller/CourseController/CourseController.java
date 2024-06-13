@@ -32,6 +32,7 @@ public class CourseController {
 
     @GetMapping("{course_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     public ResponseEntity<CourseDTO> getCourseById (@PathVariable("course_id") Integer course_id) throws IdInvalidException {
         CourseDTO courseDTO = courseService.getCourseById(course_id);
         if (courseDTO == null) {
@@ -42,8 +43,7 @@ public class CourseController {
                 .body(courseDTO);
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @GetMapping("/get")
     public ResponseEntity<List<CourseDTO>> getCourseAll(){
         List<CourseDTO> courses = courseService.getCourseAll();
         return ResponseEntity.ok(courses);

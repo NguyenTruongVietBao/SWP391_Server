@@ -37,7 +37,8 @@ public class SecurityConfiguration {
             "/api/register",
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-resources/**"
+            "/swagger-resources/**",
+            "/course/get"
     };
 
 
