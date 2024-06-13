@@ -33,6 +33,10 @@ public class AuthController {
             ResLoginDTO res = authService.login(loginDTO);
             return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+    @GetMapping("")
+    public  String test(){
+        return "hello";
+    }
 
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {

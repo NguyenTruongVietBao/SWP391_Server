@@ -14,7 +14,7 @@
 	<name>mathcha_edu</name>
 	<description>Math for primary school students</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -93,6 +93,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>be</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
