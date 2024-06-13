@@ -2,7 +2,6 @@ package com.math.mathcha.controller.TopicController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.ChapterDTO;
-import com.math.mathcha.dto.request.QuizDTO;
 import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.service.chapterService.ChapterService;
 import com.math.mathcha.service.topicService.TopicService;

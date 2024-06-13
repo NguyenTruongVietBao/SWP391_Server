@@ -13,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "quiz")
-public class Quiz {
+@Table(name = "question")
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "quiz_id")
-    private Long quiz_id; // sửa lại từ content sang id
+    @Column(name = "question_id")
+    private Long question_id; // sửa lại từ content sang id
 
     @Column(name = "content")
     private String content; // thêm trường content
@@ -27,7 +27,7 @@ public class Quiz {
     private String title; // thêm trường title
 
     @ElementCollection
-    @CollectionTable(name = "quiz_options", joinColumns = @JoinColumn(name = "quiz_id"))
+    @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "option")
     private List<String> options;
 
@@ -36,5 +36,5 @@ public class Quiz {
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
-    private Topic topic; // sửa lại từ Quiz sang Lesson
+    private Topic topic; // sửa lại từ question sang Lesson
 }

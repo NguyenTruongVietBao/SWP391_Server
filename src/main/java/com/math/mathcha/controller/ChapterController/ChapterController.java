@@ -2,9 +2,7 @@ package com.math.mathcha.controller.ChapterController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.ChapterDTO;
-import com.math.mathcha.dto.request.QuizDTO;
 import com.math.mathcha.dto.request.CourseDTO;
-import com.math.mathcha.entity.Chapter;
 import com.math.mathcha.service.chapterService.ChapterService;
 import com.math.mathcha.service.courseService.CourseService;
 import lombok.AllArgsConstructor;

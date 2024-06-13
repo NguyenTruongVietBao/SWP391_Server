@@ -11,9 +11,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuizDTO {
+public class QuestionDTO {
 
-    private long quiz_id;
+    private long question_id;
 
     private String content;
 
