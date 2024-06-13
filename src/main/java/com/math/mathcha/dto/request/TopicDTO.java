@@ -19,5 +19,5 @@ public class TopicDTO {
 
     private Boolean is_progress_limited;
 
-    private int chapter_id;
+
 }

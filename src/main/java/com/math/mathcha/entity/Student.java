@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,7 +38,14 @@ public class Student {
     private String password;
     @Column(name = "is_deleted")
     private Boolean is_deleted;
-    @Column(name = "user_id")
-    private int user_id;
+
+
+    // Many student can have 1 user
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+//    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private List<Enrollment> enrollments;
 
 }

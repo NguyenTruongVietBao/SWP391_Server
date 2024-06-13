@@ -21,6 +21,6 @@ public class LessonDTO {
 
     private String video_url;
 
-    private int topic_id;
+
 }
 

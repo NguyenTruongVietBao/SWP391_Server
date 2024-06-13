@@ -1,9 +1,12 @@
 package com.math.mathcha.dto.request;
 
+import com.math.mathcha.entity.Student;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,5 +33,5 @@ public class StudentDTO {
 
     private Boolean is_deleted;
 
-    private int user_id;
+
 }
