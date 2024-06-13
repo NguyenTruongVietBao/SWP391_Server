@@ -32,7 +32,7 @@ public class ChapterController {
     }
 
     @GetMapping("/course/{course_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+
     public ResponseEntity<List<ChapterDTO>> getChapterByCourseId (@PathVariable("course_id") int course_id) throws IdInvalidException {
         List<ChapterDTO> chapterDTOs = chapterService.getChapterByCourseId(course_id);
         CourseDTO courseDTO = courseService.getCourseById(course_id);
@@ -43,7 +43,7 @@ public class ChapterController {
     }
 
     @GetMapping("/{chapter_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT','MANAGER')")
     public ResponseEntity<ChapterDTO> getChapterById (@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException {
         ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
 

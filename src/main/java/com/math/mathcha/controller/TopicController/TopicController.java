@@ -31,7 +31,6 @@ public class TopicController {
     }
 
     @GetMapping("/chapter/{chapter_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<TopicDTO>> getTopicByChapterId (@PathVariable("chapter_id") int chapter_id) throws IdInvalidException {
         List<TopicDTO> TopicDTOs = topicService.getTopicsByChapterId(chapter_id);
         ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
@@ -42,7 +41,7 @@ public class TopicController {
     }
 
     @GetMapping("/{topic_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT','MANAGER')")
     public ResponseEntity<TopicDTO> getTopicById (@PathVariable("topic_id") Integer topic_id) throws IdInvalidException {
         TopicDTO topicDTO = topicService.getTopicById(topic_id);
 
