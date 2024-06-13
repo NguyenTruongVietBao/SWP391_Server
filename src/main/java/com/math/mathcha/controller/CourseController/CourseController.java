@@ -31,7 +31,7 @@ public class CourseController {
     }
 
     @GetMapping("{course_id}")
-    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT','MANAGER')")
+
 
     public ResponseEntity<CourseDTO> getCourseById (@PathVariable("course_id") Integer course_id) throws IdInvalidException {
         CourseDTO courseDTO = courseService.getCourseById(course_id);

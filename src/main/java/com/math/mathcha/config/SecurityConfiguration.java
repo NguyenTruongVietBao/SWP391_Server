@@ -39,6 +39,7 @@ public class SecurityConfiguration {
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/course/get",
+            "/course/{course_id}",
             "/chapter/course/{course_id}",
             "/topic/chapter/{chapter_id}"
     };
