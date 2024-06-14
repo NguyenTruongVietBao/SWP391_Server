@@ -33,10 +33,6 @@ public class TopicController {
     @GetMapping("/chapter/{chapter_id}")
     public ResponseEntity<List<TopicDTO>> getTopicByChapterId (@PathVariable("chapter_id") int chapter_id) throws IdInvalidException {
         List<TopicDTO> TopicDTOs = topicService.getTopicsByChapterId(chapter_id);
-        ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
-        if (chapterDTO == null) {
-            throw new IdInvalidException("Trong Chapter id = " + chapter_id + " hiện không có topic");
-        }
         return ResponseEntity.ok(TopicDTOs);
     }
 
@@ -44,10 +40,6 @@ public class TopicController {
     @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT','MANAGER')")
     public ResponseEntity<TopicDTO> getTopicById (@PathVariable("topic_id") Integer topic_id) throws IdInvalidException {
         TopicDTO topicDTO = topicService.getTopicById(topic_id);
-
-        if (topicDTO == null) {
-            throw new IdInvalidException("Topic với id = " + topic_id + " không tồn tại");
-        }
         return ResponseEntity.ok(topicDTO);
     }
 
@@ -62,10 +54,6 @@ public class TopicController {
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteTopic(@PathVariable("topic_id") Integer topic_id) throws IdInvalidException {
         TopicDTO currentTopic = this.topicService.getTopicById(topic_id);
-        if (currentTopic == null) {
-            throw new IdInvalidException("Topic với id = " + topic_id + " không tồn tại");
-        }
-
         this.chapterService.deleteChapter(topic_id);
         return ResponseEntity.ok(null);
     }

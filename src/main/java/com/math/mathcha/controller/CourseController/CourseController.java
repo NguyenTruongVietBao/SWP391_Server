@@ -31,16 +31,9 @@ public class CourseController {
     }
 
     @GetMapping("{course_id}")
-
-
     public ResponseEntity<CourseDTO> getCourseById (@PathVariable("course_id") Integer course_id) throws IdInvalidException {
         CourseDTO courseDTO = courseService.getCourseById(course_id);
-        if (courseDTO == null) {
-            throw new IdInvalidException("Course với id = " + course_id + " không tồn tại");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(courseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(courseDTO);
     }
 
     @GetMapping("/get")
@@ -60,9 +53,6 @@ public class CourseController {
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteCourse( @PathVariable("course_id") Integer course_id) throws IdInvalidException {
         CourseDTO currentCourse = courseService.getCourseById(course_id);
-        if (currentCourse == null) {
-            throw new IdInvalidException("Course với id = " + course_id + " không tồn tại");
-        }
         courseService.deleteCourse(course_id);
         return ResponseEntity.ok(null);
     }

@@ -1,6 +1,7 @@
 package com.math.mathcha.service.topicService.Impl;
 
 
+import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.entity.Chapter;
@@ -10,6 +11,7 @@ import com.math.mathcha.mapper.ChapterMapper;
 import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.repository.ChapterRepository.ChapterRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
+import com.math.mathcha.service.chapterService.ChapterService;
 import com.math.mathcha.service.topicService.TopicService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class TopicServiceImpl implements TopicService {
 
     private TopicRepository topicRepository;
     private final ChapterRepository chapterRepository;
+    private ChapterService chapterService ;
 
     @Override
     public TopicDTO createTopic(TopicDTO topicDTO, Integer chapter_id) {
@@ -36,12 +39,14 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public TopicDTO getTopicById(Integer topic_id) {
+    public TopicDTO getTopicById(Integer topic_id) throws IdInvalidException {
         Optional<Topic> topic = topicRepository.findById(topic_id);
         if (topic.isPresent()) {
             return TopicMapper.mapToTopicDTO(topic.get());
+        }else{
+                throw new IdInvalidException("Topic với id = " + topic_id + " không tồn tại");
         }
-        return null;
+
     }
 
 
@@ -57,15 +62,19 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void deleteTopic(Integer topic_id) {
+    public void deleteTopic(Integer topic_id) throws IdInvalidException {
         Topic topic = topicRepository.findById(topic_id)
-                .orElseThrow(() -> new RuntimeException("Not exits"+topic_id));
+                .orElseThrow(() -> new IdInvalidException("Topic với id = " + topic_id + " không tồn tại"));
         topicRepository.deleteById(topic_id);
     }
 
     @Override
-    public List<TopicDTO> getTopicsByChapterId(int chapter_id) {
+    public List<TopicDTO> getTopicsByChapterId(int chapter_id) throws IdInvalidException {
         List<Topic> chapters = topicRepository.findTopicsByChapterId(chapter_id);
+        ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
+        if (chapterDTO == null) {
+            throw new IdInvalidException("Trong Chapter id = " + chapter_id + " hiện không có topic");
+        }
         return chapters.stream().map(
                 (topic) -> TopicMapper.mapToTopicDTO(topic)).collect(Collectors.toList()
         );

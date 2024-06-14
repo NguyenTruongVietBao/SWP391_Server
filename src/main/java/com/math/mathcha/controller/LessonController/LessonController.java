@@ -33,10 +33,6 @@ public class LessonController {
 
     public ResponseEntity<List<LessonDTO>> getLessonsByTopicId(@PathVariable("topic_id") int topic_id) throws IdInvalidException {
         List<LessonDTO> lesson = lessonService.getLessonsByTopicId(topic_id);
-        TopicDTO topicDTO = topicService.getTopicById(topic_id);
-        if (topicDTO == null) {
-            throw new IdInvalidException("Trong topic id = " + topic_id + " hiện không có lesson");
-        }
         return ResponseEntity.ok(lesson);
     }
 
@@ -44,10 +40,6 @@ public class LessonController {
     @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT','MANAGER')")
     public ResponseEntity<LessonDTO> getLessonById (@PathVariable("lesson_id") Integer lesson_id) throws IdInvalidException {
         LessonDTO lessonDTO = lessonService.getLessonById(lesson_id);
-
-        if (lessonDTO == null) {
-            throw new IdInvalidException("Lesson với id = " + lesson_id + " không tồn tại");
-        }
         return ResponseEntity.ok(lessonDTO);
     }
 
@@ -68,10 +60,6 @@ public class LessonController {
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteLesson(@PathVariable("lesson_id") Integer lesson_id) throws IdInvalidException {
         LessonDTO currentTopic = this.lessonService.getLessonById(lesson_id);
-        if (currentTopic == null) {
-            throw new IdInvalidException("Lesson với id = " + lesson_id + " không tồn tại");
-        }
-
         this.lessonService.deleteLesson(lesson_id);
         return ResponseEntity.ok(null);
     }

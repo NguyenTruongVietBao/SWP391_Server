@@ -35,10 +35,6 @@ public class ChapterController {
 
     public ResponseEntity<List<ChapterDTO>> getChapterByCourseId (@PathVariable("course_id") int course_id) throws IdInvalidException {
         List<ChapterDTO> chapterDTOs = chapterService.getChapterByCourseId(course_id);
-        CourseDTO courseDTO = courseService.getCourseById(course_id);
-        if (courseDTO == null) {
-            throw new IdInvalidException("Trong course id = " + course_id + " hiện không có chapter");
-        }
         return ResponseEntity.ok(chapterDTOs);
     }
 
@@ -46,10 +42,6 @@ public class ChapterController {
     @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT','MANAGER')")
     public ResponseEntity<ChapterDTO> getChapterById (@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException {
         ChapterDTO chapterDTO = chapterService.getChapterById(chapter_id);
-
-        if (chapterDTO == null) {
-            throw new IdInvalidException("Chapter với id = " + chapter_id + " không tồn tại");
-        }
         return ResponseEntity.ok(chapterDTO);
     }
 
@@ -64,9 +56,6 @@ public class ChapterController {
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<Void> deleteChapter(@PathVariable("chapter_id") Integer chapter_id) throws IdInvalidException{
         ChapterDTO currentChapter = this.chapterService.getChapterById(chapter_id);
-        if (currentChapter == null) {
-            throw new IdInvalidException("Chapter với id = " + chapter_id + " không tồn tại");
-        }
 
         this.chapterService.deleteChapter(chapter_id);
         return ResponseEntity.ok(null);

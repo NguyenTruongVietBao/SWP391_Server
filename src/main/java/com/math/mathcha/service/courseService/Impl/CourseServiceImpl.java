@@ -1,5 +1,6 @@
 package com.math.mathcha.service.courseService.Impl;
 
+import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.entity.Course;
 import com.math.mathcha.entity.User;
@@ -27,12 +28,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDTO getCourseById( Integer course_id) {
+    public CourseDTO getCourseById( Integer course_id) throws IdInvalidException {
         Optional<Course> course = courseRepository.findById(course_id);
         if (course.isPresent()) {
             return CourseMapper.mapToCourseDTO(course.get());
+        }else {
+            throw new IdInvalidException("Course với id = " + course_id + " không tồn tại");
         }
-        return null;
     }
 
     @Override
@@ -57,9 +59,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteCourse(Integer course_id) {
+    public void deleteCourse(Integer course_id) throws IdInvalidException{
         Course course = courseRepository.findById(course_id)
-                .orElseThrow(() -> new RuntimeException("Not exits"+course_id));
+                .orElseThrow(() -> new IdInvalidException("Course với id = " + course_id + " không tồn tại"));
         courseRepository.deleteById(course_id);
     }
 
