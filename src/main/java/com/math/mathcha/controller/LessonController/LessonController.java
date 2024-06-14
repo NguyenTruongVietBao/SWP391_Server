@@ -30,7 +30,7 @@ public class LessonController {
     }
 
     @GetMapping("/topic/{topic_id}")
-    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT','MANAGER')")
+
     public ResponseEntity<List<LessonDTO>> getLessonsByTopicId(@PathVariable("topic_id") int topic_id) throws IdInvalidException {
         List<LessonDTO> lesson = lessonService.getLessonsByTopicId(topic_id);
         TopicDTO topicDTO = topicService.getTopicById(topic_id);
