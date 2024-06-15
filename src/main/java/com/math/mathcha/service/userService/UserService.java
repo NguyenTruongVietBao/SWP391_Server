@@ -1,5 +1,6 @@
 package com.math.mathcha.service.userService;
 
+import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
@@ -9,17 +10,15 @@ import com.math.mathcha.entity.User;
 import java.util.List;
 
 public interface UserService {
-    UserDTO createUser(UserDTO userDTO);
+    UserDTO createUser(UserDTO userDTO) throws IdInvalidException;
 
-    UserDTO createContentManager(UserDTO userDTO);
+    UserDTO getUserById ( Integer user_id) throws IdInvalidException;
 
-    UserDTO getUserById ( Integer user_id);
+    List<ResUserDTO> getUserAll();
 
-    List<UserDTO> getUserAll();
+    UserDTO updateUser (UserDTO userDTO) throws IdInvalidException;
 
-    UserDTO updateUser (UserDTO userDTO);
-
-    void deleteUser (Integer user_id);
+    void deleteUser (Integer user_id) throws IdInvalidException;
 
     UserDTO handleGetUserByUsername(String username);
 

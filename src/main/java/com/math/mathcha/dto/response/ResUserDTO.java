@@ -1,6 +1,7 @@
 package com.math.mathcha.dto.response;
 
 
+import com.math.mathcha.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,5 @@ public class ResUserDTO {
 
     private String username;
 
+    private Role role;
 }
