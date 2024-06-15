@@ -29,7 +29,6 @@ import java.util.List;
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
-    private PasswordEncoder passwordEncoder;
     private StudentService studentService;
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")

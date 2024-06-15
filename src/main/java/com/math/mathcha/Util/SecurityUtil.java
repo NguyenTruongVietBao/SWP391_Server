@@ -1,6 +1,8 @@
 package com.math.mathcha.Util;
 
+import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
+import com.math.mathcha.enums.Role;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -65,6 +67,24 @@ public class SecurityUtil {
                 throw new RuntimeException(e);
             }
         }
+    public String createTokenStudent(Student student) {
+
+        JWTClaimsSet claims = new JWTClaimsSet.Builder()
+                .subject(student.getUsername())
+                .issueTime(new Date(System.currentTimeMillis()))
+                .expirationTime(new Date(System.currentTimeMillis() + 1000*60*60*24*1))
+                .claim("scope", "ROLE_"+Role.STUDENT)
+                .build();
+        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
+        Payload payload = new Payload(claims.toJSONObject());
+        JWSObject jwsObject = new JWSObject(jwsHeader, payload);
+        try{
+            jwsObject.sign(new MACSigner(jwtKey.getBytes()));
+            return jwsObject.serialize();
+        }catch(JOSEException e){
+            throw new RuntimeException(e);
+        }
+    }
 
 
 }

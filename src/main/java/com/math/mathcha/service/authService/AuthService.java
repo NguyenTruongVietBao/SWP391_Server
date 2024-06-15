@@ -7,9 +7,9 @@ import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
-import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.enums.Role;
+import com.math.mathcha.repository.StudentRepository.StudentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.userService.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +32,8 @@ public class AuthService {
     SecurityUtil securityUtil;
 @Autowired
     UserService userService;
+@Autowired
+    StudentRepository studentRepository ;
 
 
     public ResLoginDTO login(LoginDTO loginDTO) {
@@ -75,5 +77,23 @@ public class AuthService {
         }
 
 
+    }
+    public ResLoginDTO loginStudent(LoginDTO loginDTO) {
+        var student = studentRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
+        if (!passwordEncoder.matches(loginDTO.getPassword(), student.getPassword())) throw new NotFoundException("Wrong password");
+        String token = securityUtil.createTokenStudent(student);
+        ResLoginDTO resLoginDTO = new ResLoginDTO();
+        resLoginDTO.setToken(token);
+        resLoginDTO.setRole(Role.STUDENT);
+        resLoginDTO.setUsername(student.getUsername());
+        resLoginDTO.setEmail(student.getEmail());
+        resLoginDTO.setAddress(student.getAddress());
+        resLoginDTO.setPhone(student.getPhone());
+        resLoginDTO.setFirst_name(student.getFirst_name());
+        resLoginDTO.setLast_name(student.getLast_name());
+        resLoginDTO.setImage(student.getImage());
+        resLoginDTO.setIs_deleted(student.getIs_deleted());
+        resLoginDTO.setUser_id(student.getStudent_id());
+        return resLoginDTO;
     }
 }

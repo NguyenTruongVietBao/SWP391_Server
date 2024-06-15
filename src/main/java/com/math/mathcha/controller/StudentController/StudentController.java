@@ -26,14 +26,6 @@ public class StudentController {
     @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<StudentDTO> createStudent(@PathVariable("user_id") Integer user_id,
                                                 @RequestBody StudentDTO studentDTO) throws IdInvalidException {
-
-        boolean isUsernameExist = this.studentService.isUsernameExist(studentDTO.getUsername());
-        if (isUsernameExist) {
-            throw new IdInvalidException(
-                    "Username " + studentDTO.getUsername() + " đã tồn tại, vui lòng sử dụng email khác.");
-        }
-        String hashPassword = this.passwordEncoder.encode(studentDTO.getPassword());
-        studentDTO.setPassword(hashPassword);
         StudentDTO savedStudent = studentService.createStudent(studentDTO, user_id);
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
@@ -42,9 +34,6 @@ public class StudentController {
     @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<StudentDTO> getStudentById (@PathVariable("student_id") Integer student_id) throws IdInvalidException {
         StudentDTO studentDTO = studentService.getStudentById(student_id);
-        if (studentDTO == null) {
-            throw new IdInvalidException("Student với id = " + student_id + " không tồn tại");
-        }
         return ResponseEntity.ok(studentDTO);
     }
 
@@ -52,7 +41,6 @@ public class StudentController {
     @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<List<StudentDTO>> getStudentAll(){
         List<StudentDTO> student = studentService.getStudentAll();
-
         return ResponseEntity.ok(student);
     }
 
@@ -60,9 +48,6 @@ public class StudentController {
     @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<StudentDTO> updateStudent (@RequestBody StudentDTO updatedStudent, @PathVariable("student_id") Integer studentId) throws IdInvalidException {
         StudentDTO studentDTO = studentService.updateStudent(updatedStudent, studentId );
-        if (studentDTO == null) {
-            throw new IdInvalidException("User với id = " + updatedStudent.getStudent_id() + " không tồn tại");
-        }
         return ResponseEntity.ok(studentDTO);
     }
 
@@ -70,9 +55,6 @@ public class StudentController {
     @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<Void> deleteStudent(@PathVariable("student_id") Integer student_id) throws IdInvalidException {
         StudentDTO currentUser = this.studentService.getStudentById(student_id);
-        if (currentUser == null) {
-            throw new IdInvalidException("User với id = " + student_id + " không tồn tại");
-        }
         this.studentService.deleteStudent(student_id);
         return ResponseEntity.ok(null);
     }

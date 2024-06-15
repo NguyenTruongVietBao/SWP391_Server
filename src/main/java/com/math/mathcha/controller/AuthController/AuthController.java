@@ -3,7 +3,6 @@ package com.math.mathcha.controller.AuthController;
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.LoginDTO;
 import com.math.mathcha.dto.request.UserDTO;
-import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.service.authService.AuthService;
@@ -49,5 +48,10 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity createUser()  {
         return ResponseEntity.ok("admin success");
+    }
+    @PostMapping("/login/student")
+    public ResponseEntity<ResLoginDTO> loginStudent(@Valid @RequestBody LoginDTO loginDTO) {
+        ResLoginDTO res = authService.loginStudent(loginDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }
