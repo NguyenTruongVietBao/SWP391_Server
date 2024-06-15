@@ -34,6 +34,7 @@ public class SecurityConfiguration {
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/api/login",
+            "/api/stlogin",
             "/api/register",
             "/v3/api-docs/**",
             "/swagger-ui/**",

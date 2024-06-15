@@ -33,6 +33,12 @@ public class AuthController {
             ResLoginDTO res = authService.login(loginDTO);
             return ResponseEntity.status(HttpStatus.OK).body(res);
     }
+
+    @PostMapping("/stlogin")
+    public ResponseEntity<ResLoginDTO> stlogin(@Valid @RequestBody LoginDTO loginDTO) {
+        ResLoginDTO res = authService.studentLogin(loginDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+    }
     @GetMapping("")
     public  String test(){
         return "hello";

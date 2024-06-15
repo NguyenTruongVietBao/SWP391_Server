@@ -8,6 +8,7 @@ import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.service.studentService.StudentService;
 import com.math.mathcha.service.userService.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -24,6 +25,8 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @AllArgsConstructor
+
+@SecurityRequirement(name = "brearerAuth")
 @RequestMapping("/user")
 
 public class UserController {
