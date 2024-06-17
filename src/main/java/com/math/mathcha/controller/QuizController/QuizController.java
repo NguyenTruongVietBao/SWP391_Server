@@ -3,6 +3,7 @@ package com.math.mathcha.controller.QuizController;
 import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.dto.request.QuizDTO;
 import com.math.mathcha.dto.response.QuizResultDTO;
+import com.math.mathcha.entity.Question.Question;
 import com.math.mathcha.entity.Question.QuestionOption;
 import com.math.mathcha.service.quizService.QuizService;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,12 @@ public class QuizController {
     public ResponseEntity<List<QuestionDTO>> getQuizQuestions() {
         List<QuestionDTO> questions = quizService.getQuizQuestions();
         return ResponseEntity.ok(questions);
+    }
+
+    @GetMapping("/chapter/{chapterId}")
+    public ResponseEntity<List<Question>> getQuizForChapter(@PathVariable int chapterId, @RequestParam int questionsPerTopic) {
+        List<Question> quiz = quizService.generateQuizForChapter(chapterId, questionsPerTopic);
+        return ResponseEntity.ok(quiz);
     }
 
     @PostMapping("/evaluate")
