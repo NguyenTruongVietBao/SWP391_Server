@@ -55,9 +55,9 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/update")
-    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody UserDTO updatedUser) throws IdInvalidException{
-        UserDTO userDTO = userService.updateUser(updatedUser);
+    @PutMapping("/{user_id}")
+    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody UserDTO updatedUser, @PathVariable("user_id") Integer user_id) throws IdInvalidException{
+        UserDTO userDTO = userService.updateUser(updatedUser,user_id);
         return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(userDTO));
     }
 

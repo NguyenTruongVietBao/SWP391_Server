@@ -6,7 +6,7 @@ import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.entity.User;
-import com.math.mathcha.enums.Role;
+import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.userService.UserService;
@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,8 +57,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO updateUser) throws IdInvalidException {
-        UserDTO user = getUserById(updateUser.getUser_id());
+    public UserDTO updateUser(UserDTO updateUser, Integer topic_id) {
+        User user = userRepository.findById(topic_id)
+                .orElseThrow(()-> new RuntimeException("Topic "+topic_id+" not found"));
         user.setFirst_name(updateUser.getFirst_name());
         user.setLast_name(updateUser.getLast_name());
         user.setPhone(updateUser.getPhone());
@@ -70,10 +70,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(updateUser.getPassword());
         user.setIs_deleted(updateUser.getIs_deleted());
         user.setRole(updateUser.getRole());
-        User updatedUserEntity = UserMapper.mapToUser(user);
-        User savedUser = userRepository.save(updatedUserEntity);
-
-        return UserMapper.mapToUserDTO(savedUser);
+        User updateUserObj = userRepository.save(user);
+        return UserMapper.mapToUserDTO(updateUserObj);
     }
 
     @Override
