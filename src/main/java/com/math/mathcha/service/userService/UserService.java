@@ -1,6 +1,7 @@
 package com.math.mathcha.service.userService;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
@@ -16,7 +17,7 @@ public interface UserService {
 
     List<ResUserDTO> getUserAll();
 
-    UserDTO updateUser (UserDTO userDTO) throws IdInvalidException;
+    UserDTO updateUser(UserDTO updateUser, Integer topic_id);
 
     void deleteUser (Integer user_id) throws IdInvalidException;
 
