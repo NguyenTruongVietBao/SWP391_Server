@@ -31,6 +31,7 @@ public class Course {
     @Column(name = "discount_price")
     private String discount_price;
 
+
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Chapter> chapters = new ArrayList<Chapter>();
 
