@@ -61,7 +61,7 @@ public class AuthService {
                 ,userDTO.getEmail(),userDTO.getAddress()
                 ,userDTO.getImage(),userDTO.getUsername()
                 ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
-                , Role.PARENT, userDTO.getStudents());
+                , Role.PARENT, userDTO.getStudents(), userDTO.getCourses(), userDTO.getPayments());
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
             throw new IdInvalidException(
