@@ -34,8 +34,6 @@ public class AuthService {
     UserService userService;
 @Autowired
     StudentRepository studentRepository ;
-
-
     public ResLoginDTO login(LoginDTO loginDTO) {
         var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new NotFoundException("Wrong password");

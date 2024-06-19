@@ -31,24 +31,14 @@ public class Course {
     @Column(name = "discount_price")
     private String discount_price;
 
-    @Column(name = "is_public")
-    private Boolean is_public = true;
-
-    @Column(name = "is_delete")
-    private Boolean is_delete;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Chapter> chapters;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Enrollment> enrollments;
+    private List<Chapter> chapters = new ArrayList<Chapter>();
 
 //    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 //    private List<Quiz> quizs;
-
+//
+//    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    private List<Enrollment> enrollments;
 }
 
