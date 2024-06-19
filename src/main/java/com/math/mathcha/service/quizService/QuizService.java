@@ -10,9 +10,8 @@ import java.util.List;
 public interface QuizService {
     public List<QuestionDTO> getQuizQuestions();
 
-    public  List<Question> generateQuizForChapter(int chapterId, int questionPerTopic);
+    public  List<QuestionDTO> generateQuizForChapter(int chapterId, int questionPerTopic);
 
     public QuizResultDTO evaluateQuiz(QuizDTO quizDTO);
-
 
 }

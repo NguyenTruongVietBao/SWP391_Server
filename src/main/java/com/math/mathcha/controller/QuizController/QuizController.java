@@ -7,6 +7,7 @@ import com.math.mathcha.entity.Question.Question;
 import com.math.mathcha.entity.Question.QuestionOption;
 import com.math.mathcha.service.quizService.QuizService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,8 @@ public class QuizController {
     }
 
     @GetMapping("/chapter/{chapterId}")
-    public ResponseEntity<List<Question>> getQuizForChapter(@PathVariable int chapterId, @RequestParam int questionsPerTopic) {
-        List<Question> quiz = quizService.generateQuizForChapter(chapterId, questionsPerTopic);
+    public ResponseEntity<List<QuestionDTO>> getQuizForChapter(@PathVariable int chapterId, @RequestParam int questionsPerTopic) {
+        List<QuestionDTO> quiz = quizService.generateQuizForChapter(chapterId, questionsPerTopic);
         return ResponseEntity.ok(quiz);
     }
 
