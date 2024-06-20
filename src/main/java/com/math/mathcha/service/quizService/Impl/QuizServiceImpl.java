@@ -5,15 +5,19 @@ import com.math.mathcha.dto.request.QuizDTO;
 import com.math.mathcha.dto.response.QuizResultDTO;
 import com.math.mathcha.entity.Chapter;
 import com.math.mathcha.entity.Question.Question;
+import com.math.mathcha.entity.QuizHistory;
 import com.math.mathcha.entity.Topic;
 import com.math.mathcha.mapper.QuestionMapper;
 import com.math.mathcha.repository.ChapterRepository.ChapterRepository;
 import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
+import com.math.mathcha.repository.QuizHistoryRepository.QuizHistoryRepository;
 import com.math.mathcha.service.quizService.QuizService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,6 +28,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class QuizServiceImpl implements QuizService {
 
+    @Autowired
+    private QuizHistoryRepository quizHistoryRepository;
     private final QuestionRepository questionRepository;
     private final ChapterRepository chapterRepository;
 
@@ -56,7 +62,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
 
-    public QuizResultDTO evaluateQuiz(QuizDTO quizDTO) {
+    public QuizResultDTO evaluateQuiz(Long quizId, Long userId, QuizDTO quizDTO) {
         List<QuestionDTO> questions = quizDTO.getQuestions();
         List<String> userAnswers = quizDTO.getUserAnswer();
         List<Boolean> results = new ArrayList<>();
@@ -74,7 +80,16 @@ public class QuizServiceImpl implements QuizService {
             }
         }
 
-        return new QuizResultDTO(results, correctCount, questions.size());
+        QuizResultDTO quizResultDTO = new QuizResultDTO(results, correctCount, questions.size());
+
+        QuizHistory history = new QuizHistory();
+        history.setQuizId(quizId);
+        history.setUserId(userId);
+        history.setScore(correctCount);
+        history.setTimestamp(LocalDateTime.now());
+
+        quizHistoryRepository.save(history);
+        return quizResultDTO;
     }
 
 

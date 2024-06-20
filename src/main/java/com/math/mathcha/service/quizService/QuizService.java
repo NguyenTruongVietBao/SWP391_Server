@@ -12,6 +12,6 @@ public interface QuizService {
 
     public  List<QuestionDTO> generateQuizForChapter(int chapterId, int questionPerTopic);
 
-    public QuizResultDTO evaluateQuiz(QuizDTO quizDTO);
+    public QuizResultDTO evaluateQuiz(Long quizId, Long userId, QuizDTO quizDTO);
 
 }

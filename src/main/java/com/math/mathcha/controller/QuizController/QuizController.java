@@ -7,6 +7,8 @@ import com.math.mathcha.entity.Question.Question;
 import com.math.mathcha.entity.Question.QuestionOption;
 import com.math.mathcha.service.quizService.QuizService;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +35,17 @@ public class QuizController {
         return ResponseEntity.ok(quiz);
     }
 
-    @PostMapping("/evaluate")
-    public ResponseEntity<QuizResultDTO> evaluateQuiz(@RequestBody QuizDTO quizDTO) {
-        QuizResultDTO result = quizService.evaluateQuiz(quizDTO);
+    @PostMapping("/{quizId}/evaluate")
+    public ResponseEntity<QuizResultDTO> evaluateQuiz(@PathVariable Long quizId, @RequestBody EvaluateQuizRequest request) {
+        QuizResultDTO result = quizService.evaluateQuiz(quizId, request.getUserId(), request.getQuizDTO());
         return ResponseEntity.ok(result);
+    }
+    @Getter
+    @Setter
+    public static class EvaluateQuizRequest {
+        private Long userId;
+        private QuizDTO quizDTO;
+
+        // Getters and Setters
     }
 }
