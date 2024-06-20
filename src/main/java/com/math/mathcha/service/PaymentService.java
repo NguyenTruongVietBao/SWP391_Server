@@ -4,7 +4,11 @@ import com.math.mathcha.dto.request.PaymentDTO;
 import com.math.mathcha.dto.request.RechargeRequestDTO;
 import com.math.mathcha.entity.Payment;
 import com.math.mathcha.entity.User;
+import com.math.mathcha.repository.CourseRepository.CourseRepository;
+import com.math.mathcha.repository.EnrollmentRepository;
 import com.math.mathcha.repository.PaymentRepository;
+import com.math.mathcha.repository.StudentRepository.StudentRepository;
+import com.math.mathcha.repository.UserRepository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,7 @@ public class PaymentService {
     @Autowired
     PaymentRepository paymentRepository;
 
+
     public String createUrl(RechargeRequestDTO rechargeRequestDTO) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime createDate = LocalDateTime.now();
@@ -36,7 +41,6 @@ public class PaymentService {
 //        User user = accountUtils.getCurrentUser();
 
 //        String orderId = UUID.randomUUID().toString().substring(0,6);
-
 
         Payment payment = new Payment();
 

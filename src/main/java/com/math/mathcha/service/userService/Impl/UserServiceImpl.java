@@ -57,9 +57,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO updateUser, Integer topic_id) {
-        User user = userRepository.findById(topic_id)
-                .orElseThrow(()-> new RuntimeException("Topic "+topic_id+" not found"));
+    public UserDTO updateUser(UserDTO updateUser, Integer user_id) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(()-> new RuntimeException("Topic "+user_id+" not found"));
         user.setFirst_name(updateUser.getFirst_name());
         user.setLast_name(updateUser.getLast_name());
         user.setPhone(updateUser.getPhone());
@@ -67,7 +67,6 @@ public class UserServiceImpl implements UserService {
         user.setAddress(updateUser.getAddress());
         user.setImage(updateUser.getImage());
         user.setUsername(updateUser.getUsername());
-        user.setPassword(updateUser.getPassword());
         user.setIs_deleted(updateUser.getIs_deleted());
         user.setRole(updateUser.getRole());
         User updateUserObj = userRepository.save(user);
