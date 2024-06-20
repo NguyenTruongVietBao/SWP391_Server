@@ -39,9 +39,5 @@ public class UserDTO {
 
     private Role role;
 
-    private List<Student> students;
 
-    private List<Course> courses;
-
-    private List<Payment> payments;
 }

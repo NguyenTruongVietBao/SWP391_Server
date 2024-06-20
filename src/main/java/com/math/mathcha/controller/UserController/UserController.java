@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/student/{user_id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<List<StudentDTO>> getStudentByUserId (@PathVariable("user_id") int user_id) throws IdInvalidException {
         List<StudentDTO> studentDTOS = studentService.getStudentByUserId(user_id);
         return ResponseEntity.ok(studentDTOS);

@@ -1,24 +1,24 @@
-package com.math.mathcha.mapper;
-
-import com.math.mathcha.dto.request.PaymentDTO;
-import com.math.mathcha.entity.Payment;
-
-public class PaymentMapper {
-    public static PaymentDTO mapToPaymentDTO(Payment payment){
-        PaymentDTO paymentDTO = new PaymentDTO();
-        paymentDTO.setPayment_id(payment.getPayment_id());
-        paymentDTO.setTotal_money(payment.getTotal_money());
-        paymentDTO.setPayment_method(payment.getPayment_method());
-        paymentDTO.setPayment_date(payment.getPayment_date());
-        return paymentDTO;
-    }
-
-    public static Payment mapToPayment(PaymentDTO paymentDTO){
-        Payment payment = new Payment();
-        payment.setPayment_id(paymentDTO.getPayment_id());
-        payment.setTotal_money(paymentDTO.getTotal_money());
-        payment.setPayment_method(paymentDTO.getPayment_method());
-        payment.setPayment_date(paymentDTO.getPayment_date());
-        return payment;
-    }
-}
+//package com.math.mathcha.mapper;
+//
+//import com.math.mathcha.dto.request.PaymentDTO;
+//import com.math.mathcha.entity.Payment;
+//
+//public class PaymentMapper {
+//    public static PaymentDTO mapToPaymentDTO(Payment payment){
+//        PaymentDTO paymentDTO = new PaymentDTO();
+//        paymentDTO.setPayment_id(payment.getPayment_id());
+//        paymentDTO.setTotal_money(payment.getTotal_money());
+//        paymentDTO.setPayment_method(payment.getPayment_method());
+//        paymentDTO.setPayment_date(payment.getPayment_date());
+//        return paymentDTO;
+//    }
+//
+//    public static Payment mapToPayment(PaymentDTO paymentDTO){
+//        Payment payment = new Payment();
+//        payment.setPayment_id(paymentDTO.getPayment_id());
+//        payment.setTotal_money(paymentDTO.getTotal_money());
+//        payment.setPayment_method(paymentDTO.getPayment_method());
+//        payment.setPayment_date(paymentDTO.getPayment_date());
+//        return payment;
+//    }
+//}

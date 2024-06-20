@@ -54,12 +54,12 @@ public class AuthService {
     }
 
     public User register(UserDTO userDTO) throws IdInvalidException {
-        User user = new User(userDTO.getUser_id(),userDTO.getFirst_name()
-                ,userDTO.getLast_name(),userDTO.getPhone()
-                ,userDTO.getEmail(),userDTO.getAddress()
-                ,userDTO.getImage(),userDTO.getUsername()
-                ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
-                , Role.PARENT, userDTO.getStudents(), userDTO.getCourses(), userDTO.getPayments());
+        User user = new User();
+        user.setRole(userDTO.getRole());
+        user.setEmail(userDTO.getEmail());
+        user.setAddress(userDTO.getAddress());
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
             throw new IdInvalidException(

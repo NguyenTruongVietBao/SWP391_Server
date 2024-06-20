@@ -23,7 +23,7 @@ public class UserMapper {
         userDTO.setPassword(user.getPassword());
         userDTO.setIs_deleted(user.getIs_deleted());
         userDTO.setRole(user.getRole());
-        userDTO.setStudents(user.getStudents());
+//        userDTO.setStudents(user.getStudents());
 
         return userDTO;
 

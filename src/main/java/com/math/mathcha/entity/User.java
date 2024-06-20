@@ -56,4 +56,7 @@ public class User {
 //    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
 //    @Column(name = "roles")
 //    private Set<String> roles;
+
+
+
 }

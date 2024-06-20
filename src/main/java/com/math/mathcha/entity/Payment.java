@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -21,20 +23,21 @@ public class Payment {
     private int payment_id;
 
     @Column(name = "payment_date")
-    private Date payment_date;
+    private String payment_date;
 
     @Column(name = "payment_method")
     private String payment_method;
 
     @Column(name = "total_money")
-    private String total_money;
-
+    private double total_money;
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "enrollment_id", nullable = false)
+    @JoinColumn(name = "enrollment_id")
     private Enrollment enrollment;
 
 }
