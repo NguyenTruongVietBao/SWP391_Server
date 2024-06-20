@@ -53,7 +53,7 @@ public class PaymentService {
         String tmnCode = "UEFQX38O";
         String secretKey = "APINBHTVCCO5CGZIN8NL50TQ1OUEJFYO";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://159.223.39.71/";
+        String returnUrl = "http://159.223.39.71?studentid="+rechargeRequestDTO.getStudentId()+"&courseid="+rechargeRequestDTO.getCourseId();
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();

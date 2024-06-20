@@ -6,6 +6,7 @@ import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.service.courseService.CourseService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/course")
+@SecurityRequirement(name = "api")
 public class CourseController {
 
     private CourseService courseService;

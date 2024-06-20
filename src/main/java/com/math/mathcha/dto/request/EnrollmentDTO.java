@@ -15,4 +15,6 @@ public class EnrollmentDTO {
 
     private int enrollment_id;
     private Date enrollment_date;
+    private StudentDTO student_id;
+    private CourseDTO course_id;
 }

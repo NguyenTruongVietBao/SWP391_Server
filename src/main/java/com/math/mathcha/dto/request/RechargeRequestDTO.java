@@ -6,4 +6,6 @@ import lombok.Data;
 @Data
 public class RechargeRequestDTO {
     String amount;
+    int studentId;
+    int courseId;
 }

@@ -5,6 +5,7 @@ import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.service.studentService.StudentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/student")
+@SecurityRequirement(name = "api")
 public class StudentController {
     private StudentService studentService;
     private PasswordEncoder passwordEncoder;
