@@ -5,8 +5,9 @@ import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.entity.Course;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.mapper.CourseMapper;
-import com.math.mathcha.mapper.UserMapper;
+import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.repository.CourseRepository.CourseRepository;
+import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.courseService.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
-
+    private UserRepository userRepository;
     @Override
-    public CourseDTO createCourse(CourseDTO courseDTO) {
+    public CourseDTO createCourse(CourseDTO courseDTO, Integer user_id) throws IdInvalidException {
         Course course = CourseMapper.mapToCourse(courseDTO);
-        Course savedCourse= courseRepository.save(course);
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new IdInvalidException("User: "+user_id+" not found"));
+        course.setUser(user);
+        Course savedCourse = courseRepository.save(course);
         return CourseMapper.mapToCourseDTO(savedCourse);
     }
 

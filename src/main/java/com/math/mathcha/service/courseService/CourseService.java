@@ -6,7 +6,7 @@ import com.math.mathcha.dto.request.CourseDTO;
 import java.util.List;
 
 public interface CourseService {
-    CourseDTO createCourse(CourseDTO courseDTO);
+    CourseDTO createCourse(CourseDTO courseDTO,Integer chapter_id) throws IdInvalidException;
 
     CourseDTO getCourseById ( Integer course_id) throws IdInvalidException;
 

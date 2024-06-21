@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -40,7 +41,7 @@ public class PaymentService {
 
 //        User user = accountUtils.getCurrentUser();
 
-//        String orderId = UUID.randomUUID().toString().substring(0,6);
+        String orderId = UUID.randomUUID().toString().substring(0,6);
 
         Payment payment = new Payment();
 
@@ -62,8 +63,8 @@ public class PaymentService {
         vnpParams.put("vnp_TmnCode", tmnCode);
         vnpParams.put("vnp_Locale", "vn");
         vnpParams.put("vnp_CurrCode", currCode);
-        vnpParams.put("vnp_TxnRef", "123");
-        vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + 123);
+        vnpParams.put("vnp_TxnRef", orderId);
+        vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + orderId);
         vnpParams.put("vnp_OrderType", "other");
         vnpParams.put("vnp_Amount", rechargeRequestDTO.getAmount() +"00");
         vnpParams.put("vnp_ReturnUrl", returnUrl);

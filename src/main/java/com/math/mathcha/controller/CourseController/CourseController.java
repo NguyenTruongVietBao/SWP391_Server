@@ -1,13 +1,11 @@
 package com.math.mathcha.controller.CourseController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
-import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.CourseDTO;
-import com.math.mathcha.dto.request.UserDTO;
+import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.service.courseService.CourseService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +23,11 @@ public class CourseController {
 
     private CourseService courseService;
 
-    @PostMapping
+    @PostMapping("/user/{user_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public ResponseEntity<CourseDTO> createCourse (@RequestBody CourseDTO courseDTO){
-        CourseDTO savedCourse = courseService.createCourse(courseDTO);
+    public ResponseEntity<CourseDTO> createCourse(@PathVariable("user_id") Integer user_id,
+                                                @RequestBody CourseDTO courseDTO) throws IdInvalidException {
+        CourseDTO savedCourse = courseService.createCourse(courseDTO, user_id);
         return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
     }
 
