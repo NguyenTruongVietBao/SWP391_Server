@@ -1,7 +1,9 @@
 package com.math.mathcha.mapper;
 
+import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.dto.request.EnrollmentDTO;
 import com.math.mathcha.dto.request.LessonDTO;
+import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.entity.Enrollment;
 import com.math.mathcha.entity.Lesson;
 
@@ -10,6 +12,7 @@ public class EnrollmentMapper {
         EnrollmentDTO enrollmentDTO = new EnrollmentDTO();
         enrollmentDTO.setEnrollment_id(enrollment.getEnrollment_id());
         enrollmentDTO.setEnrollment_date(enrollment.getEnrollment_date());
+
         return enrollmentDTO;
     }
 

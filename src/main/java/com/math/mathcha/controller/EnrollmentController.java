@@ -18,7 +18,7 @@ public class EnrollmentController {
     private EnrollmentService enrollmentService;
     @PostMapping("/create")
 //    @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public ResponseEntity<EnrollmentDTO> createEnrollment (@RequestBody EnrollmentDTO enrollmentDTO) throws IdInvalidException {
+    public ResponseEntity<EnrollmentDTO> createEnrollment(@RequestBody EnrollmentDTO enrollmentDTO) throws IdInvalidException {
         EnrollmentDTO savedEnrollment = enrollmentService.createEnrollment(enrollmentDTO);
         return new ResponseEntity<>(savedEnrollment, HttpStatus.CREATED);
     }
