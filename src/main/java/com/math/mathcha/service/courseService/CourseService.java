@@ -10,9 +10,15 @@ public interface CourseService {
 
     CourseDTO getCourseById ( Integer course_id) throws IdInvalidException;
 
+    List<CourseDTO> getCourseByStudentId(int student_id) throws IdInvalidException;
+
     List<CourseDTO> getCourseAll();
 
     CourseDTO updateCourse (CourseDTO courseDTO, Integer course_id);
 
     void deleteCourse (Integer course_id) throws IdInvalidException;
+
+    List<CourseDTO> getCoursesBoughtByParent(int userId);
+
+    List<CourseDTO> getCoursesNotBoughtByParent(int userId);
 }

@@ -57,4 +57,16 @@ public class CourseController {
         courseService.deleteCourse(course_id);
         return ResponseEntity.ok(null);
     }
+    @GetMapping("/bought/{user_id}")
+    public ResponseEntity<List<CourseDTO>> getCoursesBoughtByParent(@PathVariable("user_id") int user_id) {
+        List<CourseDTO> courses = courseService.getCoursesBoughtByParent(user_id);
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/notbought/{user_id}")
+    public ResponseEntity<List<CourseDTO>> getCoursesNotBoughtByParent(@PathVariable("user_id") int user_id) {
+        List<CourseDTO> courses = courseService.getCoursesNotBoughtByParent(user_id);
+        return ResponseEntity.ok(courses);
+    }
+
 }

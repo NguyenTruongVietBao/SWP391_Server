@@ -1,10 +1,10 @@
 package com.math.mathcha.service;
 
-import com.math.mathcha.dto.request.PaymentDTO;
+import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.RechargeRequestDTO;
-import com.math.mathcha.entity.Payment;
-import com.math.mathcha.entity.User;
-import com.math.mathcha.repository.CourseRepository.CourseRepository;
+import com.math.mathcha.entity.*;
+import com.math.mathcha.mapper.EnrollmentMapper;
+
 import com.math.mathcha.repository.EnrollmentRepository;
 import com.math.mathcha.repository.PaymentRepository;
 import com.math.mathcha.repository.StudentRepository.StudentRepository;
@@ -21,6 +21,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -32,6 +33,10 @@ public class PaymentService {
 
     @Autowired
     PaymentRepository paymentRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    EnrollmentRepository enrollmentRepository;
 
 
     public String createUrl(RechargeRequestDTO rechargeRequestDTO) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
@@ -40,7 +45,8 @@ public class PaymentService {
         String formattedCreateDate = createDate.format(formatter);
 
 //        User user = accountUtils.getCurrentUser();
-
+        User user = userRepository.findById(rechargeRequestDTO.getUser_id()).orElse(null);
+        Enrollment enrollment = enrollmentRepository.findById(rechargeRequestDTO.getEnrollment_id()).orElse(null);
         String orderId = UUID.randomUUID().toString().substring(0,6);
 
         Payment payment = new Payment();
@@ -48,13 +54,18 @@ public class PaymentService {
         payment.setTotal_money(Double.parseDouble(rechargeRequestDTO.getAmount()));
 //        transaction.setTransactionType(TransactionEnum.PENDING);
         payment.setPayment_date(formattedCreateDate);
+        payment.setPayment_method("VNPAY");
 //        transaction.setDescription("Recharge");
+        payment.setUser(user);
+        payment.setEnrollment(enrollment);
         Payment transactionReturn = paymentRepository.save(payment);
+
+
 
         String tmnCode = "UEFQX38O";
         String secretKey = "APINBHTVCCO5CGZIN8NL50TQ1OUEJFYO";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://159.223.39.71?studentid="+rechargeRequestDTO.getStudentId()+"&courseid="+rechargeRequestDTO.getCourseId();
+        String returnUrl = "http://159.223.39.71?student_id="+rechargeRequestDTO.getStudent_id()+"&course_id="+rechargeRequestDTO.getCourse_id();
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -66,7 +77,7 @@ public class PaymentService {
         vnpParams.put("vnp_TxnRef", orderId);
         vnpParams.put("vnp_OrderInfo", "Thanh toan cho ma GD: " + orderId);
         vnpParams.put("vnp_OrderType", "other");
-        vnpParams.put("vnp_Amount", rechargeRequestDTO.getAmount() +"00");
+        vnpParams.put("vnp_Amount", rechargeRequestDTO.getAmount());
         vnpParams.put("vnp_ReturnUrl", returnUrl);
         vnpParams.put("vnp_CreateDate", formattedCreateDate);
         vnpParams.put("vnp_IpAddr", "128.199.178.23");
