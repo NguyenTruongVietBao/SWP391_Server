@@ -1,14 +1,12 @@
 package com.math.mathcha.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
-
-import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -27,6 +25,9 @@ public class Payment {
 
     @Column(name = "payment_method")
     private String payment_method;
+
+//    @Enumerated(EnumType.STRING)
+//    TransactionEnums transaction;
 
     @Column(name = "total_money")
     private double total_money;

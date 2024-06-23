@@ -66,6 +66,7 @@ public class StudentController {
         return ResponseEntity.ok(null);
     }
     @GetMapping("/{student_id}/courses")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<List<CourseDTO>> getCoursesByStudentId(@PathVariable("student_id") int student_id) throws IdInvalidException {
         List<CourseDTO> courses = courseService.getCourseByStudentId(student_id);
         return ResponseEntity.ok(courses);
