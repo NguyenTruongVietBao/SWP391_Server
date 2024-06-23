@@ -1,5 +1,7 @@
 package com.math.mathcha.controller;
 
+import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.PaymentDTO;
 import com.math.mathcha.dto.request.RechargeRequestDTO;
 import com.math.mathcha.service.PaymentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin("*")
@@ -32,4 +35,11 @@ public class PaymentController {
         paymentService.handlePaymentCallback(queryParams);
         return new ResponseEntity<>("Payment processed", HttpStatus.OK);
     }
+    @GetMapping("/user/{user_id}")
+    @PreAuthorize("hasRole('PARENT')")
+    public ResponseEntity<List<PaymentDTO>> getTopicByChapterId (@PathVariable("user_id") int user_id) throws RuntimeException {
+        List<PaymentDTO> paymentDTOS = paymentService.getPaymetsByUserId(user_id);
+        return ResponseEntity.ok(paymentDTOS);
+    }
+
 }

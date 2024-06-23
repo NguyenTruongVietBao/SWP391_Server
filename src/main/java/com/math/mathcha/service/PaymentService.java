@@ -1,13 +1,13 @@
 package com.math.mathcha.service;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.PaymentDTO;
 import com.math.mathcha.dto.request.RechargeRequestDTO;
 import com.math.mathcha.entity.*;
-import com.math.mathcha.mapper.EnrollmentMapper;
 
+import com.math.mathcha.mapper.PaymentMapper;
 import com.math.mathcha.repository.EnrollmentRepository;
 import com.math.mathcha.repository.PaymentRepository;
-import com.math.mathcha.repository.StudentRepository.StudentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +21,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -143,5 +141,13 @@ public class PaymentService {
             payment.setEnrollment(enrollment);
             paymentRepository.save(payment);
         }
+    }
+    public List<PaymentDTO> getPaymetsByUserId(int user_id) throws RuntimeException {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() ->  new RuntimeException("User ID is invalid"));
+        List<Payment> payments = paymentRepository.findPaymentByUserId(user_id);
+        return payments.stream()
+                .map(PaymentMapper::mapToPaymentDTO)
+                .collect(Collectors.toList());
     }
 }
