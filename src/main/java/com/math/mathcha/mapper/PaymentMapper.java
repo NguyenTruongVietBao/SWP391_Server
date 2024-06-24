@@ -2,7 +2,6 @@ package com.math.mathcha.mapper;
 
 
 import com.math.mathcha.dto.request.PaymentDTO;
-import com.math.mathcha.dto.request.RechargeRequestDTO;
 import com.math.mathcha.entity.Payment;
 
 public class PaymentMapper {
@@ -12,6 +11,8 @@ public class PaymentMapper {
         paymentDTO.setPayment_date(payment.getPayment_date());
         paymentDTO.setPayment_method(payment.getPayment_method());
         paymentDTO.setTotal_money(payment.getTotal_money());
+        paymentDTO.setStudent(payment.getEnrollment().getStudent());
+        paymentDTO.setCourse(payment.getEnrollment().getCourse());
         return paymentDTO;
     }
 

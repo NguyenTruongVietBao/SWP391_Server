@@ -1,6 +1,5 @@
 package com.math.mathcha.controller;
 
-import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.PaymentDTO;
 import com.math.mathcha.dto.request.RechargeRequestDTO;
 import com.math.mathcha.service.PaymentService;
@@ -37,7 +36,7 @@ public class PaymentController {
     }
     @GetMapping("/user/{user_id}")
     @PreAuthorize("hasRole('PARENT')")
-    public ResponseEntity<List<PaymentDTO>> getTopicByChapterId (@PathVariable("user_id") int user_id) throws RuntimeException {
+    public ResponseEntity getTopicByChapterId (@PathVariable("user_id") int user_id) throws RuntimeException {
         List<PaymentDTO> paymentDTOS = paymentService.getPaymetsByUserId(user_id);
         return ResponseEntity.ok(paymentDTOS);
     }

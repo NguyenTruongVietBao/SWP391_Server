@@ -1,5 +1,6 @@
 package com.math.mathcha.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class Topic {
 
     @ManyToOne
     @JoinColumn(name = "chapter_id", nullable = false)
+    @JsonIgnore
     private Chapter chapter;
 
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Setter
@@ -31,6 +31,7 @@ public class Payment {
 
     @Column(name = "total_money")
     private double total_money;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")

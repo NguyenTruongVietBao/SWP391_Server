@@ -1,12 +1,12 @@
 package com.math.mathcha.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 import java.util.List;
 
@@ -40,6 +40,7 @@ public class Student {
 
     @Column(name = "is_deleted")
     private Boolean is_deleted = false;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

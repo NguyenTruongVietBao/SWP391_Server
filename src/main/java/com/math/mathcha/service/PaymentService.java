@@ -1,6 +1,5 @@
 package com.math.mathcha.service;
 
-import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.PaymentDTO;
 import com.math.mathcha.dto.request.RechargeRequestDTO;
 import com.math.mathcha.entity.*;
@@ -51,8 +50,8 @@ public class PaymentService {
         String tmnCode = "UEFQX38O";
         String secretKey = "APINBHTVCCO5CGZIN8NL50TQ1OUEJFYO";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnUrl = "http://159.223.39.71/payment/callback?student_id=" + rechargeRequestDTO.getStudent_id() + "&course_id=" + rechargeRequestDTO.getCourse_id();
-
+        String returnUrl = "http://159.223.39.71?student_id=" + rechargeRequestDTO.getStudent_id() + "&course_id=" + rechargeRequestDTO.getCourse_id();
+//        String returnUrl = "http://localhost:3000?student_id=" + rechargeRequestDTO.getStudent_id() + "&course_id=" + rechargeRequestDTO.getCourse_id();
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
         vnpParams.put("vnp_Version", "2.1.0");
