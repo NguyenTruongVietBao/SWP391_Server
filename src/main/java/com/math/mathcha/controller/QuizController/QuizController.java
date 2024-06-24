@@ -45,7 +45,5 @@ public class QuizController {
     public static class EvaluateQuizRequest {
         private Long userId;
         private QuizDTO quizDTO;
-
-        // Getters and Setters
     }
 }
