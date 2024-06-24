@@ -8,6 +8,7 @@ import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.service.studentService.StudentService;
 import com.math.mathcha.service.userService.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -25,7 +26,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/user")
-
+@SecurityRequirement(name = "api")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
@@ -70,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping("/student/{user_id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<List<StudentDTO>> getStudentByUserId (@PathVariable("user_id") int user_id) throws IdInvalidException {
         List<StudentDTO> studentDTOS = studentService.getStudentByUserId(user_id);
         return ResponseEntity.ok(studentDTOS);

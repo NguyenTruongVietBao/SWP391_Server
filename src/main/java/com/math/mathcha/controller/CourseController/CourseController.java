@@ -1,12 +1,11 @@
 package com.math.mathcha.controller.CourseController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
-import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.CourseDTO;
-import com.math.mathcha.dto.request.UserDTO;
+import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.service.courseService.CourseService;
 
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +18,16 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/course")
+@SecurityRequirement(name = "api")
 public class CourseController {
 
     private CourseService courseService;
 
-    @PostMapping
+    @PostMapping("/user/{user_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public ResponseEntity<CourseDTO> createCourse (@RequestBody CourseDTO courseDTO){
-        CourseDTO savedCourse = courseService.createCourse(courseDTO);
+    public ResponseEntity<CourseDTO> createCourse(@PathVariable("user_id") Integer user_id,
+                                                @RequestBody CourseDTO courseDTO) throws IdInvalidException {
+        CourseDTO savedCourse = courseService.createCourse(courseDTO, user_id);
         return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
     }
 
@@ -56,4 +57,16 @@ public class CourseController {
         courseService.deleteCourse(course_id);
         return ResponseEntity.ok(null);
     }
+    @GetMapping("/bought/{user_id}")
+    public ResponseEntity<List<CourseDTO>> getCoursesBoughtByParent(@PathVariable("user_id") int user_id) {
+        List<CourseDTO> courses = courseService.getCoursesBoughtByParent(user_id);
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/notbought/{user_id}")
+    public ResponseEntity<List<CourseDTO>> getCoursesNotBoughtByParent(@PathVariable("user_id") int user_id) {
+        List<CourseDTO> courses = courseService.getCoursesNotBoughtByParent(user_id);
+        return ResponseEntity.ok(courses);
+    }
+
 }

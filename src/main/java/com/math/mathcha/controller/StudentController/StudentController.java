@@ -1,11 +1,15 @@
 package com.math.mathcha.controller.StudentController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.dto.request.UserDTO;
+import com.math.mathcha.service.courseService.CourseService;
 import com.math.mathcha.service.studentService.StudentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,9 +22,12 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/student")
+@SecurityRequirement(name = "api")
 public class StudentController {
     private StudentService studentService;
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CourseService courseService;
 
     @PostMapping("/user/{user_id}")
     @PreAuthorize("hasRole('PARENT')")
@@ -57,5 +64,12 @@ public class StudentController {
         StudentDTO currentUser = this.studentService.getStudentById(student_id);
         this.studentService.deleteStudent(student_id);
         return ResponseEntity.ok(null);
+    }
+    @GetMapping("/{student_id}/courses")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<List<CourseDTO>> getCoursesByStudentId(@PathVariable("student_id") int student_id) throws IdInvalidException {
+        List<CourseDTO> courses = courseService.getCourseByStudentId(student_id);
+        return ResponseEntity.ok(courses);
+
     }
 }

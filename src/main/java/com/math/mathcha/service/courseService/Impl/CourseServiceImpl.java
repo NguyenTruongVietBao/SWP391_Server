@@ -1,12 +1,18 @@
 package com.math.mathcha.service.courseService.Impl;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
+import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.CourseDTO;
+import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.entity.Course;
+import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.mapper.CourseMapper;
-import com.math.mathcha.mapper.UserMapper;
+import com.math.mathcha.mapper.StudentMapper;
+import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.repository.CourseRepository.CourseRepository;
+import com.math.mathcha.repository.StudentRepository.StudentRepository;
+import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.courseService.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,11 +25,16 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
     private CourseRepository courseRepository;
+    private UserRepository userRepository;
+    private StudentRepository studentRepository;
 
     @Override
-    public CourseDTO createCourse(CourseDTO courseDTO) {
+    public CourseDTO createCourse(CourseDTO courseDTO, Integer user_id) throws IdInvalidException {
         Course course = CourseMapper.mapToCourse(courseDTO);
-        Course savedCourse= courseRepository.save(course);
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new IdInvalidException("User: "+user_id+" not found"));
+        course.setUser(user);
+        Course savedCourse = courseRepository.save(course);
         return CourseMapper.mapToCourseDTO(savedCourse);
     }
 
@@ -35,6 +46,14 @@ public class CourseServiceImpl implements CourseService {
         }else {
             throw new IdInvalidException("Course với id = " + course_id + " không tồn tại");
         }
+    }
+    @Override
+    public List<CourseDTO> getCourseByStudentId(int student_id) throws IdInvalidException {
+        List<Course> courses = courseRepository.findCoursesByStudentId(student_id);
+        Optional<Student> student = studentRepository.findById(student_id);
+        return courses.stream()
+                .map(CourseMapper::mapToCourseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -64,6 +83,21 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(() -> new IdInvalidException("Course với id = " + course_id + " không tồn tại"));
         courseRepository.deleteById(course_id);
     }
+    @Override
+    public List<CourseDTO> getCoursesBoughtByParent(int user_id) {
+        List<Course> courses = courseRepository.findCoursesBoughtByParent(user_id);
+        return courses.stream()
+                .map(CourseMapper::mapToCourseDTO)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<CourseDTO> getCoursesNotBoughtByParent(int user_id) {
+        List<Course> courses = courseRepository.findCoursesNotBoughtByParent(user_id);
+        return courses.stream()
+                .map(CourseMapper::mapToCourseDTO)
+                .collect(Collectors.toList());
+    }
+
 
 
 }

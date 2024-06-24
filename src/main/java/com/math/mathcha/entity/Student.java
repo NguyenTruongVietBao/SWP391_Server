@@ -1,6 +1,7 @@
 package com.math.mathcha.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,14 +37,17 @@ public class Student {
     private String username;
     @Column(name = "password")
     private String password;
+
     @Column(name = "is_deleted")
-    private Boolean is_deleted;
+    private Boolean is_deleted = false;
 
-
-    // Many student can have 1 user
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Enrollment> enrollments;
 
 //    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 //    private List<Enrollment> enrollments;
