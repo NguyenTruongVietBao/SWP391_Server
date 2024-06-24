@@ -1,12 +1,10 @@
 package com.math.mathcha.service.userService;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
-import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
-import com.math.mathcha.entity.User;
 
 import java.util.List;
 
@@ -17,7 +15,13 @@ public interface UserService {
 
     List<ResUserDTO> getUserAll();
 
-    UserDTO updateUser(UserDTO updateUser, Integer topic_id);
+    UserDTO updateAdmin(UserDTO updateAdmin, Integer user_id);
+
+    UserDTO updateContentManager(UserDTO updateContentManager, Integer user_id);
+
+    UserDTO updateManager(UserDTO updateManager, Integer user_id);
+
+    UserDTO updateParent(UserDTO updateParent, Integer user_id);
 
     void deleteUser (Integer user_id) throws IdInvalidException;
 

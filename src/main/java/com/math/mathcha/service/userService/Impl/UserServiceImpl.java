@@ -6,7 +6,6 @@ import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.entity.User;
-import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.userService.UserService;
@@ -57,19 +56,67 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(UserDTO updateUser, Integer topic_id) {
-        User user = userRepository.findById(topic_id)
-                .orElseThrow(()-> new RuntimeException("Topic "+topic_id+" not found"));
-        user.setFirst_name(updateUser.getFirst_name());
-        user.setLast_name(updateUser.getLast_name());
-        user.setPhone(updateUser.getPhone());
-        user.setEmail(updateUser.getEmail());
-        user.setAddress(updateUser.getAddress());
-        user.setImage(updateUser.getImage());
-        user.setUsername(updateUser.getUsername());
-        user.setPassword(updateUser.getPassword());
-        user.setIs_deleted(updateUser.getIs_deleted());
-        user.setRole(updateUser.getRole());
+    public UserDTO updateAdmin(UserDTO updateAdmin, Integer user_id) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(()-> new RuntimeException("User "+user_id+" not found"));
+        user.setFirst_name(updateAdmin.getFirst_name());
+        user.setLast_name(updateAdmin.getLast_name());
+        user.setPhone(updateAdmin.getPhone());
+        user.setEmail(updateAdmin.getEmail());
+        user.setAddress(updateAdmin.getAddress());
+        user.setImage(updateAdmin.getImage());
+        user.setUsername(updateAdmin.getUsername());
+        user.setPassword(updateAdmin.getPassword());
+        user.setIs_deleted(updateAdmin.getIs_deleted());
+        user.setRole(updateAdmin.getRole());
+        User updateUserObj = userRepository.save(user);
+        return UserMapper.mapToUserDTO(updateUserObj);
+    }
+
+    @Override
+    public UserDTO updateContentManager(UserDTO updateContentManager, Integer user_id) {
+            User user = userRepository.findById(user_id)
+                    .orElseThrow(()-> new RuntimeException("User "+user_id+" not found"));
+            user.setFirst_name(updateContentManager.getFirst_name());
+            user.setLast_name(updateContentManager.getLast_name());
+            user.setPhone(updateContentManager.getPhone());
+            user.setEmail(updateContentManager.getEmail());
+            user.setAddress(updateContentManager.getAddress());
+            user.setImage(updateContentManager.getImage());
+            user.setIs_deleted(updateContentManager.getIs_deleted());
+            user.setRole(updateContentManager.getRole());
+            User updateUserObj = userRepository.save(user);
+            return UserMapper.mapToUserDTO(updateUserObj);
+    }
+
+    @Override
+    public UserDTO updateManager(UserDTO updateManager, Integer user_id) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(()-> new RuntimeException("User "+user_id+" not found"));
+        user.setFirst_name(updateManager.getFirst_name());
+        user.setLast_name(updateManager.getLast_name());
+        user.setPhone(updateManager.getPhone());
+        user.setEmail(updateManager.getEmail());
+        user.setAddress(updateManager.getAddress());
+        user.setImage(updateManager.getImage());
+        user.setIs_deleted(updateManager.getIs_deleted());
+
+        User updateUserObj = userRepository.save(user);
+        return UserMapper.mapToUserDTO(updateUserObj);
+    }
+
+    @Override
+    public UserDTO updateParent(UserDTO updateParent, Integer user_id) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(()-> new RuntimeException("User "+user_id+" not found"));
+        user.setFirst_name(updateParent.getFirst_name());
+        user.setLast_name(updateParent.getLast_name());
+        user.setPhone(updateParent.getPhone());
+        user.setEmail(updateParent.getEmail());
+        user.setAddress(updateParent.getAddress());
+        user.setImage(updateParent.getImage());
+        user.setIs_deleted(updateParent.getIs_deleted());
+
         User updateUserObj = userRepository.save(user);
         return UserMapper.mapToUserDTO(updateUserObj);
     }
@@ -101,7 +148,6 @@ public class UserServiceImpl implements UserService {
         res.setEmail(user.getEmail());
         res.setAddress(user.getAddress());
         res.setImage(user.getImage());
-        res.setUsername(user.getUsername());
         res.setRole(user.getRole());
         return res;
     }

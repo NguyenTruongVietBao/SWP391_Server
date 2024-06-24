@@ -55,9 +55,9 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{user_id}")
-    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody UserDTO updatedUser, @PathVariable("user_id") Integer user_id) throws IdInvalidException{
-        UserDTO userDTO = userService.updateUser(updatedUser,user_id);
+    @PutMapping("/admin/{user_id}")
+    public ResponseEntity<ResUpdateUserDTO> updateAdmin(@RequestBody UserDTO updatedAdmin, @PathVariable("user_id") Integer user_id) throws IdInvalidException{
+        UserDTO userDTO = userService.updateAdmin(updatedAdmin,user_id);
         return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(userDTO));
     }
 
@@ -75,4 +75,26 @@ public class UserController {
         List<StudentDTO> studentDTOS = studentService.getStudentByUserId(user_id);
         return ResponseEntity.ok(studentDTOS);
     }
+
+    @PreAuthorize("hasRole('PARENT')")
+    @PutMapping("/parent/{user_id}")
+    public ResponseEntity<ResUpdateUserDTO> updateParent(@RequestBody UserDTO updatedParent, @PathVariable("user_id") Integer user_id) throws IdInvalidException{
+        UserDTO userDTO = userService.updateParent(updatedParent,user_id);
+        return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(userDTO));
+    }
+
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PutMapping("/content_manager/{user_id}")
+    public ResponseEntity<ResUpdateUserDTO> updateContentManager(@RequestBody UserDTO updateContentManager, @PathVariable("user_id") Integer user_id) throws IdInvalidException{
+        UserDTO userDTO = userService.updateContentManager(updateContentManager,user_id);
+        return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(userDTO));
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @PutMapping("/manager/{user_id}")
+    public ResponseEntity<ResUpdateUserDTO> updateManager(@RequestBody UserDTO updateManager, @PathVariable("user_id") Integer user_id) throws IdInvalidException{
+        UserDTO userDTO = userService.updateManager(updateManager,user_id);
+        return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(userDTO));
+    }
+
 }

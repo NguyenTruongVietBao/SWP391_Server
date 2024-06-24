@@ -24,8 +24,6 @@ public class ResCreateUserDTO {
 
     private String image;
 
-    private String username;
-
     private Role role;
 
 

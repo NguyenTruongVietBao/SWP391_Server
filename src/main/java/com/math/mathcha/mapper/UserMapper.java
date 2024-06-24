@@ -40,6 +40,7 @@ public class UserMapper {
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setIs_deleted(userDTO.getIs_deleted());
+        user.setRole(userDTO.getRole());
         return user;
 
     }
