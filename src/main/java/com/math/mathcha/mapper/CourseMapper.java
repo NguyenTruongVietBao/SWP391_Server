@@ -13,6 +13,7 @@ public class CourseMapper {
         courseDTO.setOriginal_price(course.getOriginal_price());
         courseDTO.setDiscount_price(course.getDiscount_price());
         courseDTO.setIs_deleted(course.getIs_deleted());
+        courseDTO.setStatus(course.getStatus());
         return courseDTO;
     }
 
@@ -25,6 +26,7 @@ public class CourseMapper {
         course.setOriginal_price(courseDTO.getOriginal_price());
         course.setDiscount_price(courseDTO.getDiscount_price());
         course.setIs_deleted(courseDTO.getIs_deleted());
+        course.setStatus(courseDTO.getStatus());
         return course;
     }
 }

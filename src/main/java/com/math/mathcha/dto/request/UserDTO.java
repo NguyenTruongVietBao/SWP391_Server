@@ -35,7 +35,7 @@ public class UserDTO {
 
     private String password;
 
-    private Boolean is_deleted;
+    private Boolean delete;
 
     private Role role;
 

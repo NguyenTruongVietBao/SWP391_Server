@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         user.setAddress(updateUser.getAddress());
         user.setImage(updateUser.getImage());
         user.setUsername(updateUser.getUsername());
-        user.setIs_deleted(updateUser.getIs_deleted());
+        user.setIs_deleted(updateUser.getDelete());
         user.setRole(updateUser.getRole());
         User updateUserObj = userRepository.save(user);
         return UserMapper.mapToUserDTO(updateUserObj);
@@ -130,6 +130,7 @@ public class UserServiceImpl implements UserService {
     res.setImage(user.getImage());
     res.setUsername(user.getUsername());
     res.setRole(user.getRole());
+    res.setDelete(user.getDelete() != null ? user.getDelete() : false);
     return res;
     }
 }

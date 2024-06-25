@@ -64,7 +64,7 @@ public class AuthService {
         user.setPhone(userDTO.getPhone());
         user.setFirst_name(userDTO.getFirst_name());
         user.setImage(userDTO.getImage());
-        user.setIs_deleted(userDTO.getIs_deleted());
+        user.setIs_deleted(userDTO.getDelete());
         user.setUser_id(userDTO.getUser_id());
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
