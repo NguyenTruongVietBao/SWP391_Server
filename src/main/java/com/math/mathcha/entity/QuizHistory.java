@@ -25,5 +25,5 @@ public class QuizHistory {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    // Getters and Setters
+
 }
