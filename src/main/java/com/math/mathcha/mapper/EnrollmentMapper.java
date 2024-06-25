@@ -12,7 +12,6 @@ public class EnrollmentMapper {
         EnrollmentDTO enrollmentDTO = new EnrollmentDTO();
         enrollmentDTO.setEnrollment_id(enrollment.getEnrollment_id());
         enrollmentDTO.setEnrollment_date(enrollment.getEnrollment_date());
-
         return enrollmentDTO;
     }
 
