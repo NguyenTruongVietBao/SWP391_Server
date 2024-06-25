@@ -28,7 +28,7 @@ public class ResUserDTO {
 
     private String username;
 
-    private boolean is_deleted;
+    private boolean delete;
 
     private Role role;
 }

@@ -38,8 +38,8 @@ public class User {
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "is_deleted")
-    private Boolean is_deleted = false;
+    @Column(name = "is_deleted", columnDefinition = "TINYINT(1)")
+    private Boolean is_deleted ;
 
     @Enumerated(EnumType.STRING)
     Role role;

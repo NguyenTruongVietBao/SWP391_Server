@@ -21,7 +21,7 @@ public class UserMapper {
         userDTO.setImage(user.getImage());
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
-        userDTO.setIs_deleted(user.getIs_deleted());
+        userDTO.setDelete(user.getIs_deleted() != null ? user.getIs_deleted() : false);
         userDTO.setRole(user.getRole());
 //        userDTO.setStudents(user.getStudents());
 
@@ -39,7 +39,7 @@ public class UserMapper {
         user.setImage(userDTO.getImage());
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
-        user.setIs_deleted(userDTO.getIs_deleted());
+        user.setIs_deleted(userDTO.getDelete());
         return user;
 
     }
