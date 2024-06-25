@@ -31,6 +31,10 @@ public class Course {
     private String original_price;
     @Column(name = "discount_price")
     private String discount_price;
+    @Column(name = "is_deleted")
+    private Boolean is_deleted = false;
+    @Column(name = "status")
+    private Boolean status = true;
 
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
