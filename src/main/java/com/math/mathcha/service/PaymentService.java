@@ -2,6 +2,9 @@ package com.math.mathcha.service;
 
 import com.math.mathcha.dto.request.PaymentDTO;
 import com.math.mathcha.dto.request.RechargeRequestDTO;
+import com.math.mathcha.dto.request.UserDTO;
+import com.math.mathcha.dto.response.ResCreateUserDTO;
+import com.math.mathcha.dto.response.ResPaymentDTO;
 import com.math.mathcha.entity.*;
 
 import com.math.mathcha.mapper.PaymentMapper;
@@ -18,6 +21,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -133,7 +137,7 @@ public class PaymentService {
         Enrollment enrollment = enrollmentRepository.findById(rechargeRequestDTO.getEnrollment_id()).orElse(null);
         if (user != null && enrollment != null) {
             Payment payment = new Payment();
-            payment.setTotal_money(Double.parseDouble(rechargeRequestDTO.getAmount()));
+            payment.setTotal_money(Double.parseDouble(rechargeRequestDTO.getAmount())/100);
             payment.setPayment_date(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
             payment.setPayment_method("VNPAY");
             payment.setUser(user);
@@ -148,5 +152,21 @@ public class PaymentService {
         return payments.stream()
                 .map(PaymentMapper::mapToPaymentDTO)
                 .collect(Collectors.toList());
+    }
+    public List<ResPaymentDTO> getPaymentsByDate(LocalDate date) {
+        String formattedDate = date.toString(); // yyyy-MM-dd
+        List<Payment> payments = paymentRepository.findPaymentsByDate(formattedDate);
+        return payments.stream()
+                .map(PaymentMapper::mapToPaymentDTO)
+                .map(this::convertToResPaymentDTO)
+                .collect(Collectors.toList());
+    }
+    public ResPaymentDTO convertToResPaymentDTO(PaymentDTO paymentDTO) {
+        ResPaymentDTO res = new ResPaymentDTO();
+        res.setPayment_date(paymentDTO.getPayment_date());
+        res.setPayment_id(paymentDTO.getPayment_id());
+        res.setTotal_money(paymentDTO.getTotal_money());
+        res.setPayment_method(paymentDTO.getPayment_method());
+        return res;
     }
 }

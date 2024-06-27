@@ -12,4 +12,6 @@ import java.util.List;
 public interface PaymentRepository extends JpaRepository<Payment,Integer> {
     @Query("SELECT t FROM Payment t WHERE t.user.user_id = :user_id")
     List<Payment> findPaymentByUserId(@Param(value = "user_id") int user_id);
+    @Query("SELECT p FROM Payment p WHERE p.payment_date LIKE CONCAT(:date, '%')")
+    List<Payment> findPaymentsByDate(@Param("date") String date);
 }
