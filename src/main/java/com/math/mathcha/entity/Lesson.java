@@ -26,6 +26,8 @@ public class Lesson {
     private String document;
     @Column(name = "video_url")
     private String video_url;
+    @Column(name = "is_deleted",columnDefinition = "TINYINT(1)")
+    private Boolean is_deleted ;
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)

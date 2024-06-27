@@ -38,7 +38,7 @@ public class PaymentController {
     }
     @GetMapping("/user/{user_id}")
     @PreAuthorize("hasRole('PARENT')")
-    public ResponseEntity getTopicByChapterId (@PathVariable("user_id") int user_id) throws RuntimeException {
+    public ResponseEntity getPaymetsByUserId(@PathVariable("user_id") int user_id) throws RuntimeException {
         List<PaymentDTO> paymentDTOS = paymentService.getPaymetsByUserId(user_id);
         return ResponseEntity.ok(paymentDTOS);
     }
@@ -48,6 +48,12 @@ public class PaymentController {
         LocalDate localDate = LocalDate.parse(date); // Parse date from string yyyy-MM-dd
         List<ResPaymentDTO> paymentDTOs = paymentService.getPaymentsByDate(localDate);
         return ResponseEntity.ok(paymentDTOs);
+    }
+    @GetMapping("/course/{course_id}")
+    @PreAuthorize("hasRole('PARENT')")
+    public ResponseEntity getPaymetsByCourseId(@PathVariable("course_id") int course_id) throws RuntimeException {
+        List<PaymentDTO> paymentDTOS = paymentService.getPaymetsByCourseId(course_id);
+        return ResponseEntity.ok(paymentDTOS);
     }
 
 }

@@ -8,6 +8,7 @@ import com.math.mathcha.dto.response.ResPaymentDTO;
 import com.math.mathcha.entity.*;
 
 import com.math.mathcha.mapper.PaymentMapper;
+import com.math.mathcha.repository.CourseRepository.CourseRepository;
 import com.math.mathcha.repository.EnrollmentRepository;
 import com.math.mathcha.repository.PaymentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
@@ -38,7 +39,8 @@ public class PaymentService {
     UserRepository userRepository;
     @Autowired
     EnrollmentRepository enrollmentRepository;
-
+    @Autowired
+    CourseRepository   courseRepository;
 
     public String createUrl(RechargeRequestDTO rechargeRequestDTO) throws NoSuchAlgorithmException, InvalidKeyException, Exception{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
@@ -168,5 +170,13 @@ public class PaymentService {
         res.setTotal_money(paymentDTO.getTotal_money());
         res.setPayment_method(paymentDTO.getPayment_method());
         return res;
+    }
+    public List<PaymentDTO> getPaymetsByCourseId(int course_id) throws RuntimeException {
+        Course course = courseRepository.findById(course_id)
+                .orElseThrow(() ->  new RuntimeException("Course ID is invalid"));
+        List<Payment> payments = paymentRepository.findPaymentByCourseId(course_id);
+        return payments.stream()
+                .map(PaymentMapper::mapToPaymentDTO)
+                .collect(Collectors.toList());
     }
 }
