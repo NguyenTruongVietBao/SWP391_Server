@@ -32,8 +32,10 @@ public class AuthService {
     SecurityUtil securityUtil;
 @Autowired
     UserService userService;
+
 @Autowired
     StudentRepository studentRepository ;
+
     public ResLoginDTO login(LoginDTO loginDTO) {
         var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
         if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) throw new NotFoundException("Wrong password");
@@ -50,6 +52,25 @@ public class AuthService {
         resLoginDTO.setImage(user.getImage());
         resLoginDTO.setIs_deleted(user.getIs_deleted());
         resLoginDTO.setUser_id(user.getUser_id());
+        return resLoginDTO;
+    }
+
+    public ResLoginDTO studentLogin(LoginDTO loginDTO) {
+        var student = studentRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
+        if (!passwordEncoder.matches(loginDTO.getPassword(), student.getPassword())) throw new NotFoundException("Wrong password");
+        String token = securityUtil.createTokenStudent(student);
+        ResLoginDTO resLoginDTO = new ResLoginDTO();
+        resLoginDTO.setToken(token);
+        resLoginDTO.setUsername(student.getUsername());
+        resLoginDTO.setRole(Role.STUDENT);
+        resLoginDTO.setEmail(student.getEmail());
+        resLoginDTO.setAddress(student.getAddress());
+        resLoginDTO.setPhone(student.getPhone());
+        resLoginDTO.setFirst_name(student.getFirst_name());
+        resLoginDTO.setLast_name(student.getLast_name());
+        resLoginDTO.setImage(student.getImage());
+        resLoginDTO.setIs_deleted(student.getIs_deleted());
+        resLoginDTO.setUser_id(student.getStudent_id());
         return resLoginDTO;
     }
 

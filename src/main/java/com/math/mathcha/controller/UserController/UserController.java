@@ -25,6 +25,8 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @AllArgsConstructor
+
+@SecurityRequirement(name = "brearerAuth")
 @RequestMapping("/user")
 @SecurityRequirement(name = "api")
 public class UserController {
