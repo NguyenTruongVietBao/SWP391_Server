@@ -15,6 +15,6 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
     List<Student> findStudentByUserId(@Param(value = "user_id") int user_id);
     Optional<Student> findByUsername(String username);
     boolean existsByUsername(String username);
-    Optional<Student> findByUsername(String username);
+
 
 }
