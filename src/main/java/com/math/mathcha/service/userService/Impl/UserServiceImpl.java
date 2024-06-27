@@ -1,18 +1,19 @@
 package com.math.mathcha.service.userService.Impl;
 
+import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResUpdateUserDTO;
 import com.math.mathcha.dto.response.ResUserDTO;
 import com.math.mathcha.entity.User;
-import com.math.mathcha.enums.Role;
+import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.mapper.UserMapper;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.userService.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,47 +23,43 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
-
+    public UserDTO createUser(UserDTO userDTO) throws IdInvalidException {
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
+            throw new IdInvalidException("Username " + userDTO.getUsername() + " đã tồn tại, vui lòng sử dụng email khác.");
+        }
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         User user = UserMapper.mapToUser(userDTO);
-
         user.setRole(userDTO.getRole());
         User savedUser= userRepository.save(user);
         return UserMapper.mapToUserDTO(savedUser);
     }
 
     @Override
-    public UserDTO createContentManager(UserDTO userDTO) {
-
-        User user = UserMapper.mapToUser(userDTO);
-        user.setRole(user.getRole());
-        User savedUser= userRepository.save(user);
-        return UserMapper.mapToUserDTO(savedUser);
-    }
-
-    @Override
-    public UserDTO getUserById(Integer user_id) {
+    public UserDTO getUserById(Integer user_id) throws IdInvalidException {
         Optional<User> user = userRepository.findById(user_id);
         if (user.isPresent()) {
             return UserMapper.mapToUserDTO(user.get());
+        }else{
+            throw new IdInvalidException("User với id = " + user_id + " không tồn tại");
         }
-        return null;
     }
 
     @Override
-    public List<UserDTO> getUserAll() {
-            List<User> userss = userRepository.findAll();
-            return userss.stream().map(
-                    (user) -> UserMapper.mapToUserDTO(user)).collect(Collectors.toList()
-            );
+    public List<ResUserDTO> getUserAll() {
+            List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(UserMapper::mapToUserDTO)
+                .map(this::convertToResUserDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO updateUser(UserDTO updateUser) {
-        UserDTO user = getUserById(updateUser.getUser_id());
+    public UserDTO updateUser(UserDTO updateUser, Integer user_id) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(()-> new RuntimeException("Topic "+user_id+" not found"));
         user.setFirst_name(updateUser.getFirst_name());
         user.setLast_name(updateUser.getLast_name());
         user.setPhone(updateUser.getPhone());
@@ -70,28 +67,22 @@ public class UserServiceImpl implements UserService {
         user.setAddress(updateUser.getAddress());
         user.setImage(updateUser.getImage());
         user.setUsername(updateUser.getUsername());
-        user.setPassword(updateUser.getPassword());
-        user.setIs_deleted(updateUser.getIs_deleted());
+        user.setIs_deleted(updateUser.getDelete());
         user.setRole(updateUser.getRole());
-        User updatedUserEntity = UserMapper.mapToUser(user);
-        User savedUser = userRepository.save(updatedUserEntity);
-
-        return UserMapper.mapToUserDTO(savedUser);
+        User updateUserObj = userRepository.save(user);
+        return UserMapper.mapToUserDTO(updateUserObj);
     }
 
     @Override
-    public void deleteUser(Integer user_id) {
+    public void deleteUser(Integer user_id) throws IdInvalidException {
         User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new RuntimeException("Not exits"+user_id));
+                .orElseThrow(() -> new IdInvalidException("User với id = " + user_id + " không tồn tại"));
         userRepository.deleteById(user_id);
     }
 
     @Override
     public UserDTO handleGetUserByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(()->new RuntimeException("Not exits"+username));
-//        if (user == null) {
-//            throw new UsernameNotFoundException("User not found");
-//        }
 
         return UserMapper.mapToUserDTO(user);
     }
@@ -137,6 +128,9 @@ public class UserServiceImpl implements UserService {
     res.setEmail(user.getEmail());
     res.setAddress(user.getAddress());
     res.setImage(user.getImage());
+    res.setUsername(user.getUsername());
+    res.setRole(user.getRole());
+    res.setDelete(user.getDelete() != null ? user.getDelete() : false);
     return res;
     }
 }

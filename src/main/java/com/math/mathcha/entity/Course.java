@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,11 @@ public class Course {
     private String original_price;
     @Column(name = "discount_price")
     private String discount_price;
+    @Column(name = "is_deleted",columnDefinition = "TINYINT(1)")
+    private Boolean is_deleted;
+    @Column(name = "status",columnDefinition = "TINYINT(1)")
+    private Boolean status ;
+
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Chapter> chapters = new ArrayList<Chapter>();
@@ -39,5 +45,11 @@ public class Course {
 //
 //    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 //    private List<Enrollment> enrollments;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
 }
 

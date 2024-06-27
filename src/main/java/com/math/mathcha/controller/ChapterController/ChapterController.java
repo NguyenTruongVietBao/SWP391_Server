@@ -5,6 +5,7 @@ import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.CourseDTO;
 import com.math.mathcha.service.chapterService.ChapterService;
 import com.math.mathcha.service.courseService.CourseService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/chapter")
+@SecurityRequirement(name = "api")
 public class ChapterController {
     private static final Logger log = LoggerFactory.getLogger(ChapterController.class);
     private ChapterService chapterService;

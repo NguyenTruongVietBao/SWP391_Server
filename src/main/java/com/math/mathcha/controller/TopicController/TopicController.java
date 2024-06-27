@@ -5,6 +5,7 @@ import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.service.chapterService.ChapterService;
 import com.math.mathcha.service.topicService.TopicService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/topic")
+@SecurityRequirement(name = "api")
 public class TopicController {
     private TopicService topicService;
 

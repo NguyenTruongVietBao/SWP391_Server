@@ -1,5 +1,7 @@
 package com.math.mathcha.dto.request;
 
+import com.math.mathcha.entity.Course;
+import com.math.mathcha.entity.Payment;
 import com.math.mathcha.entity.Student;
 import com.math.mathcha.enums.Role;
 import lombok.AllArgsConstructor;
@@ -33,10 +35,9 @@ public class UserDTO {
 
     private String password;
 
-    private Boolean is_deleted;
+    private Boolean delete;
 
     private Role role;
 
-    private List<Student> students;
 
 }

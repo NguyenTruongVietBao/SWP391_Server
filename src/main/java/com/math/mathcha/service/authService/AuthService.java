@@ -7,7 +7,6 @@ import com.math.mathcha.Util.SecurityUtil;
 import com.math.mathcha.dto.request.LoginDTO;
 import com.math.mathcha.dto.request.UserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
-import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.enums.Role;
 import com.math.mathcha.repository.StudentRepository.StudentRepository;
@@ -33,9 +32,9 @@ public class AuthService {
     SecurityUtil securityUtil;
 @Autowired
     UserService userService;
-    @Autowired
-    private StudentRepository studentRepository;
 
+@Autowired
+    StudentRepository studentRepository ;
 
     public ResLoginDTO login(LoginDTO loginDTO) {
         var user = userRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
@@ -76,12 +75,18 @@ public class AuthService {
     }
 
     public User register(UserDTO userDTO) throws IdInvalidException {
-        User user = new User(userDTO.getUser_id(),userDTO.getFirst_name()
-                ,userDTO.getLast_name(),userDTO.getPhone()
-                ,userDTO.getEmail(),userDTO.getAddress()
-                ,userDTO.getImage(),userDTO.getUsername()
-                ,passwordEncoder.encode(userDTO.getPassword()),userDTO.getIs_deleted()
-                , Role.PARENT, userDTO.getStudents());
+        User user = new User();
+        user.setRole(Role.PARENT);
+        user.setEmail(userDTO.getEmail());
+        user.setAddress(userDTO.getAddress());
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setLast_name(userDTO.getLast_name());
+        user.setPhone(userDTO.getPhone());
+        user.setFirst_name(userDTO.getFirst_name());
+        user.setImage(userDTO.getImage());
+        user.setIs_deleted(userDTO.getDelete());
+        user.setUser_id(userDTO.getUser_id());
         boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
         if (isUsernameExist) {
             throw new IdInvalidException(
@@ -97,5 +102,23 @@ public class AuthService {
         }
 
 
+    }
+    public ResLoginDTO loginStudent(LoginDTO loginDTO) {
+        var student = studentRepository.findByUsername(loginDTO.getUsername()).orElseThrow(() -> new NotFoundException("User not found"));
+        if (!passwordEncoder.matches(loginDTO.getPassword(), student.getPassword())) throw new NotFoundException("Wrong password");
+        String token = securityUtil.createTokenStudent(student);
+        ResLoginDTO resLoginDTO = new ResLoginDTO();
+        resLoginDTO.setToken(token);
+        resLoginDTO.setRole(Role.STUDENT);
+        resLoginDTO.setUsername(student.getUsername());
+        resLoginDTO.setEmail(student.getEmail());
+        resLoginDTO.setAddress(student.getAddress());
+        resLoginDTO.setPhone(student.getPhone());
+        resLoginDTO.setFirst_name(student.getFirst_name());
+        resLoginDTO.setLast_name(student.getLast_name());
+        resLoginDTO.setImage(student.getImage());
+        resLoginDTO.setIs_deleted(student.getIs_deleted());
+        resLoginDTO.setUser_id(student.getStudent_id());
+        return resLoginDTO;
     }
 }

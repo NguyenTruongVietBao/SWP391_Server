@@ -1,6 +1,7 @@
 package com.math.mathcha.config;
 
 import com.math.mathcha.Util.SecurityUtil;
+import com.math.mathcha.filter.Filter;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -34,7 +36,7 @@ public class SecurityConfiguration {
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/api/login",
-            "/api/stlogin",
+            "/api/login/student",
             "/api/register",
             "/v3/api-docs/**",
             "/swagger-ui/**",
@@ -61,7 +63,6 @@ public class SecurityConfiguration {
                         authz -> authz
                                 .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                                 .anyRequest().authenticated())
-
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()).jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                 )
@@ -71,6 +72,8 @@ public class SecurityConfiguration {
                  .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
                 .formLogin(f -> f.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http.addFilterBefore(new Filter(PUBLIC_ENDPOINTS), AbstractPreAuthenticatedProcessingFilter.class);
         return http.build();
     }
 

@@ -3,11 +3,11 @@ package com.math.mathcha.controller.AuthController;
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.LoginDTO;
 import com.math.mathcha.dto.request.UserDTO;
-import com.math.mathcha.dto.response.ResCreateUserDTO;
 import com.math.mathcha.dto.response.ResLoginDTO;
 import com.math.mathcha.entity.User;
 import com.math.mathcha.service.authService.AuthService;
 import com.math.mathcha.service.userService.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api")
+@SecurityRequirement(name = "api")
 public class AuthController {
 
     @Autowired
     AuthService authService;
 
-    private final UserService userService;
+    private final UserService userService ;
 
     @PostMapping("/login")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
-            ResLoginDTO res = authService.login(loginDTO);
+                ResLoginDTO res = authService.login(loginDTO);
             return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 
@@ -55,5 +56,10 @@ public class AuthController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity createUser()  {
         return ResponseEntity.ok("admin success");
+    }
+    @PostMapping("/login/student")
+    public ResponseEntity<ResLoginDTO> loginStudent(@Valid @RequestBody LoginDTO loginDTO) {
+        ResLoginDTO res = authService.loginStudent(loginDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
     }
 }

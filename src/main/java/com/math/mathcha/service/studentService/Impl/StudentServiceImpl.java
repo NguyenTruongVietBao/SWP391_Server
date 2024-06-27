@@ -1,6 +1,7 @@
 package com.math.mathcha.service.studentService.Impl;
 
 
+import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.StudentDTO;
 
 import com.math.mathcha.entity.Student;
@@ -12,6 +13,7 @@ import com.math.mathcha.repository.StudentRepository.StudentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
 import com.math.mathcha.service.studentService.StudentService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,24 +25,30 @@ import java.util.stream.Collectors;
 public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Override
-    public StudentDTO createStudent(StudentDTO studentDTO, Integer user_id) {
+    public StudentDTO createStudent(StudentDTO studentDTO, Integer user_id) throws IdInvalidException {
+        if (studentRepository.existsByUsername(studentDTO.getUsername())) {
+            throw new IdInvalidException("Username " + studentDTO.getUsername() + " đã tồn tại, vui lòng sử dụng email khác.");
+        }
+        studentDTO.setPassword(passwordEncoder.encode(studentDTO.getPassword()));
         Student student = StudentMapper.mapToStudent(studentDTO);
         User user = userRepository.findById(user_id)
-                .orElseThrow(() -> new RuntimeException("User: "+user_id+" not found"));
+                .orElseThrow(() -> new IdInvalidException("User với id = " + user_id + " không tồn tại"));
         student.setUser(user);
         Student savedStudent = studentRepository.save(student);
         return StudentMapper.mapToStudentDTO(savedStudent);
     }
 
     @Override
-    public StudentDTO getStudentById(Integer student_id) {
+    public StudentDTO getStudentById(Integer student_id) throws IdInvalidException {
         Optional<Student> student = studentRepository.findById(student_id);
         if (student.isPresent()) {
             return StudentMapper.mapToStudentDTO(student.get());
+        }else {
+            throw new IdInvalidException("Student với id = " + student_id + " không tồn tại");
         }
-        return null;
     }
 
     @Override
@@ -69,9 +77,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void deleteStudent(Integer student_id) {
+    public void deleteStudent(Integer student_id) throws IdInvalidException {
         Student student = studentRepository.findById(student_id)
-                .orElseThrow(() -> new RuntimeException("Not exits"+student_id));
+                .orElseThrow(() -> new IdInvalidException("User với id = " + student_id + " không tồn tại"));
         studentRepository.deleteById(student_id);
     }
 

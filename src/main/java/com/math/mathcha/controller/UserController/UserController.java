@@ -28,73 +28,54 @@ import java.util.List;
 
 @SecurityRequirement(name = "brearerAuth")
 @RequestMapping("/user")
-
+@SecurityRequirement(name = "api")
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
-    private PasswordEncoder passwordEncoder;
     private StudentService studentService;
     @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ResCreateUserDTO> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {
-        boolean isUsernameExist = this.userService.isUsernameExist(userDTO.getUsername());
-        if (isUsernameExist) {
-            throw new IdInvalidException(
-                    "Username " + userDTO.getUsername() + " đã tồn tại, vui lòng sử dụng email khác.");
-        }
-
-        String hashPassword = this.passwordEncoder.encode(userDTO.getPassword());
-        userDTO.setPassword(hashPassword);
         UserDTO savedUser = userService.createUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertToResCreateUserDTO(savedUser));
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get/{user_id}")
     public ResponseEntity<ResUserDTO> getUserById (@PathVariable("user_id") Integer user_id) throws IdInvalidException{
         UserDTO userDTO = userService.getUserById(user_id);
-        if (userDTO == null) {
-            throw new IdInvalidException("User với id = " + user_id + " không tồn tại");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(this.userService.convertToResUserDTO(userDTO));
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.convertToResUserDTO(userDTO));
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/get/all")
-    public ResponseEntity<List<UserDTO>> getUserAll(){
-        List<UserDTO> user = userService.getUserAll();
+    public ResponseEntity<List<ResUserDTO>> getUserAll(){
+        List<ResUserDTO> user = userService.getUserAll();
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("Username : {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
         return ResponseEntity.ok(user);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/update")
-    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody UserDTO updatedUser) throws IdInvalidException{
-        UserDTO userDTO = userService.updateUser(updatedUser);
-        if (userDTO == null) {
-            throw new IdInvalidException("User với id = " + updatedUser.getUser_id() + " không tồn tại");
-        }
+    @PutMapping("/{user_id}")
+    public ResponseEntity<ResUpdateUserDTO> updateUser(@RequestBody UserDTO updatedUser, @PathVariable("user_id") Integer user_id) throws IdInvalidException{
+        UserDTO userDTO = userService.updateUser(updatedUser,user_id);
         return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(userDTO));
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{user_id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("user_id") Integer user_id) throws IdInvalidException{
         UserDTO currentUser = this.userService.getUserById(user_id);
-        if (currentUser == null) {
-            throw new IdInvalidException("User với id = " + user_id + " không tồn tại");
-        }
         this.userService.deleteUser(user_id);
         return ResponseEntity.ok(null);
     }
+
     @GetMapping("/student/{user_id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('PARENT')")
     public ResponseEntity<List<StudentDTO>> getStudentByUserId (@PathVariable("user_id") int user_id) throws IdInvalidException {
         List<StudentDTO> studentDTOS = studentService.getStudentByUserId(user_id);
-        UserDTO userDTO = userService.getUserById(user_id);
-        if (userDTO == null) {
-            throw new IdInvalidException("Trong user id = " + user_id + " hiện không có student");
-        }
         return ResponseEntity.ok(studentDTOS);
     }
 }
