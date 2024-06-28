@@ -54,6 +54,7 @@ public class ChapterServiceImpl implements ChapterService {
                 .orElseThrow(()-> new RuntimeException("Chapter "+chapter_id+" not found"));
         chapter.setTitle(updateChapter.getTitle());
         chapter.setNumber(updateChapter.getNumber());
+        chapter.setIs_finish(updateChapter.getIs_finish());
         Chapter updateChapterObj = chapterRepository.save(chapter);
         return ChapterMapper.mapToChapterDTO(updateChapterObj);
     }

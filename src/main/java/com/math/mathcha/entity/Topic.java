@@ -26,6 +26,8 @@ public class Topic {
     private int number;
     @Column(name = "is_progress_limited")
     private Boolean is_progress_limited;
+    @Column(name = "is_finish",columnDefinition = "TINYINT(1)")
+    private Boolean is_finish;
 
     @ManyToOne
     @JoinColumn(name = "chapter_id", nullable = false)

@@ -17,5 +17,5 @@ public class ChapterDTO {
 
     private int number;
 
-
+    private Boolean is_finish;
 }

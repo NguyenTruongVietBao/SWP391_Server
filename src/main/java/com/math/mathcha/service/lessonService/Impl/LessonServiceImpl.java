@@ -74,7 +74,7 @@ public class LessonServiceImpl implements LessonService {
         lesson.setNumber(updateLesson.getNumber());
         lesson.setDocument(updateLesson.getDocument());
         lesson.setVideo_url(updateLesson.getVideo_url());
-        lesson.setIs_deleted(updateLesson.getIs_deleted());
+        lesson.setIs_finish(updateLesson.getIs_finish());
         Lesson updateLessonsObj = lessonRepository.save(lesson);
         return  LessonMapper.mapToLessonDTO(updateLessonsObj);
     }
