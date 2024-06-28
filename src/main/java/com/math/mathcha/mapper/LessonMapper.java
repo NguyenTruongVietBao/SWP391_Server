@@ -11,6 +11,7 @@ public class LessonMapper {
         lessonDTO.setNumber(lesson.getNumber());
         lessonDTO.setDocument(lesson.getDocument());
         lessonDTO.setVideo_url(lesson.getVideo_url());
+        lessonDTO.setIs_deleted(lesson.getIs_deleted());
         return lessonDTO;
     }
 
@@ -21,6 +22,7 @@ public class LessonMapper {
         lesson.setNumber(lessonDTO.getNumber());
         lesson.setDocument(lessonDTO.getDocument());
         lesson.setVideo_url(lessonDTO.getVideo_url());
+        lesson.setIs_deleted(lessonDTO.getIs_deleted());
         return lesson;
     }
 }
