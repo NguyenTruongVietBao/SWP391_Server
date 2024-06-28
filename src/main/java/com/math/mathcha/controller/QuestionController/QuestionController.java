@@ -7,10 +7,19 @@ import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.service.questionService.QuestionService;
 import com.math.mathcha.service.topicService.TopicService;
 import lombok.AllArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -66,5 +75,45 @@ public class QuestionController {
 
         this.questionService.deleteQuestion(question_id);
         return ResponseEntity.ok(null);
+    }
+
+    @PostMapping("/upload/{topic_id}")
+    public ResponseEntity<String> uploadQuestionsFromExcel(@RequestParam("file") MultipartFile file, @PathVariable("topic_id") Integer topicId) {
+        List<QuestionDTO> questions = new ArrayList<>();
+
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("File is empty");
+        }
+
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+
+            if (rowIterator.hasNext()) {
+                rowIterator.next(); // Skip header row if any
+            }
+
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                QuestionDTO questionDTO = new QuestionDTO();
+                questionDTO.setContent(row.getCell(0).toString());
+                questionDTO.setTitle(row.getCell(1).toString());
+                questionDTO.setOption(Arrays.asList(
+                        row.getCell(2).toString(),
+                        row.getCell(3).toString(),
+                        row.getCell(4).toString(),
+                        row.getCell(5).toString()
+                ));
+                questionDTO.setCorrectAnswer(row.getCell(6).toString());
+                questions.add(questionDTO);
+            }
+
+            questionService.saveQuestionsFromExcel(questions, topicId);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to parse the file");
+        }
+
+        return ResponseEntity.ok("File uploaded and questions saved");
     }
 }

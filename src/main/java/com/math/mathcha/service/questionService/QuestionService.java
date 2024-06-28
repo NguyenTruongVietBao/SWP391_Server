@@ -15,4 +15,6 @@ public interface QuestionService {
 
     void deleteQuestion(Integer question_id);
 
+    void saveQuestionsFromExcel(List<QuestionDTO> questions, Integer topicId);
+
 }
