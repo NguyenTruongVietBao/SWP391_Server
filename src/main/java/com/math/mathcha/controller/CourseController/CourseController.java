@@ -51,7 +51,7 @@ public class CourseController {
     }
 
     @DeleteMapping("{course_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'MANAGER')")
     public ResponseEntity<Void> deleteCourse( @PathVariable("course_id") Integer course_id) throws IdInvalidException {
         CourseDTO currentCourse = courseService.getCourseById(course_id);
         courseService.deleteCourse(course_id);
