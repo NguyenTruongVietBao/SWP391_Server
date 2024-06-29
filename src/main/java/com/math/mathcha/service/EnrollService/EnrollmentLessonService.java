@@ -27,17 +27,17 @@ public class EnrollmentLessonService {
     @Autowired
     private EnrollmentRepository enrollmentRepository;
 
-    public EnrollmentLessonDTO createEnrollmentLesson(EnrollmentLessonDTO enrollmentLessonDTO) throws IdInvalidException {
-        Enrollment enrollment = enrollmentRepository.findById(enrollmentLessonDTO.getEnrollment_id())
+    public EnrollmentLessonDTO createEnrollmentLesson(int enrollment_id, int lesson_id) throws IdInvalidException {
+        Enrollment enrollment = enrollmentRepository.findById(enrollment_id)
                 .orElseThrow(() -> new IdInvalidException("Enrollment not found"));
 
-        Lesson lesson = lessonRepository.findById(enrollmentLessonDTO.getLesson_id())
-                .orElseThrow(() -> new IdInvalidException("Course not found"));
-        EnrollmentLesson enrollmentLesson = EnrollmentLessonMapper.mapToEnrollmentLesson(enrollmentLessonDTO);
-        enrollmentLesson.setLesson(lesson);
-        enrollmentLesson.setEnrollment(enrollment);
-        enrollmentLesson.setIs_complete(enrollmentLessonDTO.getIs_complete());
+        Lesson lesson = lessonRepository.findById(lesson_id)
+                .orElseThrow(() -> new IdInvalidException("Lesson not found"));
 
+        EnrollmentLesson enrollmentLesson = new EnrollmentLesson();
+        enrollmentLesson.setEnrollment(enrollment);
+        enrollmentLesson.setLesson(lesson);
+        enrollmentLesson.setIs_complete(true);
 
         EnrollmentLesson savedEnrollment = enrollmentLessonRepository.save(enrollmentLesson);
 

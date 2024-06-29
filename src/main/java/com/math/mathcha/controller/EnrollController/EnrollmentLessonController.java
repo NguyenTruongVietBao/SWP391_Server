@@ -20,10 +20,11 @@ public class EnrollmentLessonController {
     @Autowired
     private EnrollmentLessonService enrollmentLessonService;
 
-    @PostMapping("/create")
+
 //    @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public ResponseEntity<EnrollmentLessonDTO> createEnrollmentLesson(@RequestBody EnrollmentLessonDTO enrollmentLessonDTO) throws IdInvalidException {
-        EnrollmentLessonDTO savedEnrollment = enrollmentLessonService.createEnrollmentLesson(enrollmentLessonDTO);
+    @PostMapping("/create/{enrollment_id}/{lesson_id}")
+    public ResponseEntity<EnrollmentLessonDTO> createEnrollmentLesson(@PathVariable int enrollment_id, @PathVariable int lesson_id) throws IdInvalidException {
+        EnrollmentLessonDTO savedEnrollment = enrollmentLessonService.createEnrollmentLesson(enrollment_id, lesson_id);
         return new ResponseEntity<>(savedEnrollment, HttpStatus.CREATED);
     }
 }
