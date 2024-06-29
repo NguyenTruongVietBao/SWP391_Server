@@ -9,8 +9,4 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface EnrollmentLessonRepository extends JpaRepository<EnrollmentLesson, Integer> {
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE EnrollmentLesson e SET e.is_complete = true WHERE e.enrollmentLesson_id = :enrollmentLesson_id AND e.enrollment.student.student_id = :student_id")
-    void markLessonComplete(@Param("enrollmentLesson_id") int enrollmentLesson_id, @Param("student_id") int student_id);
 }

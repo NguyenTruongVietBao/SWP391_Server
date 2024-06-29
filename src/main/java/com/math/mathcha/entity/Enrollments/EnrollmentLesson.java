@@ -24,7 +24,7 @@ public class EnrollmentLesson {
     private int enrollmentLesson_id;
 
     @Column(name = "is_complete",columnDefinition = "TINYINT(1)")
-    private Boolean is_complete = false;
+    private Boolean is_complete = true;
 
     @ManyToOne
     @JoinColumn(name = "enrollment_id", nullable = false)
