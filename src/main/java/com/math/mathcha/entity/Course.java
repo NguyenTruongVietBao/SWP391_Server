@@ -35,8 +35,7 @@ public class Course {
     private Boolean is_deleted;
     @Column(name = "status",columnDefinition = "TINYINT(1)")
     private Boolean status ;
-    @Column(name = "is_finish",columnDefinition = "TINYINT(1)")
-    private Boolean is_finish;
+
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Chapter> chapters = new ArrayList<Chapter>();
