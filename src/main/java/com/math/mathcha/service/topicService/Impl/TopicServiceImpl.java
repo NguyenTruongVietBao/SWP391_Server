@@ -57,7 +57,6 @@ public class TopicServiceImpl implements TopicService {
         course.setTitle(updateTopic.getTitle());
         course.setNumber(updateTopic.getNumber());
         course.setIs_progress_limited(updateTopic.getIs_progress_limited());
-        course.setIs_finish(updateTopic.getIs_finish());
         Topic updateTopicObj = topicRepository.save(course);
         return TopicMapper.mapToTopicDTO(updateTopicObj);
     }

@@ -75,7 +75,7 @@ public class CourseServiceImpl implements CourseService {
         course.setDiscount_price(updatedCourse.getDiscount_price());
         course.setStatus(updatedCourse.getStatus());
         course.setIs_deleted(updatedCourse.getIs_deleted());
-        course.setIs_finish(updatedCourse.getIs_finish());
+
         Course updateCourseObj = courseRepository.save(course);
         return CourseMapper.mapToCourseDTO(updateCourseObj);
     }
