@@ -2,9 +2,10 @@ package com.math.mathcha.entity;
 
 
 import com.math.mathcha.dto.request.QuestionDTO;
+import jakarta.persistence.Entity;
 
 import java.util.List;
-
+@Entity
 public class Quiz {
     private List<QuestionDTO> questions;
     private int timeLimit; // Thời gian làm bài
