@@ -11,4 +11,7 @@ import java.util.List;
 public interface TopicRepository extends JpaRepository<Topic,Integer> {
     @Query("SELECT t FROM Topic t WHERE t.chapter.chapter_id = :chapter_id")
     List<Topic> findTopicsByChapterId(@Param(value = "chapter_id") int chapter_id);
+
+    @Query("SELECT l.chapter FROM Topic l WHERE l.topic_id = :topic_id")
+    Chapter findChapterIdByTopicId(@Param("topic_id") int topic_id);
 }
