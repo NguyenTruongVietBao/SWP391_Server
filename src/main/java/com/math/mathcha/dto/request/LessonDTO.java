@@ -21,7 +21,7 @@ public class LessonDTO {
 
     private String video_url;
 
-    private Boolean is_finish;
+
 
 }
 

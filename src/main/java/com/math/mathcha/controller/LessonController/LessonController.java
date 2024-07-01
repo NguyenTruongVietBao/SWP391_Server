@@ -3,6 +3,7 @@ package com.math.mathcha.controller.LessonController;
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.LessonDTO;
 import com.math.mathcha.dto.request.TopicDTO;
+import com.math.mathcha.entity.Topic;
 import com.math.mathcha.service.lessonService.LessonService;
 import com.math.mathcha.service.topicService.TopicService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -65,4 +66,10 @@ public class LessonController {
         this.lessonService.deleteLesson(lesson_id);
         return ResponseEntity.ok(null);
     }
+    @GetMapping("/{lesson_id}/topic")
+    public ResponseEntity<TopicDTO> getTopicByLessonId(@PathVariable("lesson_id") int lessonId) {
+        TopicDTO topicDTO = lessonService.getTopicByLessonId(lessonId);
+        return ResponseEntity.ok(topicDTO);
+    }
+
 }

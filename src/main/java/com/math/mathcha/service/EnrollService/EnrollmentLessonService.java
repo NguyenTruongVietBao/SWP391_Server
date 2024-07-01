@@ -43,4 +43,8 @@ public class EnrollmentLessonService {
 
         return EnrollmentLessonMapper.mapToEnrollmentLessonDTO(savedEnrollment);
     }
+
+    public Boolean getIsCompleteByEnrollmentIdAndLessonId(int enrollmentId, int lessonId) {
+        return enrollmentLessonRepository.findIsCompleteByEnrollmentIdAndLessonId(enrollmentId, lessonId);
+    }
 }
