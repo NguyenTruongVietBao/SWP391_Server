@@ -35,48 +35,38 @@ public class QuizServiceImpl implements QuizService {
     private final CourseRepository courseRepository;
 
     @Override
-    public Quiz createQuiz(QuizDTO quizDTO) {
-        Quiz quiz = QuizMapper.mapToQuiz(quizDTO);
+    public QuizDTO createQuiz(QuizDTO quizDTO) {
+        Quiz generatedQuiz;
 
         if (quizDTO.getQuizType() == QuizType.QUIZ_COURSE && quizDTO.getCourseId() != null) {
-            Course course = courseRepository.findById(quizDTO.getCourseId())
-                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khóa học"));
-            quiz.setCourse(course);
+            generatedQuiz = generateQuizForCourse(quizDTO.getCourseId(), quizDTO.getNumOfQuestions(), quizDTO.getTimeLimit());
         } else if (quizDTO.getQuizType() == QuizType.QUIZ_CHAPTER && quizDTO.getChapterId() != null) {
-            Chapter chapter = chapterRepository.findById(quizDTO.getChapterId())
-                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chương"));
-            quiz.setChapter(chapter);
+            generatedQuiz = generateQuizForChapter(quizDTO.getChapterId(), quizDTO.getNumOfQuestions(), quizDTO.getTimeLimit());
         } else if (quizDTO.getQuizType() == QuizType.QUIZ_TOPIC && quizDTO.getTopicId() != null) {
-            Topic topic = topicRepository.findById(quizDTO.getTopicId())
-                    .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chủ đề"));
-            quiz.setTopic(topic);
+            generatedQuiz = generateQuizForTopic(quizDTO.getTopicId(), quizDTO.getNumOfQuestions(), quizDTO.getTimeLimit());
         } else {
             throw new IllegalArgumentException("Loại bài kiểm tra hoặc ID không hợp lệ");
         }
 
-        return quizRepository.save(quiz);
+        Quiz savedQuiz = quizRepository.save(generatedQuiz);
+        return QuizMapper.mapToQuizDTO(savedQuiz);
     }
 
-    // Hợp nhất phương thức generateQuizForTopic
     @Override
-    public QuizDTO generateQuizForTopic(int topicId, int numOfQuestions, int timeLimit) {
+    public Quiz generateQuizForTopic(int topicId, int numOfQuestions, int timeLimit) {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chủ đề"));
         List<Question> questions = questionRepository.findByTopic(topic);
         Collections.shuffle(questions);
         List<Question> selectedQuestions = questions.subList(0, Math.min(numOfQuestions, questions.size()));
 
-        QuizDTO quizDTO = new QuizDTO();
-        quizDTO.setQuestions(selectedQuestions.stream()
-                .map(QuestionMapper::mapToQuestionDTO)
-                .collect(Collectors.toList()));
-        quizDTO.setNumOfQuestions(numOfQuestions);
-        quizDTO.setTimeLimit(timeLimit);
-        quizDTO.setQuizType(QuizType.QUIZ_TOPIC);
-        quizDTO.setTopicId(topicId);
-        Quiz quiz = QuizMapper.mapToQuiz(quizDTO);
-        quizRepository.save(quiz);
-        return quizDTO;
+        Quiz quiz = new Quiz();
+        quiz.setQuestions(selectedQuestions);
+        quiz.setNumOfQuestions(numOfQuestions);
+        quiz.setTimeLimit(timeLimit);
+        quiz.setQuizType(QuizType.QUIZ_TOPIC);
+        quiz.setTopic(topic);
+        return quiz;
     }
 
     @Override

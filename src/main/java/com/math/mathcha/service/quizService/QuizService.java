@@ -10,9 +10,9 @@ import com.math.mathcha.entity.QuizResult;
 import java.util.List;
 
 public interface QuizService {
-    Quiz createQuiz(QuizDTO quizDTO);
+    QuizDTO createQuiz(QuizDTO quizDTO);
     QuizResult saveQuizResult(Long quizId, QuizResultDTO quizResultDTO);
-    QuizDTO generateQuizForTopic(int topicId, int numOfQuestions, int timeLimit);
+    Quiz generateQuizForTopic(int topicId, int numOfQuestions, int timeLimit);
     Quiz generateQuizForChapter(int chapterId, int numOfQuestions, int timeLimit);
     Quiz generateQuizForCourse(int courseId, int numOfQuestions, int timeLimit);
 

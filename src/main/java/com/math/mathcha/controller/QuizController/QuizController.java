@@ -17,10 +17,10 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping
-    public ResponseEntity<Quiz> createQuiz(@RequestBody QuizDTO quizDTO) {
+    public ResponseEntity<QuizDTO> createQuiz(@RequestBody QuizDTO quizDTO) {
         try {
-            Quiz quiz = quizService.createQuiz(quizDTO);
-            return new ResponseEntity<>(quiz, HttpStatus.CREATED);
+            QuizDTO createdQuiz = quizService.createQuiz(quizDTO);
+            return new ResponseEntity<>(createdQuiz, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
