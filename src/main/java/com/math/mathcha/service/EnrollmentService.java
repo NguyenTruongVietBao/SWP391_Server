@@ -36,8 +36,6 @@ public class EnrollmentService {
         enrollment.setStudent(student);
         enrollment.setCourse(course);
         enrollment.setEnrollment_date(new Date());
-
-
         Enrollment savedEnrollment = enrollmentRepository.save(enrollment);
 
         return EnrollmentMapper.mapToEnrollmentDTO(savedEnrollment);
