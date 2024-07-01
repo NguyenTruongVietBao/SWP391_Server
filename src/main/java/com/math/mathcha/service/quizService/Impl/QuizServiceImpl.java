@@ -41,15 +41,15 @@ public class QuizServiceImpl implements QuizService {
         if (quizDTO.getQuizType() == QuizType.QUIZ_COURSE && quizDTO.getCourseId() != null) {
             Course course = courseRepository.findById(quizDTO.getCourseId())
                     .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khóa học"));
-            quiz.setCourse_id(course);
+            quiz.setCourse(course);
         } else if (quizDTO.getQuizType() == QuizType.QUIZ_CHAPTER && quizDTO.getChapterId() != null) {
             Chapter chapter = chapterRepository.findById(quizDTO.getChapterId())
                     .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chương"));
-            quiz.setChapter_id(chapter);
+            quiz.setChapter(chapter);
         } else if (quizDTO.getQuizType() == QuizType.QUIZ_TOPIC && quizDTO.getTopicId() != null) {
             Topic topic = topicRepository.findById(quizDTO.getTopicId())
                     .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy chủ đề"));
-            quiz.setTopic_id(topic);
+            quiz.setTopic(topic);
         } else {
             throw new IllegalArgumentException("Loại bài kiểm tra hoặc ID không hợp lệ");
         }

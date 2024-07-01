@@ -25,3 +25,5 @@ public class QuestionOption {
     @JoinColumn(name = "question_id")
     private Question question;
 }
+
+

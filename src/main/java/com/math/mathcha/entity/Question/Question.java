@@ -17,11 +17,10 @@ import java.util.List;
 @Entity
 @Table(name = "question")
 public class Question {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
-    private Long question_id;
+    private Long questionId;
 
     @Column(name = "content")
     private String content;
@@ -39,8 +38,9 @@ public class Question {
     @JoinColumn(name = "topic_id", nullable = false)
     private Topic topic;
 
-    @ManyToOne // Thêm quan hệ ManyToOne với Quiz
-    @JoinColumn(name = "quiz_id", nullable = false)
-    private Quiz quiz; // Thêm thuộc tính 'quiz' để liên kết với Quiz
-
+    @ManyToOne
+    @JoinColumn(name = "quiz_id", nullable = true)
+    private Quiz quiz;
 }
+
+

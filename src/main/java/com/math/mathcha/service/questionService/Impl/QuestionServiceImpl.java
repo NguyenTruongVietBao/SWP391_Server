@@ -2,9 +2,12 @@ package com.math.mathcha.service.questionService.Impl;
 
 import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.entity.Question.Question;
+import com.math.mathcha.entity.Question.QuestionOption;
+import com.math.mathcha.entity.Quiz;
 import com.math.mathcha.entity.Topic;
 import com.math.mathcha.mapper.QuestionMapper;
 import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
+import com.math.mathcha.repository.QuizRepository.QuizRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
 import com.math.mathcha.service.questionService.QuestionService;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,16 +23,33 @@ import java.util.stream.Collectors;
 public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
     private final TopicRepository topicRepository;
+    private final QuizRepository quizRepository;
 
-    @Override
-    public QuestionDTO createQuestion(QuestionDTO questionDTO, Integer topic_id) {
+    public QuestionDTO createQuestion(QuestionDTO questionDTO, Integer topicId) {
         Question question = QuestionMapper.mapToQuestion(questionDTO);
-        Topic topic = topicRepository.findById(topic_id)
-                .orElseThrow(() -> new EntityNotFoundException("Topic with ID " + topic_id + " not found"));
+        Topic topic = topicRepository.findById(topicId)
+                .orElseThrow(() -> new EntityNotFoundException("Topic with ID " + topicId + " not found"));
+//        Quiz quiz = quizRepository.findById(quizId)
+//                .orElseThrow(() -> new EntityNotFoundException("Quiz with ID " + quizId + " not found"));
         question.setTopic(topic);
+//        question.setQuiz(quiz);
+
+        List<QuestionOption> options = questionDTO.getOption().stream()
+                .map(optionText -> {
+                    QuestionOption option = new QuestionOption();
+                    option.setOptionText(optionText);
+                    option.setQuestion(question);
+                    return option;
+                }).collect(Collectors.toList());
+
+        question.setOptions(options);
         Question savedQuestion = questionRepository.save(question);
         return QuestionMapper.mapToQuestionDTO(savedQuestion);
     }
+
+
+
+
 
 
     @Override

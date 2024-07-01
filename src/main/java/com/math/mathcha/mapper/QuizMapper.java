@@ -19,14 +19,14 @@ public class QuizMapper {
         quizDTO.setTimeLimit(quiz.getTimeLimit());
         quizDTO.setQuizType(quiz.getQuizType());
 
-        if (quiz.getCourse_id() != null) {
-            quizDTO.setCourseId(quiz.getCourse_id().getCourse_id());
+        if (quiz.getCourse() != null) {
+            quizDTO.setCourseId(quiz.getCourse().getCourse_id());
         }
-        if (quiz.getChapter_id() != null) {
-            quizDTO.setChapterId(quiz.getChapter_id().getChapter_id());
+        if (quiz.getCourse() != null) {
+            quizDTO.setChapterId(quiz.getChapter().getChapter_id());
         }
-        if (quiz.getTopic_id() != null) {
-            quizDTO.setTopicId(quiz.getTopic_id().getTopic_id());
+        if (quiz.getTopic() != null) {
+            quizDTO.setTopicId(quiz.getTopic().getTopic_id());
         }
 
         quizDTO.setQuestions(quiz.getQuestions().stream()

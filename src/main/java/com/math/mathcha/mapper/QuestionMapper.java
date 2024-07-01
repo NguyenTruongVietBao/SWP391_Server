@@ -12,7 +12,7 @@ public class QuestionMapper {
         Question question = new Question();
         question.setQuiz(questionDTO.getQuiz());
         question.setTopic(questionDTO.getTopic());
-        question.setQuestion_id(questionDTO.getQuestion_id());
+        question.setQuestionId(questionDTO.getQuestionId());
         question.setContent(questionDTO.getContent());
         question.setTitle(questionDTO.getTitle());
         question.setCorrectAnswer(questionDTO.getCorrectAnswer());
@@ -31,7 +31,7 @@ public class QuestionMapper {
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setQuiz(question.getQuiz());
         questionDTO.setTopic(question.getTopic());
-        questionDTO.setQuestion_id(question.getQuestion_id());
+        questionDTO.setQuestionId(question.getQuestionId());
         questionDTO.setContent(question.getContent());
         questionDTO.setTitle(question.getTitle());
         questionDTO.setCorrectAnswer(question.getCorrectAnswer());

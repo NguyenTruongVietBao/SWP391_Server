@@ -5,7 +5,7 @@ import com.math.mathcha.dto.request.QuestionDTO;
 import java.util.List;
 
 public interface QuestionService {
-    QuestionDTO createQuestion(QuestionDTO questionDTO, Integer question_id);
+    public QuestionDTO createQuestion(QuestionDTO questionDTO, Integer topic_id);
 
     QuestionDTO getQuestionById(Integer question_id);
 

@@ -33,14 +33,16 @@ public class QuestionController {
     private final QuestionService questionService;
     private final TopicService topicService;
   //  @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    @PostMapping("/{topic_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionDTO questionDTO,
-                                                      @PathVariable("topic_id") Integer topic_id) {
-        QuestionDTO saveQuestion = questionService.createQuestion(questionDTO, topic_id);
-        return new ResponseEntity<>(saveQuestion, HttpStatus.CREATED);
-    }
-   // @PreAuthorize("hasRole('CONTENT_MANAGER')")
+  @PostMapping("/{topic_id}")
+  @PreAuthorize("hasRole('CONTENT_MANAGER')")
+  public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionDTO questionDTO,
+                                                    @PathVariable("topic_id") Integer topicId) {
+      QuestionDTO savedQuestion = questionService.createQuestion(questionDTO, topicId);
+      return new ResponseEntity<>(savedQuestion, HttpStatus.CREATED);
+  }
+
+
+    // @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/topic/{topic_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<List<QuestionDTO>> getQuestionsByTopicId(@PathVariable("topic_id") int topic_id) throws IdInvalidException {

@@ -14,19 +14,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionDTO {
-
-    private long question_id;
-
+    private Long questionId;
     private String content;
-
     private String title;
-
     private List<String> option;
-
     private String correctAnswer;
-
     private Topic topic;
-
     private Quiz quiz;
-
+    private Integer topicId;
+    private Long quizId;
 }
+
+
+
