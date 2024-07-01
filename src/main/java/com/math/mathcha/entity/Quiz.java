@@ -2,38 +2,47 @@ package com.math.mathcha.entity;
 
 
 import com.math.mathcha.dto.request.QuestionDTO;
-import jakarta.persistence.Entity;
+import com.math.mathcha.entity.Question.Question;
+import com.math.mathcha.enums.QuizType;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
+@Getter
+@Setter
 @Entity
+@Table(name = "quiz")
 public class Quiz {
-    private List<QuestionDTO> questions;
-    private int timeLimit; // Thời gian làm bài
-    private int numberOfQuestions; // Số câu hỏi của bài kiểm tra
 
-    // Getters và Setters
-    public List<QuestionDTO> getQuestions() {
-        return questions;
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "quiz_id")
+    private Long quiz_id;
 
-    public void setQuestions(List<QuestionDTO> questions) {
-        this.questions = questions;
-    }
+    @Column(name = "num_of_questions")
+    private int numOfQuestions;
 
-    public int getTimeLimit() {
-        return timeLimit;
-    }
+    @Column(name = "time_limit")
+    private int timeLimit;
 
-    public void setTimeLimit(int timeLimit) {
-        this.timeLimit = timeLimit;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(name = "quiz_type")
+    private QuizType quizType;
 
-    public int getNumberOfQuestions() {
-        return numberOfQuestions;
-    }
+    @ManyToOne
+    @JoinColumn(name = "course_id", nullable = true)
+    private Course course_id;
 
-    public void setNumberOfQuestions(int numberOfQuestions) {
-        this.numberOfQuestions = numberOfQuestions;
-    }
+    @ManyToOne
+    @JoinColumn(name = "chapter_id", nullable = true)
+    private Chapter chapter_id;
+
+    @ManyToOne
+    @JoinColumn(name = "topic_id", nullable = true)
+    private Topic topic_id;
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Question> questions;
 }
 

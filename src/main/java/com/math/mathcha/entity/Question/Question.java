@@ -1,5 +1,6 @@
 package com.math.mathcha.entity.Question;
 
+import com.math.mathcha.entity.Quiz;
 import com.math.mathcha.entity.Topic;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,16 +17,17 @@ import java.util.List;
 @Entity
 @Table(name = "question")
 public class Question {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
-    private Long question_id; // sửa lại từ content sang id
+    private Long question_id;
 
     @Column(name = "content")
-    private String content; // thêm trường content
+    private String content;
 
     @Column(name = "title")
-    private String title; // thêm trường title
+    private String title;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionOption> options;
@@ -35,5 +37,10 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
-    private Topic topic; // sửa lại từ question sang Lesson
+    private Topic topic;
+
+    @ManyToOne // Thêm quan hệ ManyToOne với Quiz
+    @JoinColumn(name = "quiz_id", nullable = false)
+    private Quiz quiz; // Thêm thuộc tính 'quiz' để liên kết với Quiz
+
 }

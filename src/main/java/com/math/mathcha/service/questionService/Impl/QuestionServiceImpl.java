@@ -7,6 +7,7 @@ import com.math.mathcha.mapper.QuestionMapper;
 import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
 import com.math.mathcha.service.questionService.QuestionService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +25,12 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionDTO createQuestion(QuestionDTO questionDTO, Integer topic_id) {
         Question question = QuestionMapper.mapToQuestion(questionDTO);
         Topic topic = topicRepository.findById(topic_id)
-                .orElseThrow(() -> new RuntimeException("Topic: " + topic_id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Topic with ID " + topic_id + " not found"));
         question.setTopic(topic);
         Question savedQuestion = questionRepository.save(question);
         return QuestionMapper.mapToQuestionDTO(savedQuestion);
     }
+
 
     @Override
     public QuestionDTO getQuestionById(Integer question_id) {
