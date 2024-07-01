@@ -51,6 +51,9 @@ public class AuthController {
     public ResponseEntity createUser()  {
         return ResponseEntity.ok("admin success");
     }
+
+
+
     @PostMapping("/login/student")
     public ResponseEntity<ResLoginDTO> loginStudent(@Valid @RequestBody LoginDTO loginDTO) {
         ResLoginDTO res = authService.loginStudent(loginDTO);
