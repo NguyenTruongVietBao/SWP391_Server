@@ -4,6 +4,7 @@ import com.math.mathcha.dto.request.QuizDTO;
 import com.math.mathcha.entity.Quiz;
 import com.math.mathcha.entity.QuizResult;
 import com.math.mathcha.service.quizService.QuizService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/quizzes")
 @AllArgsConstructor
+@SecurityRequirement(name = "api")
 public class QuizController {
 
     private final QuizService quizService;
