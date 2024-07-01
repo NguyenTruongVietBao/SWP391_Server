@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/quizzes")
 @AllArgsConstructor
@@ -19,14 +22,22 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping
-    public ResponseEntity<QuizDTO> createQuiz(@RequestBody QuizDTO quizDTO) {
+    public ResponseEntity<Map<String, Object>> createQuiz(@RequestBody QuizDTO quizDTO) {
         try {
             QuizDTO createdQuiz = quizService.createQuiz(quizDTO);
-            return new ResponseEntity<>(createdQuiz, HttpStatus.CREATED);
+            Map<String, Object> response = new HashMap<>();
+            response.put("quizId", createdQuiz.getQuizId());
+            response.put("title", createdQuiz.getTimeLimit());
+            response.put("numOfQuestions", createdQuiz.getNumOfQuestions());
+            response.put("questions", createdQuiz.getQuestions());
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Invalid quiz data");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
 
 //    @PostMapping("/{quizId}/results")
 //    public ResponseEntity<QuizResult> saveQuizResult(@PathVariable Long quizId, @RequestBody QuizResultDTO quizResultDTO) {
