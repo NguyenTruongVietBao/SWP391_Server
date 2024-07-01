@@ -2,7 +2,6 @@ package com.math.mathcha.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.entity.Question.Question;
 import com.math.mathcha.enums.QuizType;
@@ -16,7 +15,6 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "quiz")
-@JsonIgnoreProperties({"lessons"})
 public class Quiz {
 
     @Id
@@ -45,6 +43,7 @@ public class Quiz {
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = true)
+    @JsonIgnore
     private Topic topic;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

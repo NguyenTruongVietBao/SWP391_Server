@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 public class QuestionMapper {
     public static Question mapToQuestion(QuestionDTO questionDTO) {
         Question question = new Question();
-        question.setQuiz(questionDTO.getQuiz());
-        question.setTopic(questionDTO.getTopic());
+//        question.setQuiz(questionDTO.getQuiz());
+//        question.setTopic(questionDTO.getTopic());
         question.setQuestionId(questionDTO.getQuestionId());
         question.setContent(questionDTO.getContent());
         question.setTitle(questionDTO.getTitle());
@@ -29,8 +29,8 @@ public class QuestionMapper {
 
     public static QuestionDTO mapToQuestionDTO(Question question) {
         QuestionDTO questionDTO = new QuestionDTO();
-        questionDTO.setQuiz(question.getQuiz());
-        questionDTO.setTopic(question.getTopic());
+//        questionDTO.setQuiz(question.getQuiz());
+//        questionDTO.setTopic(question.getTopic());
         questionDTO.setQuestionId(question.getQuestionId());
         questionDTO.setContent(question.getContent());
         questionDTO.setTitle(question.getTitle());

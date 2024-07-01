@@ -65,7 +65,6 @@ public class QuizServiceImpl implements QuizService {
         quiz.setNumOfQuestions(numOfQuestions);
         quiz.setTimeLimit(timeLimit);
         quiz.setQuizType(QuizType.QUIZ_TOPIC);
-        quiz.setTopic(topic);
         return quiz;
     }
 

@@ -1,5 +1,6 @@
 package com.math.mathcha.entity.Question;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.math.mathcha.entity.Quiz;
 import com.math.mathcha.entity.Topic;
 import jakarta.persistence.*;
@@ -34,8 +35,10 @@ public class Question {
     @Column(name = "correct_answer")
     private String correctAnswer;
 
+
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
+            @JsonIgnore
     private Topic topic;
 
     @ManyToOne

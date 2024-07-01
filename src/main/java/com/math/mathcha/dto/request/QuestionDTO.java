@@ -19,10 +19,10 @@ public class QuestionDTO {
     private String title;
     private List<String> option;
     private String correctAnswer;
-    private Topic topic;
-    private Quiz quiz;
-    private Integer topicId;
-    private Long quizId;
+//    private Topic topic;
+//    private Quiz quiz;
+//    private Integer topicId;
+//    private Long quizId;
 }
 
 
