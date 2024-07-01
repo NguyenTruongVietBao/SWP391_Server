@@ -3,7 +3,6 @@ package com.math.mathcha.service;
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.EnrollmentDTO;
 import com.math.mathcha.entity.*;
-import com.math.mathcha.mapper.CourseMapper;
 import com.math.mathcha.mapper.EnrollmentMapper;
 import com.math.mathcha.repository.CourseRepository.CourseRepository;
 import com.math.mathcha.repository.EnrollmentRepository;
@@ -46,5 +45,11 @@ public class EnrollmentService {
     public List<Course> getCoursesByStudentId(int studentId) {
         List<Enrollment> enrollments = enrollmentRepository.findByStudentId(studentId);
         return enrollments.stream().map(Enrollment::getCourse).collect(Collectors.toList());
+    }
+    public List<EnrollmentDTO> getEnrollmentsByStudentIdAndCourseId(int studentId, int courseId) {
+        List<Enrollment> enrollments = enrollmentRepository.findEnrollmentsByStudentIdAndCourseId(studentId, courseId);
+        return enrollments.stream()
+                .map(EnrollmentMapper::mapToEnrollmentDTO)
+                .collect(Collectors.toList());
     }
 }

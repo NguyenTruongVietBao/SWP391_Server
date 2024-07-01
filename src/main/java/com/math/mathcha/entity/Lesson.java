@@ -27,6 +27,8 @@ public class Lesson {
     @Column(name = "video_url")
     private String video_url;
 
+
+
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
     @JsonIgnore

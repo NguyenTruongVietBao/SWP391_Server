@@ -31,13 +31,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResLoginDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
-                ResLoginDTO res = authService.login(loginDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(res);
-    }
-
-    @PostMapping("/loginstudent")
-    public ResponseEntity<ResLoginDTO> studentLogin(@Valid @RequestBody LoginDTO loginDTO) {
-        ResLoginDTO res = authService.studentLogin(loginDTO);
+        ResLoginDTO res = authService.login(loginDTO);
         return ResponseEntity.status(HttpStatus.OK).body(res);
     }
     @GetMapping("")
@@ -47,7 +41,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {
-      User user = authService.register(userDTO);
+        User user = authService.register(userDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

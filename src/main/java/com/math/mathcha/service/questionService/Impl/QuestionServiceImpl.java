@@ -66,5 +66,17 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.deleteById(question_id);
     }
 
+    @Override
+    public void saveQuestionsFromExcel(List<QuestionDTO> questions, Integer topicId) {
+        Topic topic = topicRepository.findById(topicId)
+                .orElseThrow(() -> new RuntimeException("Topic: " + topicId + " not found"));
+        for (QuestionDTO questionDTO : questions) {
+            Question question = QuestionMapper.mapToQuestion(questionDTO);
+            question.setTopic(topic);
+            questionRepository.save(question);
+        }
+    }
+
+
 
 }

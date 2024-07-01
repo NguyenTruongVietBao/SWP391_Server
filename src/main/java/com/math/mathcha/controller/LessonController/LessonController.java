@@ -52,7 +52,7 @@ public class LessonController {
 //    }
 
     @PutMapping("/{lesson_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public ResponseEntity<LessonDTO> updateLesson (@RequestBody LessonDTO updatedLesson, @PathVariable("lesson_id") Integer lessonId){
         LessonDTO lessonDTO = lessonService.updateLesson(updatedLesson, lessonId );
         return ResponseEntity.ok(lessonDTO);

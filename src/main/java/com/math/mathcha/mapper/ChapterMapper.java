@@ -11,6 +11,7 @@ public class ChapterMapper {
         chapterDTO.setChapter_id(chapter.getChapter_id());
         chapterDTO.setTitle(chapter.getTitle());
         chapterDTO.setNumber(chapter.getNumber());
+
         return chapterDTO;
     }
 
@@ -19,6 +20,7 @@ public class ChapterMapper {
         chapter.setChapter_id(chapterDTO.getChapter_id());
         chapter.setTitle(chapterDTO.getTitle());
         chapter.setNumber(chapterDTO.getNumber());
+
         return chapter;
     }
 }

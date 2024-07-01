@@ -27,6 +27,7 @@ public class Topic {
     @Column(name = "is_progress_limited")
     private Boolean is_progress_limited;
 
+
     @ManyToOne
     @JoinColumn(name = "chapter_id", nullable = false)
     @JsonIgnore

@@ -10,6 +10,7 @@ public class TopicMapper {
         topicDTO.setTitle(topic.getTitle());
         topicDTO.setNumber(topic.getNumber());
         topicDTO.setIs_progress_limited(topic.getIs_progress_limited());
+
         return topicDTO;
     }
 
@@ -19,6 +20,7 @@ public class TopicMapper {
         topic.setTitle(topicDTO.getTitle());
         topic.setNumber(topicDTO.getNumber());
         topic.setIs_progress_limited(topicDTO.getIs_progress_limited());
+
         return topic;
     }
 

@@ -1,5 +1,6 @@
 package com.math.mathcha.dto.request;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,13 +10,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChapterDTO {
+public class EnrollmentLessonDTO {
 
-    private int chapter_id;
-
-    private String title;
-
-    private int number;
-
-    private Boolean is_finish;
+    private int enrollmentLesson_id;
+    private Boolean is_complete = true;
+    private int enrollment_id;
+    private int lesson_id;
 }
