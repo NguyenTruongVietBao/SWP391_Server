@@ -27,4 +27,10 @@ public class EnrollmentLessonController {
         EnrollmentLessonDTO savedEnrollment = enrollmentLessonService.createEnrollmentLesson(enrollment_id, lesson_id);
         return new ResponseEntity<>(savedEnrollment, HttpStatus.CREATED);
     }
+    @GetMapping("/status/{enrollment_id}/{lesson_id}")
+    public ResponseEntity<Boolean> getIsComplete(@PathVariable("enrollment_id") int enrollmentId, @PathVariable("lesson_id") int lessonId) {
+        Boolean isComplete = enrollmentLessonService.getIsCompleteByEnrollmentIdAndLessonId(enrollmentId, lessonId);
+        return ResponseEntity.ok(isComplete);
+    }
+
 }
