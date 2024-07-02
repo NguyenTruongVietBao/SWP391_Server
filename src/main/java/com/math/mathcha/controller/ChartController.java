@@ -50,4 +50,10 @@ public class ChartController {
     public int getUsersPurchasedOnDate(@RequestParam String date) {
         return chartService.countUsersPurchasedOnDate(date);
     }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/api/total-users-purchased-course")
+    public int getTotalUsersPurchasedCourseOnDate(@RequestParam int courseId, @RequestParam String date) {
+        return chartService.countTotalUsersPurchasedCourseOnDate(courseId, date);
+    }
 }
