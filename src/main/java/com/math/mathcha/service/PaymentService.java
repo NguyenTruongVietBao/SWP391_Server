@@ -147,22 +147,23 @@ public class PaymentService {
             paymentRepository.save(payment);
         }
     }
-    public List<PaymentDTO> getPaymetsByUserId(int user_id) throws RuntimeException {
+    public List<ResPaymentDTO> getPaymetsByUserId(int user_id) throws RuntimeException {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() ->  new RuntimeException("User ID is invalid"));
         List<Payment> payments = paymentRepository.findPaymentByUserId(user_id);
         return payments.stream()
                 .map(PaymentMapper::mapToPaymentDTO)
-                .collect(Collectors.toList());
-    }
-    public List<ResPaymentDTO> getPaymentsByDate(LocalDate date) {
-        String formattedDate = date.toString(); // yyyy-MM-dd
-        List<Payment> payments = paymentRepository.findPaymentsByDate(formattedDate);
-        return payments.stream()
-                .map(PaymentMapper::mapToPaymentDTO)
                 .map(this::convertToResPaymentDTO)
                 .collect(Collectors.toList());
     }
+//    public List<ResPaymentDTO> getPaymentsByDate(LocalDate date) {
+//        String formattedDate = date.toString(); // yyyy-MM-dd
+//        List<Payment> payments = paymentRepository.findPaymentsByDate(formattedDate);
+//        return payments.stream()
+//                .map(PaymentMapper::mapToPaymentDTO)
+//                .map(this::convertToResPaymentDTO)
+//                .collect(Collectors.toList());
+//    }
     public ResPaymentDTO convertToResPaymentDTO(PaymentDTO paymentDTO) {
         ResPaymentDTO res = new ResPaymentDTO();
         res.setPayment_date(paymentDTO.getPayment_date());
@@ -171,12 +172,13 @@ public class PaymentService {
         res.setPayment_method(paymentDTO.getPayment_method());
         return res;
     }
-    public List<PaymentDTO> getPaymetsByCourseId(int course_id) throws RuntimeException {
+    public List<ResPaymentDTO> getPaymetsByCourseId(int course_id) throws RuntimeException {
         Course course = courseRepository.findById(course_id)
                 .orElseThrow(() ->  new RuntimeException("Course ID is invalid"));
         List<Payment> payments = paymentRepository.findPaymentByCourseId(course_id);
         return payments.stream()
                 .map(PaymentMapper::mapToPaymentDTO)
+                .map(this::convertToResPaymentDTO)
                 .collect(Collectors.toList());
     }
 }

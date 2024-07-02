@@ -22,8 +22,20 @@ public class ChartController {
     private ChartService chartService;
 
     @PreAuthorize("hasRole('MANAGER')")
-    @PostMapping("/revenue")
-    public ResChartDTO getRevenue(@RequestParam int month, @RequestParam int year, @RequestParam int interval) {
-        return chartService.calculateRevenue(month, year, interval);
+    @GetMapping("/revenue/daily")
+    public ResChartDTO getDailyRevenue(@RequestParam String date) {
+        return chartService.calculateDailyRevenue(date);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/revenue/monthly")
+    public ResChartDTO getMonthlyRevenue(@RequestParam String month) {
+        return chartService.calculateMonthlyRevenue(month);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/revenue/yearly")
+    public ResChartDTO getYearlyRevenue(@RequestParam String year) {
+        return chartService.calculateYearlyRevenue(year);
     }
 }
