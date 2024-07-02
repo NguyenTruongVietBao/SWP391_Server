@@ -17,7 +17,6 @@ public class TopicDTO {
 
     private int number;
 
-    private Boolean is_progress_limited;
-    private Boolean is_finish;
+
 
 }

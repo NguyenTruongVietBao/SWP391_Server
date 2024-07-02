@@ -59,7 +59,11 @@ public class TopicController {
         this.chapterService.deleteChapter(topic_id);
         return ResponseEntity.ok(null);
     }
-
+    @GetMapping("/{topic_id}/chapter")
+    public ResponseEntity<ChapterDTO> getChapterIdByTopicId(@PathVariable("topic_id") int topic_id) {
+        ChapterDTO chapterDTO = topicService.getChapterIdByTopicId(topic_id);
+        return ResponseEntity.ok(chapterDTO);
+    }
 
 //    @GetMapping
 //    public ResponseEntity<List<TopicDTO>> getTopicAll(){

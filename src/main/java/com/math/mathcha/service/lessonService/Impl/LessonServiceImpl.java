@@ -85,4 +85,11 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(() -> new IdInvalidException("Lesson với id = " + lesson_id + " không tồn tại"));
         lessonRepository.deleteById(lesson_id);
     }
+
+    @Override
+    public TopicDTO getTopicByLessonId(int lessonId) {
+        Topic topic = lessonRepository.findTopicByLessonId(lessonId);
+        return TopicMapper.mapToTopicDTO(topic);
+    }
+
 }

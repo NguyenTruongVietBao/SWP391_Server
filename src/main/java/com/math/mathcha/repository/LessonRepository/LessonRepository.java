@@ -11,4 +11,7 @@ import java.util.List;
 public interface LessonRepository extends JpaRepository<Lesson,Integer> {
     @Query("SELECT l FROM Lesson l WHERE l.topic.topic_id = :topic_id")
     List<Lesson> findLessonsByTopicId(@Param(value = "topic_id") int topic_id);
+
+    @Query("SELECT l.topic FROM Lesson l WHERE l.lesson_id = :lesson_id")
+    Topic findTopicByLessonId(@Param("lesson_id") int lesson_id);
 }
