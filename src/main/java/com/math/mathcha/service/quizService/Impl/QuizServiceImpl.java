@@ -1,6 +1,7 @@
 package com.math.mathcha.service.quizService.Impl;
 
 
+import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.dto.request.QuizDTO;
 import com.math.mathcha.dto.response.QuizResultDTO;
 import com.math.mathcha.entity.*;
@@ -19,6 +20,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,8 +67,44 @@ public class QuizServiceImpl implements QuizService {
         quiz.setNumOfQuestions(numOfQuestions);
         quiz.setTimeLimit(timeLimit);
         quiz.setQuizType(QuizType.QUIZ_TOPIC);
+        quiz.setTopic(topic);
         return quiz;
     }
+
+
+
+    @Override
+    public Quiz generateQuizForChapter(int chapterId, int numOfQuestions, int timeLimit) {
+        Chapter chapter = chapterRepository.findById(chapterId)
+                .orElseThrow(() -> new EntityNotFoundException("Chapter not found"));
+        int questionPerTopic = 1;
+        List<Question> selectedQuestions = new ArrayList<>();
+        List<QuestionDTO> quizQuestions = new ArrayList<>();
+
+        for (Topic topic : chapter.getTopics()) {
+            List<Question> questions = questionRepository.findByTopic(topic);
+
+            Collections.shuffle(questions);
+
+            List<Question> selectedTopicQuestions = questions.subList(0, Math.min(questionPerTopic, questions.size()));
+
+            selectedQuestions.addAll(selectedTopicQuestions);
+
+            quizQuestions.addAll(selectedTopicQuestions.stream()
+                    .map(QuestionMapper::mapToQuestionDTO)
+                    .collect(Collectors.toList()));
+        }
+
+        Quiz quiz = new Quiz();
+        quiz.setQuestions(selectedQuestions);
+        quiz.setNumOfQuestions(numOfQuestions);
+        quiz.setTimeLimit(timeLimit);
+        quiz.setQuizType(QuizType.QUIZ_CHAPTER);
+        quiz.setChapter(chapter);
+
+        return quiz;
+    }
+
 
     @Override
     public QuizResult saveQuizResult(Long quizId, QuizResultDTO quizResultDTO) {
@@ -74,31 +112,9 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Quiz generateQuizForChapter(int chapterId, int numOfQuestions, int timeLimit) {
-        return null;
-    }
-
-    @Override
     public Quiz generateQuizForCourse(int courseId, int numOfQuestions, int timeLimit) {
         return null;
     }
-
-//    @Override
-//    public Quiz generateQuizForChapter(int chapterId, int numOfQuestions, int timeLimit) {
-//        Chapter chapter = chapterRepository.findById(chapterId)
-//                .orElseThrow(() -> new EntityNotFoundException("Chapter not found"));
-//        List<Question> questions = questionRepository.findByChapter(chapter);
-//        Collections.shuffle(questions);
-//        List<Question> selectedQuestions = questions.subList(0, Math.min(numOfQuestions, questions.size()));
-//
-//        Quiz quiz = new Quiz();
-//        quiz.setQuestions(selectedQuestions);
-//        quiz.setNumOfQuestions(numOfQuestions);
-//        quiz.setTimeLimit(timeLimit);
-//        quiz.setQuizType(QuizType.QUIZ_CHAPTER);
-//        quiz.setChapterId(chapterId);
-//        return quiz;
-//    }
 //
 //    @Override
 //    public Quiz generateQuizForCourse(int courseId, int numOfQuestions, int timeLimit) {
@@ -194,25 +210,7 @@ public class QuizServiceImpl implements QuizService {
 //    }
 //
 //
-//    @Override
-//    public Quiz generateQuizForChapter(int chapterId, int questionPerTopic, int timeLimit) {
-//        Chapter chapter = chapterRepository.findById(chapterId)
-//                .orElseThrow(() -> new EntityNotFoundException("Chapter not found"));
-//        List<QuestionDTO> quizQuestions = new ArrayList<>();
-//        for (Topic topic : chapter.getTopics()) {
-//            List<Question> questions = questionRepository.findByTopic(topic);
-//            Collections.shuffle(questions);
-//            List<Question> selectedQuestions = questions.subList(0, Math.min(questionPerTopic, questions.size()));
-//            quizQuestions.addAll(selectedQuestions.stream()
-//                    .map(QuestionMapper::mapToQuestionDTO)
-//                    .collect(Collectors.toList()));
-//        }
-//        Quiz quiz = new Quiz();
-//        quiz.setQuestions(quizQuestions);
-//        quiz.setNumberOfQuestions(questionPerTopic);
-//        quiz.setTimeLimit(timeLimit);
-//        return quiz;
-//    }
+
 //
 //    @Override
 //    public Quiz generateQuizForTopic(int topicId, int numberOfQuestions, int timeLimit) {

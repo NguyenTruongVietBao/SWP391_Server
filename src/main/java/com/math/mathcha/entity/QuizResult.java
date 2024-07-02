@@ -21,11 +21,11 @@ public class QuizResult {
     private int score;
 
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDateTime attemptDate;
 
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
-    private Quiz quiz;
+    private Quiz quizId;
 
     @Column(name = "enrollment_id")
     private Long enrollmentId;
