@@ -25,9 +25,6 @@ public class Chapter {
     private String title;
     @Column(name = "number")
     private int number;
-
-
-
     @ManyToOne
     @JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore

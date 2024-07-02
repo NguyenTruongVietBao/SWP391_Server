@@ -20,11 +20,11 @@ import java.util.List;
 public class EnrollmentTopic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "enrollmentLesson_id")
-    private int enrollmentLesson_id;
+    @Column(name = "enrollmentTopic_id")
+    private int enrollmentTopic_id;
 
     @Column(name = "is_complete",columnDefinition = "TINYINT(1)")
-    private Boolean is_complete;
+    private Boolean is_complete =true;
 
     @ManyToOne
     @JoinColumn(name = "enrollment_id", nullable = false)

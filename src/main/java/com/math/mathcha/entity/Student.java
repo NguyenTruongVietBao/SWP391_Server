@@ -46,6 +46,7 @@ public class Student {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonIgnore //co the anh huong
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Enrollment> enrollments;
 

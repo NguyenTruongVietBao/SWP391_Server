@@ -147,13 +147,12 @@ public class PaymentService {
             paymentRepository.save(payment);
         }
     }
-    public List<ResPaymentDTO> getPaymetsByUserId(int user_id) throws RuntimeException {
+    public List<PaymentDTO> getPaymetsByUserId(int user_id) throws RuntimeException {
         User user = userRepository.findById(user_id)
                 .orElseThrow(() ->  new RuntimeException("User ID is invalid"));
         List<Payment> payments = paymentRepository.findPaymentByUserId(user_id);
         return payments.stream()
                 .map(PaymentMapper::mapToPaymentDTO)
-                .map(this::convertToResPaymentDTO)
                 .collect(Collectors.toList());
     }
 //    public List<ResPaymentDTO> getPaymentsByDate(LocalDate date) {
