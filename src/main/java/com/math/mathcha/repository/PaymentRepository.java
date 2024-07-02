@@ -21,4 +21,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     @Query("SELECT COUNT(DISTINCT p.user.user_id) FROM Payment p WHERE p.payment_date BETWEEN :startDate AND :endDate")
     int countDistinctUsersByPaymentDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    @Query("SELECT COUNT(DISTINCT p.user.user_id) FROM Payment p WHERE p.enrollment.course.course_id = :course_id AND p.payment_date BETWEEN :startDate AND :endDate")
+    int countTotalUsersPurchasedCourseOnDate(@Param("course_id") int courseId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

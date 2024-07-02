@@ -58,4 +58,10 @@ public class ChartService {
         return paymentRepository.countDistinctUsersByPaymentDate(startDate, endDate);
     }
 
+    public int countTotalUsersPurchasedCourseOnDate(int courseId, String date) {
+        String startDate = date + "000000"; // Start of the day
+        String endDate = date + "235959";   // End of the day
+        return paymentRepository.countTotalUsersPurchasedCourseOnDate(courseId, startDate, endDate);
+    }
+
 }
