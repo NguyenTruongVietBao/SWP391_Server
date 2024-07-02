@@ -51,4 +51,11 @@ public class ChartService {
         String endDate = year + "1231235959";
         return calculateRevenue(startDate, endDate);
     }
+
+    public int countUsersPurchasedOnDate(String date) {
+        String startDate = date + "000000"; // Start of the day
+        String endDate = date + "235959";   // End of the day
+        return paymentRepository.countDistinctUsersByPaymentDate(startDate, endDate);
+    }
+
 }

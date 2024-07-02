@@ -6,8 +6,11 @@ import com.math.mathcha.service.ChartService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @CrossOrigin("*")
@@ -23,19 +26,28 @@ public class ChartController {
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/revenue/daily")
-    public ResChartDTO getDailyRevenue(@RequestParam String date) {
-        return chartService.calculateDailyRevenue(date);
+    public ResponseEntity<ResChartDTO> getDailyRevenue(@RequestBody String date) {
+        ResChartDTO resChartDTO = chartService.calculateDailyRevenue(date);
+        return ResponseEntity.ok(resChartDTO);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/revenue/monthly")
-    public ResChartDTO getMonthlyRevenue(@RequestParam String month) {
-        return chartService.calculateMonthlyRevenue(month);
+    public ResponseEntity<ResChartDTO> getMonthlyRevenue(@RequestBody String month) {
+        ResChartDTO resChartDTO = chartService.calculateMonthlyRevenue(month);
+        return ResponseEntity.ok(resChartDTO);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/revenue/yearly")
-    public ResChartDTO getYearlyRevenue(@RequestParam String year) {
-        return chartService.calculateYearlyRevenue(year);
+    public ResponseEntity<ResChartDTO> getYearlyRevenue(@RequestBody String year) {
+        ResChartDTO resChartDTO = chartService.calculateYearlyRevenue(year);
+        return ResponseEntity.ok(resChartDTO);
+    }
+
+    @GetMapping("/api/users-purchased")
+    @PreAuthorize("hasRole('MANAGER')")
+    public int getUsersPurchasedOnDate(@RequestParam String date) {
+        return chartService.countUsersPurchasedOnDate(date);
     }
 }
