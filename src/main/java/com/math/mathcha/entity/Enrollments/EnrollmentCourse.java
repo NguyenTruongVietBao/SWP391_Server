@@ -24,7 +24,7 @@ public class EnrollmentCourse {
     private int enrollmentCourse_id;
 
     @Column(name = "is_complete",columnDefinition = "TINYINT(1)")
-    private Boolean is_complete;
+    private Boolean is_complete =true;
 
     @ManyToOne
     @JoinColumn(name = "enrollment_id", nullable = false)
@@ -32,7 +32,7 @@ public class EnrollmentCourse {
     private Enrollment enrollment;
 
     @ManyToOne
-    @JoinColumn(name = "chapter_id", nullable = false)
+    @JoinColumn(name = "course_id", nullable = false)
     @JsonIgnore
     private Course course;
 

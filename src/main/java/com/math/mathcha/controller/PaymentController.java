@@ -37,9 +37,9 @@ public class PaymentController {
         return new ResponseEntity<>("Payment processed", HttpStatus.OK);
     }
     @GetMapping("/user/{user_id}")
-    @PreAuthorize("hasAnyRole('PARENT','MANAGER')")
-    public ResponseEntity<List<ResPaymentDTO>> getPaymetsByUserId(@PathVariable("user_id") int user_id) throws RuntimeException {
-        List<ResPaymentDTO> paymentDTOS = paymentService.getPaymetsByUserId(user_id);
+    @PreAuthorize("hasRole('PARENT')")
+    public ResponseEntity <List<PaymentDTO>>getTopicByChapterId (@PathVariable("user_id") int user_id) throws RuntimeException {
+        List<PaymentDTO> paymentDTOS = paymentService.getPaymetsByUserId(user_id);
         return ResponseEntity.ok(paymentDTOS);
     }
 //    @GetMapping("/date/{date}")
