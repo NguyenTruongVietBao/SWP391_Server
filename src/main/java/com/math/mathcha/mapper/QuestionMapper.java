@@ -17,11 +17,11 @@ public class QuestionMapper {
         List<QuestionOption> options = questionDTO.getOption().stream()
                 .map(opt -> {
                     QuestionOption option = new QuestionOption();
-                    option.setOptionText(opt);
+                    option.setOption(opt);
                     option.setQuestion(question);
                     return option;
                 }).collect(Collectors.toList());
-        question.setOptions(options);
+        question.setQuestionOptions(options);
         return question;
     }
 
@@ -31,8 +31,8 @@ public class QuestionMapper {
         questionDTO.setContent(question.getContent());
         questionDTO.setTitle(question.getTitle());
         questionDTO.setCorrectAnswer(question.getCorrectAnswer());
-        questionDTO.setOption(question.getOptions().stream()
-                .map(QuestionOption::getOptionText)
+        questionDTO.setOption(question.getQuestionOptions().stream()
+                .map(QuestionOption::getOption)
                 .collect(Collectors.toList()));
         return questionDTO;
     }
