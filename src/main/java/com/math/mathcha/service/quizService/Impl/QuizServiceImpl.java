@@ -2,16 +2,16 @@ package com.math.mathcha.service.quizService.Impl;
 
 import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.dto.request.QuizDTO;
-import com.math.mathcha.dto.response.QuizResultDTO;
-import com.math.mathcha.entity.Chapter;
+import com.math.mathcha.dto.request.QuizResultDTO;
+import com.math.mathcha.dto.response.ResQuizResultDTO;
+import com.math.mathcha.entity.*;
 import com.math.mathcha.entity.Question.Question;
-import com.math.mathcha.entity.Quiz;
-import com.math.mathcha.entity.QuizHistory;
-import com.math.mathcha.entity.Topic;
 import com.math.mathcha.mapper.QuestionMapper;
+import com.math.mathcha.mapper.QuizResultMapper;
 import com.math.mathcha.repository.ChapterRepository.ChapterRepository;
+import com.math.mathcha.repository.EnrollmentRepository;
 import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
-import com.math.mathcha.repository.QuizHistoryRepository.QuizHistoryRepository;
+import com.math.mathcha.repository.QuizResultRepository.QuizResultRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
 import com.math.mathcha.service.quizService.QuizService;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,10 +31,12 @@ import java.util.stream.Collectors;
 public class QuizServiceImpl implements QuizService {
 
     @Autowired
-    private QuizHistoryRepository quizHistoryRepository;
+    private QuizResultRepository quizResultRepository;
     private final QuestionRepository questionRepository;
     private final ChapterRepository chapterRepository;
     private final TopicRepository topicRepository;
+    private final EnrollmentRepository enrollmentRepository;
+
 
     @Override
     public List<QuestionDTO> getQuizQuestions() {
@@ -88,7 +90,7 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizResultDTO evaluateQuiz(Long quizId, Long userId, QuizDTO quizDTO) {
+    public ResQuizResultDTO evaluateQuiz( int enrollment_id, QuizDTO quizDTO) {
         List<QuestionDTO> questions = quizDTO.getQuestions();
         List<String> userAnswers = quizDTO.getUserAnswer();
         List<Boolean> results = new ArrayList<>();
@@ -106,16 +108,21 @@ public class QuizServiceImpl implements QuizService {
             }
         }
 
-        QuizResultDTO quizResultDTO = new QuizResultDTO(results, correctCount, questions.size());
+        QuizResultDTO quizResultDTO = new QuizResultDTO();
 
-        QuizHistory history = new QuizHistory();
-        history.setQuizId(quizId);
-        history.setUserId(userId);
-        history.setScore(correctCount);
-        history.setTimestamp(LocalDateTime.now());
+        quizResultDTO.setEnrollment_id(enrollment_id);
+        quizResultDTO.setScore(correctCount);
+        quizResultDTO.setDate(LocalDateTime.now());
+        QuizResult quizResult = QuizResultMapper.mapToQuizResult(quizResultDTO);
 
-        quizHistoryRepository.save(history);
-        return quizResultDTO;
+        Enrollment enrollment = enrollmentRepository.findById(quizResultDTO.getEnrollment_id()).orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
+        quizResult.setEnrollment(enrollment);
+        quizResultRepository.save(quizResult);
+
+
+        ResQuizResultDTO resQuizResultDTO = new ResQuizResultDTO(results, correctCount, questions.size());
+
+        return resQuizResultDTO;
     }
 
 

@@ -3,8 +3,7 @@ package com.math.mathcha.controller.QuizController;
 import com.math.mathcha.dto.request.EvaluateQuizRequest;
 import com.math.mathcha.dto.request.GenerateQuizRequest;
 import com.math.mathcha.dto.request.QuestionDTO;
-import com.math.mathcha.dto.request.QuizDTO;
-import com.math.mathcha.dto.response.QuizResultDTO;
+import com.math.mathcha.dto.response.ResQuizResultDTO;
 import com.math.mathcha.entity.Quiz;
 import com.math.mathcha.service.quizService.QuizService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -46,12 +45,12 @@ public class QuizController {
         return quizService.generateQuizForChapter(chapterId, request.getNumberOfQuestions(), request.getTimeLimit());
     }
 
-    @PostMapping("/evaluate/{quizId}/user/{userId}")
+    @PostMapping("/evaluate/enrollment/{enrollment_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public QuizResultDTO evaluateQuiz(@PathVariable Long quizId,
-                                      @PathVariable Long userId,
-                                      @RequestBody EvaluateQuizRequest request) {
-        return quizService.evaluateQuiz(quizId, userId, request.getQuizDTO());
+    public ResQuizResultDTO evaluateQuiz(
+                                         @PathVariable int enrollment_id,
+                                         @RequestBody EvaluateQuizRequest request) {
+        return quizService.evaluateQuiz( enrollment_id, request.getQuizDTO());
     }
 }
 

@@ -19,7 +19,7 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
-    private Long question_id; // sửa lại từ content sang id
+    private int question_id; // sửa lại từ content sang id
 
     @Column(name = "content")
     private String content; // thêm trường content
@@ -27,11 +27,12 @@ public class Question {
     @Column(name = "title")
     private String title; // thêm trường title
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<QuestionOption> options;
 
     @Column(name = "correct_answer")
     private String correctAnswer;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuestionOption> questionOptions;
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
