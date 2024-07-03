@@ -18,37 +18,50 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "api")
 
 public class ChartController {
-
     @Autowired
     private ChartService chartService;
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/revenue/daily")
-    public ResChartDTO getDailyRevenue(@RequestParam String date) {
+    @GetMapping("/revenue/daily/{date}")
+    public ResChartDTO getDailyRevenue(@PathVariable String date) {
         return chartService.calculateDailyRevenue(date);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/revenue/monthly")
-    public ResChartDTO getMonthlyRevenue(@RequestParam String month) {
+    @GetMapping("/revenue/monthly/{month}")
+    public ResChartDTO getMonthlyRevenue(@PathVariable String month) {
         return chartService.calculateMonthlyRevenue(month);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/revenue/yearly")
-    public ResChartDTO getYearlyRevenue(@RequestParam String year) {
+    @GetMapping("/revenue/yearly/{year}")
+    public ResChartDTO getYearlyRevenue(@PathVariable String year) {
         return chartService.calculateYearlyRevenue(year);
     }
 
-    @GetMapping("/api/users-purchased")
+    @GetMapping("/api/users-purchased/{date}")
     @PreAuthorize("hasRole('MANAGER')")
-    public int getUsersPurchasedOnDate(@RequestParam String date) {
+    public int getUsersPurchasedOnDate(@PathVariable String date) {
         return chartService.countUsersPurchasedOnDate(date);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/api/total-users-purchased-course")
-    public int getTotalUsersPurchasedCourseOnDate(@RequestParam int courseId, @RequestParam String date) {
+    @GetMapping("/api/total-users-purchased-course/{courseId}/{date}")
+    public int getTotalUsersPurchasedCourseOnDate(@PathVariable int courseId, @PathVariable String date) {
         return chartService.countTotalUsersPurchasedCourseOnDate(courseId, date);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/revenue/course/{courseId}")
+    public ResponseEntity<Double> getTotalRevenueByCourseId(@PathVariable int courseId) {
+        Double totalRevenue = chartService.calculateTotalRevenueByCourseId(courseId);
+        return ResponseEntity.ok(totalRevenue);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/revenue/user/{userId}")
+    public ResponseEntity<Double> getTotalSpentByUserId(@PathVariable int userId) {
+        Double totalSpent = chartService.calculateTotalSpentByUserId(userId);
+        return ResponseEntity.ok(totalSpent);
     }
 }
