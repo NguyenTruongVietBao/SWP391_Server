@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository
+
 public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("SELECT c FROM Course c JOIN Enrollment e ON c.course_id = e.course.course_id JOIN Student s ON e.student.student_id = s.student_id WHERE s.student_id = :student_id")
     List<Course> findCoursesByStudentId(@Param("student_id") int student_id);
@@ -24,5 +24,9 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "JOIN User u ON s.user.user_id = u.user_id " +
             "WHERE u.user_id = :user_id)")
     List<Course> findCoursesNotBoughtByParent(@Param("user_id") int user_id);
-    Course findCourseById(int course_id);
+
+
+//    @Query("SELECT c FROM Course c WHERE c.course_id = :course_id")
+//    Course findCourseById(@Param("course_id") int course_id);
+
 }

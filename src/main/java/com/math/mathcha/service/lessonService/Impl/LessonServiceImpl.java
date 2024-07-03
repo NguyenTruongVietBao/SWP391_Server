@@ -74,7 +74,7 @@ public class LessonServiceImpl implements LessonService {
         lesson.setNumber(updateLesson.getNumber());
         lesson.setDocument(updateLesson.getDocument());
         lesson.setVideo_url(updateLesson.getVideo_url());
-        lesson.setIs_finish(updateLesson.getIs_finish());
+
         Lesson updateLessonsObj = lessonRepository.save(lesson);
         return  LessonMapper.mapToLessonDTO(updateLessonsObj);
     }
@@ -85,4 +85,11 @@ public class LessonServiceImpl implements LessonService {
                 .orElseThrow(() -> new IdInvalidException("Lesson với id = " + lesson_id + " không tồn tại"));
         lessonRepository.deleteById(lesson_id);
     }
+
+    @Override
+    public TopicDTO getTopicByLessonId(int lessonId) {
+        Topic topic = lessonRepository.findTopicByLessonId(lessonId);
+        return TopicMapper.mapToTopicDTO(topic);
+    }
+
 }

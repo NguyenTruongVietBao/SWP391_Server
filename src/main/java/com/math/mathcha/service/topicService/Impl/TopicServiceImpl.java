@@ -5,7 +5,6 @@ import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.ChapterDTO;
 import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.entity.Chapter;
-import com.math.mathcha.entity.Course;
 import com.math.mathcha.entity.Topic;
 import com.math.mathcha.mapper.ChapterMapper;
 import com.math.mathcha.mapper.TopicMapper;
@@ -56,8 +55,7 @@ public class TopicServiceImpl implements TopicService {
                 .orElseThrow(()-> new RuntimeException("Topic "+topic_id+" not found"));
         course.setTitle(updateTopic.getTitle());
         course.setNumber(updateTopic.getNumber());
-        course.setIs_progress_limited(updateTopic.getIs_progress_limited());
-        course.setIs_finish(updateTopic.getIs_finish());
+
         Topic updateTopicObj = topicRepository.save(course);
         return TopicMapper.mapToTopicDTO(updateTopicObj);
     }
@@ -79,6 +77,12 @@ public class TopicServiceImpl implements TopicService {
         return chapters.stream().map(
                 (topic) -> TopicMapper.mapToTopicDTO(topic)).collect(Collectors.toList()
         );
+    }
+
+    @Override
+    public ChapterDTO getChapterIdByTopicId(int topic_id) {
+        Chapter chapter = topicRepository.findChapterIdByTopicId(topic_id);
+        return ChapterMapper.mapToChapterDTO(chapter);
     }
 
 //    @Override

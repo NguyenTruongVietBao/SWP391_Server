@@ -2,6 +2,8 @@ package com.math.mathcha.service.lessonService;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.LessonDTO;
+import com.math.mathcha.dto.request.TopicDTO;
+import com.math.mathcha.entity.Topic;
 
 import java.util.List;
 
@@ -16,5 +18,5 @@ public interface LessonService {
 
     void deleteLesson (Integer lesson_id) throws IdInvalidException;
 
-
+    TopicDTO getTopicByLessonId(int lessonId);
 }

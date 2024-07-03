@@ -5,12 +5,13 @@ import com.math.mathcha.entity.Topic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
-@Repository
+
 public interface LessonRepository extends JpaRepository<Lesson,Integer> {
     @Query("SELECT l FROM Lesson l WHERE l.topic.topic_id = :topic_id")
     List<Lesson> findLessonsByTopicId(@Param(value = "topic_id") int topic_id);
-    Lesson findLessonById(int id);
+
+    @Query("SELECT l.topic FROM Lesson l WHERE l.lesson_id = :lesson_id")
+    Topic findTopicByLessonId(@Param("lesson_id") int lesson_id);
 }

@@ -26,8 +26,7 @@ public class Lesson {
     private String document;
     @Column(name = "video_url")
     private String video_url;
-    @Column(name = "is_finish",columnDefinition = "TINYINT(1)")
-    private Boolean is_finish;
+
 
 
     @ManyToOne
