@@ -38,12 +38,11 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
-            @JsonIgnore
+    @JsonIgnore
     private Topic topic;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_id", nullable = true)
-    private Quiz quiz;
+    @ManyToMany(mappedBy = "questions")
+    List<Quiz> quizzes;
 }
 
 

@@ -69,6 +69,12 @@ public class QuestionController {
         return ResponseEntity.ok(questionDTO);
     }
 
+    @GetMapping("/chapter/{chapterId}")
+    public ResponseEntity<List<QuestionDTO>> getQuestionsByChapterId(@PathVariable int chapterId) {
+        List<QuestionDTO> questions = questionService.getQuestionsByChapterId(chapterId);
+        return ResponseEntity.ok(questions);
+    }
+
    // @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PutMapping("/{question_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")

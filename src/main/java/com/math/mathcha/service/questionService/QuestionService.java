@@ -11,6 +11,8 @@ public interface QuestionService {
 
     List<QuestionDTO> getQuestionsByTopicId(int question_id);
 
+    List<QuestionDTO> getQuestionsByChapterId(int chapterId);
+
     QuestionDTO updateQuestion(QuestionDTO questionDTO, Integer question_id);
 
     void deleteQuestion(Integer question_id);

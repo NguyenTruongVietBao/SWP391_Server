@@ -1,5 +1,6 @@
 package com.math.mathcha.entity.Question;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class QuestionOption {
     private String optionText;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "question_id")
     private Question question;
 }

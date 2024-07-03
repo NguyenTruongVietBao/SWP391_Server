@@ -25,7 +25,7 @@ public class QuestionServiceImpl implements QuestionService {
     private final TopicRepository topicRepository;
     private final QuizRepository quizRepository;
 
-    public QuestionDTO createQuestion(QuestionDTO questionDTO, Integer topicId) {
+    public QuestionDTO  createQuestion(QuestionDTO questionDTO, Integer topicId) {
         Question question = QuestionMapper.mapToQuestion(questionDTO);
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new EntityNotFoundException("Topic with ID " + topicId + " not found"));
@@ -70,6 +70,13 @@ public class QuestionServiceImpl implements QuestionService {
         );
     }
 
+    @Override
+    public List<QuestionDTO> getQuestionsByChapterId(int chapterId) {
+        List<Question> questions = questionRepository.findQuestionsByChapterId(chapterId);
+        return questions.stream()
+                .map(QuestionMapper::mapToQuestionDTO)
+                .collect(Collectors.toList());
+    }
     @Override
     public QuestionDTO updateQuestion(QuestionDTO updateQuestion, Integer question_id) {
         Question question = questionRepository.findById(question_id)

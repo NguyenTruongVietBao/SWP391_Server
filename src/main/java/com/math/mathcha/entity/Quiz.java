@@ -33,10 +33,12 @@ public class Quiz {
     private QuizType quizType;
 
     @ManyToOne
-    @JoinColumn(name = "course_id", nullable = true)
+    @JsonIgnore
+    @JoinColumn(name = "course_id",  nullable = true)
     private Course course;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "chapter_id", nullable = true)
     private Chapter chapter;
 
@@ -46,8 +48,13 @@ public class Quiz {
     @JsonIgnore
     private Topic topic;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            joinColumns =  @JoinColumn(name = "quiz_Id"),
+            inverseJoinColumns = @JoinColumn(name = "questions_id")
+    )
     private List<Question> questions;
+
 }
 
 

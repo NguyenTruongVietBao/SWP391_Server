@@ -1,10 +1,13 @@
 package com.math.mathcha.controller.QuizController;
 
 import com.math.mathcha.dto.request.QuizDTO;
+import com.math.mathcha.dto.request.QuizRequestDTO;
 import com.math.mathcha.entity.Quiz;
 import com.math.mathcha.entity.QuizResult;
+import com.math.mathcha.enums.QuizType;
 import com.math.mathcha.service.quizService.QuizService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +40,29 @@ public class QuizController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/generate/course")
+    public ResponseEntity<QuizDTO> generateQuizForCourse(@RequestBody QuizRequestDTO quizRequestDTO) {
+        try {
+            // Convert QuizRequestDTO to QuizDTO (if needed)
+            QuizDTO quizDTO = new QuizDTO();
+            quizDTO.setCourseId(quizRequestDTO.getCourseId());
+            quizDTO.setNumOfQuestions(quizRequestDTO.getNumOfQuestions());
+            quizDTO.setTimeLimit(quizRequestDTO.getTimeLimit());
+            quizDTO.setQuizType(QuizType.QUIZ_COURSE); // Assuming QUIZ_COURSE here
+
+            // Call service method with QuizDTO
+            QuizDTO createdQuizDTO = quizService.createQuiz(quizDTO);
+
+            return new ResponseEntity<>(createdQuizDTO, HttpStatus.CREATED);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 
 //    @PostMapping("/{quizId}/results")

@@ -15,10 +15,12 @@ import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
 import com.math.mathcha.repository.QuizRepository.QuizRepository;
 import com.math.mathcha.repository.QuizRepository.QuizResultRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
+import com.math.mathcha.service.questionService.Impl.QuestionServiceImpl;
 import com.math.mathcha.service.quizService.QuizService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,10 +37,13 @@ public class QuizServiceImpl implements QuizService {
     private final TopicRepository topicRepository;
     private final ChapterRepository chapterRepository;
     private final CourseRepository courseRepository;
+    private final QuestionServiceImpl questionServiceImpl;
 
+
+    @Transactional
     @Override
     public QuizDTO createQuiz(QuizDTO quizDTO) {
-        Quiz generatedQuiz;
+        Quiz generatedQuiz = new Quiz();
 
         if (quizDTO.getQuizType() == QuizType.QUIZ_COURSE && quizDTO.getCourseId() != null) {
             generatedQuiz = generateQuizForCourse(quizDTO.getCourseId(), quizDTO.getNumOfQuestions(), quizDTO.getTimeLimit());
@@ -106,32 +111,48 @@ public class QuizServiceImpl implements QuizService {
     }
 
 
+
+
+    @Override
+    public Quiz generateQuizForCourse(int courseId, int numOfQuestions, int timeLimit) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+        List<Question> selectedQuestions = new ArrayList<>();
+
+        for (Chapter chapter : course.getChapters()) {
+            List<QuestionDTO> chapterQuestions = questionServiceImpl.getQuestionsByChapterId(chapter.getChapter_id());
+            List<Question> questions = chapterQuestions.stream()
+                    .map(QuestionMapper::mapToQuestion)
+                    .collect(Collectors.toList());
+
+            Collections.shuffle(questions);
+
+            int questionsNeeded = Math.min(questions.size(), numOfQuestions - selectedQuestions.size());
+            selectedQuestions.addAll(questions.subList(0, questionsNeeded));
+
+            if (selectedQuestions.size() >= numOfQuestions) {
+                break;
+            }
+        }
+
+        Quiz quiz = new Quiz();
+        quiz.setQuestions(selectedQuestions);
+        quiz.setNumOfQuestions(numOfQuestions);
+        quiz.setTimeLimit(timeLimit);
+        quiz.setQuizType(QuizType.QUIZ_COURSE);
+        quiz.setCourse(course);
+
+        return quiz;
+    }
+
     @Override
     public QuizResult saveQuizResult(Long quizId, QuizResultDTO quizResultDTO) {
         return null;
     }
 
-    @Override
-    public Quiz generateQuizForCourse(int courseId, int numOfQuestions, int timeLimit) {
-        return null;
-    }
-//
-//    @Override
-//    public Quiz generateQuizForCourse(int courseId, int numOfQuestions, int timeLimit) {
-//        Course course = courseRepository.findById(courseId)
-//                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
-//        List<Question> questions = questionRepository.findByCourse(course);
-//        Collections.shuffle(questions);
-//        List<Question> selectedQuestions = questions.subList(0, Math.min(numOfQuestions, questions.size()));
-//
-//        Quiz quiz = new Quiz();
-//        quiz.setQuestions(selectedQuestions);
-//        quiz.setNumOfQuestions(numOfQuestions);
-//        quiz.setTimeLimit(timeLimit);
-//        quiz.setQuizType(QuizType.QUIZ_COURSE);
-//        quiz.setCourseId(courseId);
-//        return quiz;
-//    }
+
+
+}
 //
 //    @Override
 //    public QuizResult saveQuizResult(Long quizId, QuizResultDTO quizResultDTO) {
@@ -144,8 +165,6 @@ public class QuizServiceImpl implements QuizService {
 //        quizResult.setEnrollmentId(quizResultDTO.getEnrollmentId());
 //        return quizResultRepository.save(quizResult);
 //    }
-}
-
 
 
 
