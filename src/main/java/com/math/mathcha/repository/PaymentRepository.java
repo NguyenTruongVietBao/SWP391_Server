@@ -1,7 +1,6 @@
 package com.math.mathcha.repository;
 
 import com.math.mathcha.entity.Payment;
-import com.math.mathcha.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +22,11 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
     int countDistinctUsersByPaymentDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
     @Query("SELECT COUNT(DISTINCT p.user.user_id) FROM Payment p WHERE p.enrollment.course.course_id = :course_id AND p.payment_date BETWEEN :startDate AND :endDate")
-    int countTotalUsersPurchasedCourseOnDate(@Param("course_id") int courseId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+    int countTotalUsersPurchasedCourseOnDate(@Param("course_id") int course_id, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    @Query("SELECT SUM(p.total_money) FROM Payment p WHERE p.enrollment.course.course_id = :course_id")
+    Double findTotalRevenueByCourseId(@Param("course_id") int course_id);
+
+    @Query("SELECT SUM(p.total_money) FROM Payment p WHERE p.user.user_id = :user_id")
+    Double findTotalSpentByUserId(@Param("user_id") int user_id);
 }

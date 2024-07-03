@@ -64,4 +64,12 @@ public class ChartService {
         return paymentRepository.countTotalUsersPurchasedCourseOnDate(courseId, startDate, endDate);
     }
 
+    public Double calculateTotalRevenueByCourseId(int courseId) {
+        return paymentRepository.findTotalRevenueByCourseId(courseId);
+    }
+
+    public Double calculateTotalSpentByUserId(int userId) {
+        return paymentRepository.findTotalSpentByUserId(userId);
+    }
+
 }
