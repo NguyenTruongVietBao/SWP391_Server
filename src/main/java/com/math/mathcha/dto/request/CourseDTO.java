@@ -18,5 +18,5 @@ public class CourseDTO {
     private String discount_price;
     private Boolean is_deleted;
     private Boolean status;
-    private Boolean is_finish;
+
 }

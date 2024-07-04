@@ -1,6 +1,7 @@
 package com.math.mathcha.repository.CourseRepository;
 
 import com.math.mathcha.entity.Course;
+import com.math.mathcha.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +25,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "JOIN User u ON s.user.user_id = u.user_id " +
             "WHERE u.user_id = :user_id)")
     List<Course> findCoursesNotBoughtByParent(@Param("user_id") int user_id);
+
+    @Query("SELECT c FROM Course c JOIN c.enrollments e JOIN e.payments p WHERE p.payment_date BETWEEN :startDate AND :endDate")
+    List<Course> findCoursesByPaymentDates(String startDate, String endDate);
+
 
 
 //    @Query("SELECT c FROM Course c WHERE c.course_id = :course_id")

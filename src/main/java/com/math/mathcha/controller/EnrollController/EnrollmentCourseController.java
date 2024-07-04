@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
@@ -23,7 +24,7 @@ public class EnrollmentCourseController {
     private EnrollmentCourseService enrollmentCourseService;
 
 
-    //    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+//    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @PostMapping("/create/{enrollment_id}/{course_id}")
     public ResponseEntity<EnrollmentCourseDTO> createEnrollmentCourse(@PathVariable int enrollment_id, @PathVariable int course_id) throws IdInvalidException {
         EnrollmentCourseDTO savedEnrollment = enrollmentCourseService.createEnrollmentCourse(enrollment_id, course_id);

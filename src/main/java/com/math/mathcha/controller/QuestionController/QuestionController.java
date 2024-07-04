@@ -86,6 +86,7 @@ public class QuestionController {
     }
 
     @PostMapping("/upload/{topic_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')") // can xem lai
     public ResponseEntity<String> uploadQuestionsFromExcel(@RequestParam("file") MultipartFile file, @PathVariable("topic_id") Integer topicId) {
         List<QuestionDTO> questions = new ArrayList<>();
 

@@ -67,6 +67,7 @@ public class LessonController {
         return ResponseEntity.ok(null);
     }
     @GetMapping("/{lesson_id}/topic")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')") // can xem lai
     public ResponseEntity<TopicDTO> getTopicByLessonId(@PathVariable("lesson_id") int lessonId) {
         TopicDTO topicDTO = lessonService.getTopicByLessonId(lessonId);
         return ResponseEntity.ok(topicDTO);
