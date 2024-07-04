@@ -45,6 +45,13 @@ public class QuizController {
         return quizService.generateQuizForChapter(chapterId, request.getNumberOfQuestions(), request.getTimeLimit());
     }
 
+    @PostMapping("/course/{courseId}/generate")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    public Quiz generateQuizForCourse(@PathVariable int courseId,
+                                       @RequestBody GenerateQuizRequest request) {
+        return quizService.generateQuizForCourse(courseId, request.getNumberOfQuestions(), request.getTimeLimit());
+    }
+
     @PostMapping("/evaluate/enrollment/{enrollment_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResQuizResultDTO evaluateQuiz(

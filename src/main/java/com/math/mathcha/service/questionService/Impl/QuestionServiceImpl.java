@@ -42,10 +42,19 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public List<QuestionDTO> getQuestionsByTopicId(int topic_id) {
         List<Question> questions = questionRepository.findQuestionByTopicId(topic_id);
-        return questions.stream().map(
-                (question) -> QuestionMapper.mapToQuestionDTO(question)).collect(Collectors.toList()
+        return questions.stream()
+                .map(QuestionMapper::mapToQuestionDTO)
+                .collect(Collectors.toList()
 
         );
+    }
+
+    @Override
+    public List<QuestionDTO> getQuestionsByChapterId(int chapter_id) {
+        List<Question> questions = questionRepository.findQuestionsByChapterId(chapter_id);
+        return questions.stream()
+                .map(QuestionMapper::mapToQuestionDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -76,6 +85,7 @@ public class QuestionServiceImpl implements QuestionService {
             questionRepository.save(question);
         }
     }
+
 
 
 

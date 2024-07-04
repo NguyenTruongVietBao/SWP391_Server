@@ -13,8 +13,9 @@ public interface QuizService {
     public Quiz generateQuizForTopic(int topicId, int numberOfQuestions, int timeLimit);
 
 //    public  List<QuestionDTO> generateQuizForChapter(int chapterId, int questionPerTopic);
+public Quiz generateQuizForCourse(int courseId, int questionPerChapter, int timeLimit);
 
-    public Quiz generateQuizForChapter(int chapterId, int questionPerTopic, int timeLimit);
+    public Quiz generateQuizForChapter(int chapterId, int numberOfQuestions, int timeLimit);
 
     public ResQuizResultDTO evaluateQuiz( int enrollment_id, QuizDTO quizDTO);
 
