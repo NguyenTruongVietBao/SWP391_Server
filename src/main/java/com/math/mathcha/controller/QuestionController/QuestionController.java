@@ -12,12 +12,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,5 +126,52 @@ public class QuestionController {
         }
 
         return ResponseEntity.ok("File uploaded and questions saved");
+    }
+
+    @GetMapping("/download-template/{topic_id}")
+    public ResponseEntity<byte[]> downloadTemplate(@PathVariable("topic_id") Integer topicId) throws IOException, IdInvalidException {
+        List<QuestionDTO> questions = questionService.getQuestionsByTopicId(topicId);
+        TopicDTO topicDTO = topicService.getTopicById(topicId);
+
+        if (topicDTO == null) {
+            throw new IdInvalidException("Topic with id = " + topicId + " does not exist");
+        }
+
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Questions");
+
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Content");
+            headerRow.createCell(1).setCellValue("Title");
+            headerRow.createCell(2).setCellValue("Option 1");
+            headerRow.createCell(3).setCellValue("Option 2");
+            headerRow.createCell(4).setCellValue("Option 3");
+            headerRow.createCell(5).setCellValue("Option 4");
+            headerRow.createCell(6).setCellValue("Correct Answer");
+
+            int rowNum = 1;
+            for (QuestionDTO question : questions) {
+                Row row = sheet.createRow(rowNum++);
+                row.createCell(0).setCellValue(question.getContent());
+                row.createCell(1).setCellValue(question.getTitle());
+                List<String> options = question.getOption();
+                row.createCell(2).setCellValue(options.get(0));
+                row.createCell(3).setCellValue(options.get(1));
+                row.createCell(4).setCellValue(options.get(2));
+                row.createCell(5).setCellValue(options.get(3));
+                row.createCell(6).setCellValue(question.getCorrectAnswer());
+            }
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            workbook.write(outputStream);
+
+            byte[] bytes = outputStream.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", "questions_template.xlsx");
+
+            return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+        }
     }
 }
