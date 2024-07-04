@@ -9,10 +9,12 @@ import com.math.mathcha.entity.Question.Question;
 import com.math.mathcha.mapper.QuestionMapper;
 import com.math.mathcha.mapper.QuizResultMapper;
 import com.math.mathcha.repository.ChapterRepository.ChapterRepository;
+import com.math.mathcha.repository.CourseRepository.CourseRepository;
 import com.math.mathcha.repository.EnrollmentRepository;
 import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
 import com.math.mathcha.repository.QuizResultRepository.QuizResultRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
+import com.math.mathcha.service.questionService.QuestionService;
 import com.math.mathcha.service.quizService.QuizService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -36,6 +38,9 @@ public class QuizServiceImpl implements QuizService {
     private final ChapterRepository chapterRepository;
     private final TopicRepository topicRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final QuestionService questionService;
+    @Autowired
+    private CourseRepository courseRepository;
 
 
     @Override
@@ -72,6 +77,40 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
+    public Quiz generateQuizForCourse(int courseId, int questionPerChapter, int timeLimit) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khóa học"));
+
+        List<Question> quizQuestions = new ArrayList<>();
+
+        for (Chapter chapter : course.getChapters()) {
+            List<QuestionDTO> chapterQuestions = questionService.getQuestionsByChapterId(chapter.getChapter_id());
+            Collections.shuffle(chapterQuestions);
+
+            List<QuestionDTO> selectedQuestions = chapterQuestions.subList(0, Math.min(questionPerChapter, chapterQuestions.size()));
+
+            quizQuestions.addAll(
+                    selectedQuestions.stream()
+                            .map(QuestionMapper::mapToQuestion)
+                            .collect(Collectors.toList())
+            );
+        }
+
+        Quiz quiz = new Quiz();
+        quiz.setQuestions(
+                quizQuestions.stream()
+                        .map(QuestionMapper::mapToQuestionDTO)
+                        .collect(Collectors.toList())
+        );
+        quiz.setNumberOfQuestions(quizQuestions.size()); // Đặt số lượng câu hỏi thực tế trong bài kiểm tra
+        quiz.setTimeLimit(timeLimit);
+
+        return quiz;
+    }
+
+
+
+    @Override
     public Quiz generateQuizForTopic(int topicId, int numberOfQuestions, int timeLimit) {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new EntityNotFoundException("Topic not found"));
@@ -88,6 +127,8 @@ public class QuizServiceImpl implements QuizService {
         quiz.setTimeLimit(timeLimit);
         return quiz;
     }
+
+
 
     @Override
     public ResQuizResultDTO evaluateQuiz( int enrollment_id, QuizDTO quizDTO) {

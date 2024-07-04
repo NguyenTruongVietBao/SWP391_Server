@@ -17,4 +17,6 @@ public interface QuestionService {
 
     void saveQuestionsFromExcel(List<QuestionDTO> questions, Integer topicId);
 
+    List<QuestionDTO> getQuestionsByChapterId(int chapterId);
+
 }
