@@ -49,9 +49,24 @@ public class ChartController {
         return ResponseEntity.ok(revenueData);
     }
 
+//    @PreAuthorize("hasRole('MANAGER')")
+//    @GetMapping("/api/total-users-purchased-course/{courseId}/{date}")
+//    public int getTotalUsersPurchasedCourseOnDate(@PathVariable int courseId, @PathVariable String date) {
+//        return chartService.countTotalUsersPurchasedCourseOnDate(courseId, date);
+//    }
+
+
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/api/total-users-purchased-course/{courseId}/{date}")
-    public int getTotalUsersPurchasedCourseOnDate(@PathVariable int courseId, @PathVariable String date) {
-        return chartService.countTotalUsersPurchasedCourseOnDate(courseId, date);
+    @GetMapping("/revenue/course/{courseId}")
+    public ResponseEntity<Double> getTotalRevenueByCourseId(@PathVariable int courseId) {
+        Double totalRevenue = chartService.calculateTotalRevenueByCourseId(courseId);
+        return ResponseEntity.ok(totalRevenue);
+    }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/revenue/user/{userId}")
+    public ResponseEntity<Double> getTotalSpentByUserId(@PathVariable int userId) {
+        Double totalSpent = chartService.calculateTotalSpentByUserId(userId);
+        return ResponseEntity.ok(totalSpent);
     }
 }
