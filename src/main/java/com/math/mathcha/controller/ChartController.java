@@ -48,4 +48,10 @@ public class ChartController {
         ResChartDTO revenueData = chartService.calculateRevenue(startDate + "000000", endDate + "235959");
         return ResponseEntity.ok(revenueData);
     }
+
+    @PreAuthorize("hasRole('MANAGER')")
+    @GetMapping("/api/total-users-purchased-course/{courseId}/{date}")
+    public int getTotalUsersPurchasedCourseOnDate(@PathVariable int courseId, @PathVariable String date) {
+        return chartService.countTotalUsersPurchasedCourseOnDate(courseId, date);
+    }
 }

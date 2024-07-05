@@ -68,24 +68,22 @@ public class ChartService {
         return calculateRevenue(startDate, endDate);
     }
 
+    public Double calculateTotalRevenueByCourseId(int courseId) {
+        return paymentRepository.findTotalRevenueByCourseId(courseId);
+    }
+
+    public Double calculateTotalSpentByUserId(int userId) {
+        return paymentRepository.findTotalSpentByUserId(userId);
+    }
+
+    public int countTotalUsersPurchasedCourseOnDate(int courseId, String date) {
+        String startDate = date + "000000"; // Start of the day
+        String endDate = date + "235959";   // End of the day
+        return paymentRepository.countTotalUsersPurchasedCourseOnDate(courseId, startDate, endDate);
+    }
 //    public int countUsersPurchasedOnDate(String date) {
 //        String startDate = date + "000000"; // Start of the day
 //        String endDate = date + "235959";   // End of the day
 //        return paymentRepository.countDistinctUsersByPaymentDate(startDate, endDate);
 //    }
-//
-//    public int countTotalUsersPurchasedCourseOnDate(int courseId, String date) {
-//        String startDate = date + "000000"; // Start of the day
-//        String endDate = date + "235959";   // End of the day
-//        return paymentRepository.countTotalUsersPurchasedCourseOnDate(courseId, startDate, endDate);
-//    }
-//
-//    public Double calculateTotalRevenueByCourseId(int courseId) {
-//        return paymentRepository.findTotalRevenueByCourseId(courseId);
-//    }
-//
-//    public Double calculateTotalSpentByUserId(int userId) {
-//        return paymentRepository.findTotalSpentByUserId(userId);
-//    }
-
 }
