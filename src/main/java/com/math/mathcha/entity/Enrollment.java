@@ -36,6 +36,7 @@ public class Enrollment {
     private Course course;
 
     @OneToMany(mappedBy = "enrollment", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore // chan o day
     private List<QuizResult> quizResults;
 
 

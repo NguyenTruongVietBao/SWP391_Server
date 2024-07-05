@@ -14,4 +14,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment,Integer> 
     List<Enrollment> findByStudentId(@Param(value = "student_id") int student_id);
     @Query("SELECT e FROM Enrollment e WHERE e.student.student_id = :student_id AND e.course.course_id = :course_id")
     List<Enrollment> findEnrollmentsByStudentIdAndCourseId(@Param("student_id") int student_id, @Param("course_id") int course_id);
+    @Query("SELECT DISTINCT e FROM Enrollment e JOIN e.payments p WHERE p.payment_date BETWEEN :startDate AND :endDate")
+    List<Enrollment> findEnrollmentsByPaymentDates(String startDate, String endDate);
 }
