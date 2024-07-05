@@ -46,7 +46,7 @@ public class QuizController {
     }
 
     @PostMapping("/course/{courseId}/generate")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public Quiz generateQuizForCourse(@PathVariable int courseId,
                                        @RequestBody GenerateQuizRequest request) {
         return quizService.generateQuizForCourse(courseId, request.getNumberOfQuestions(), request.getTimeLimit());
