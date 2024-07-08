@@ -1,7 +1,7 @@
 package com.math.mathcha.controller;
 
-import com.math.mathcha.dto.request.ChartDTO;
 import com.math.mathcha.dto.response.ResChartDTO;
+
 import com.math.mathcha.service.ChartService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
@@ -23,33 +23,38 @@ public class ChartController {
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/revenue/daily/{date}")
-    public ResChartDTO getDailyRevenue(@PathVariable String date) {
-        return chartService.calculateDailyRevenue(date);
+    public ResponseEntity<ResChartDTO> getDailyRevenue(@PathVariable String date) {
+        ResChartDTO revenueData = chartService.calculateDailyRevenue(date);
+        return ResponseEntity.ok(revenueData);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/revenue/monthly/{month}")
-    public ResChartDTO getMonthlyRevenue(@PathVariable String month) {
-        return chartService.calculateMonthlyRevenue(month);
+    public ResponseEntity<ResChartDTO> getMonthlyRevenue(@PathVariable String month) {
+        ResChartDTO revenueData = chartService.calculateMonthlyRevenue(month);
+        return ResponseEntity.ok(revenueData);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/revenue/yearly/{year}")
-    public ResChartDTO getYearlyRevenue(@PathVariable String year) {
-        return chartService.calculateYearlyRevenue(year);
-    }
-
-    @GetMapping("/api/users-purchased/{date}")
-    @PreAuthorize("hasRole('MANAGER')")
-    public int getUsersPurchasedOnDate(@PathVariable String date) {
-        return chartService.countUsersPurchasedOnDate(date);
+    public ResponseEntity<ResChartDTO> getYearlyRevenue(@PathVariable String year) {
+        ResChartDTO revenueData = chartService.calculateYearlyRevenue(year);
+        return ResponseEntity.ok(revenueData);
     }
 
     @PreAuthorize("hasRole('MANAGER')")
-    @GetMapping("/api/total-users-purchased-course/{courseId}/{date}")
-    public int getTotalUsersPurchasedCourseOnDate(@PathVariable int courseId, @PathVariable String date) {
-        return chartService.countTotalUsersPurchasedCourseOnDate(courseId, date);
+    @GetMapping("/revenue/from/{startDate}/to/{endDate}")
+    public ResponseEntity<ResChartDTO> getRevenueBetweenDates(@PathVariable String startDate, @PathVariable String endDate) {
+        ResChartDTO revenueData = chartService.calculateRevenue(startDate + "000000", endDate + "235959");
+        return ResponseEntity.ok(revenueData);
     }
+
+//    @PreAuthorize("hasRole('MANAGER')")
+//    @GetMapping("/api/total-users-purchased-course/{courseId}/{date}")
+//    public int getTotalUsersPurchasedCourseOnDate(@PathVariable int courseId, @PathVariable String date) {
+//        return chartService.countTotalUsersPurchasedCourseOnDate(courseId, date);
+//    }
+
 
     @PreAuthorize("hasRole('MANAGER')")
     @GetMapping("/revenue/course/{courseId}")

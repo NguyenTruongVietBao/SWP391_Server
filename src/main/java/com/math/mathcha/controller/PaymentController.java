@@ -42,13 +42,7 @@ public class PaymentController {
         List<PaymentDTO> paymentDTOS = paymentService.getPaymetsByUserId(user_id);
         return ResponseEntity.ok(paymentDTOS);
     }
-//    @GetMapping("/date/{date}")
-//    @PreAuthorize("hasRole('PARENT')")
-//    public ResponseEntity<List<ResPaymentDTO>> getPaymentsByDate(@PathVariable("date") String date) {
-//        LocalDate localDate = LocalDate.parse(date); // Parse date from string yyyy-MM-dd
-//        List<ResPaymentDTO> paymentDTOs = paymentService.getPaymentsByDate(localDate);
-//        return ResponseEntity.ok(paymentDTOs);
-//    }
+
     @GetMapping("/course/{course_id}")
     @PreAuthorize("hasAnyRole('PARENT','MANAGER')")
     public ResponseEntity <List<ResPaymentDTO>> getPaymetsByCourseId(@PathVariable("course_id") int course_id) throws RuntimeException {

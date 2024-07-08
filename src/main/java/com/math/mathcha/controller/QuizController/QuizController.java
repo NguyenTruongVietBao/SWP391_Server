@@ -31,7 +31,7 @@ public class QuizController {
 
 
     @PostMapping("/topic/{topicId}/generate")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public Quiz generateQuizForTopic(@PathVariable int topicId,
                                      @RequestBody GenerateQuizRequest request) {
         return quizService.generateQuizForTopic(topicId, request.getNumberOfQuestions(), request.getTimeLimit());
@@ -39,21 +39,21 @@ public class QuizController {
 
 
     @PostMapping("/chapter/{chapterId}/generate")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public Quiz generateQuizForChapter(@PathVariable int chapterId,
                                        @RequestBody GenerateQuizRequest request) {
         return quizService.generateQuizForChapter(chapterId, request.getNumberOfQuestions(), request.getTimeLimit());
     }
 
     @PostMapping("/course/{courseId}/generate")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public Quiz generateQuizForCourse(@PathVariable int courseId,
                                        @RequestBody GenerateQuizRequest request) {
         return quizService.generateQuizForCourse(courseId, request.getNumberOfQuestions(), request.getTimeLimit());
     }
 
     @PostMapping("/evaluate/enrollment/{enrollment_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public ResQuizResultDTO evaluateQuiz(
                                          @PathVariable int enrollment_id,
                                          @RequestBody EvaluateQuizRequest request) {

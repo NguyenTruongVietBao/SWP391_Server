@@ -47,7 +47,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.convertToResUserDTO(userDTO));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
     @GetMapping("/get/all")
     public ResponseEntity<List<ResUserDTO>> getUserAll(){
         List<ResUserDTO> user = userService.getUserAll();

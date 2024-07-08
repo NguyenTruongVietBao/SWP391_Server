@@ -45,21 +45,21 @@ public class StudentController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('PARENT')")
+    @PreAuthorize("hasRole('PARENT')") // can xem lai
     public ResponseEntity<List<StudentDTO>> getStudentAll(){
         List<StudentDTO> student = studentService.getStudentAll();
         return ResponseEntity.ok(student);
     }
 
     @PutMapping("/{student_id}")
-    @PreAuthorize("hasRole('PARENT')")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<StudentDTO> updateStudent (@RequestBody StudentDTO updatedStudent, @PathVariable("student_id") Integer studentId) throws IdInvalidException {
         StudentDTO studentDTO = studentService.updateStudent(updatedStudent, studentId );
         return ResponseEntity.ok(studentDTO);
     }
 
     @DeleteMapping("/{student_id}")
-    @PreAuthorize("hasRole('PARENT')")
+    @PreAuthorize("hasRole('PARENT')") // can xem lai (co the cua admin) trang thai: bo? con giua~ cho.
     public ResponseEntity<Void> deleteStudent(@PathVariable("student_id") Integer student_id) throws IdInvalidException {
         StudentDTO currentUser = this.studentService.getStudentById(student_id);
         this.studentService.deleteStudent(student_id);
