@@ -2,14 +2,17 @@ package com.math.mathcha.service.questionService.Impl;
 
 import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.entity.Question.Question;
+import com.math.mathcha.entity.Question.QuestionOption;
 import com.math.mathcha.entity.Topic;
 import com.math.mathcha.mapper.QuestionMapper;
+import com.math.mathcha.repository.QuestionRepository.QuestionOptionRepository;
 import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
 import com.math.mathcha.service.questionService.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 public class QuestionServiceImpl implements QuestionService {
     private QuestionRepository questionRepository;
     private final TopicRepository topicRepository;
-
+private final QuestionOptionRepository questionOptionRepository;
     @Override
     public QuestionDTO createQuestion(QuestionDTO questionDTO, Integer topic_id) {
         Question question = QuestionMapper.mapToQuestion(questionDTO);
@@ -56,16 +59,24 @@ public class QuestionServiceImpl implements QuestionService {
                 .map(QuestionMapper::mapToQuestionDTO)
                 .collect(Collectors.toList());
     }
+    public QuestionDTO updateQuestion(Question updatedQuestion, Integer questionId) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new IllegalArgumentException("Question with id = " + questionId + " does not exist"));
 
-    @Override
-    public QuestionDTO updateQuestion(QuestionDTO updateQuestion, Integer question_id) {
-        Question question = questionRepository.findById(question_id)
-                .orElseThrow(() -> new RuntimeException("Question: "+question_id+" not found"));
-        question.setTitle(updateQuestion.getTitle());
-        question.setContent(updateQuestion.getContent());
-        question.setCorrectAnswer(updateQuestion.getCorrectAnswer());
-        Question uptateQuestionsObj = questionRepository.save(question);
-        return QuestionMapper.mapToQuestionDTO(uptateQuestionsObj);
+        question.setContent(updatedQuestion.getContent());
+        question.setTitle(updatedQuestion.getTitle());
+        question.setCorrectAnswer(updatedQuestion.getCorrectAnswer());
+        question.getQuestionOptions().clear();
+        for (QuestionOption option : updatedQuestion.getQuestionOptions()) {
+            QuestionOption updatedOption = questionOptionRepository.findById(option.getOption_id())
+                    .orElse(new QuestionOption());
+            updatedOption.setOption(option.getOption());
+            updatedOption.setQuestion(question);
+            question.getQuestionOptions().add(updatedOption);
+        }
+        Question savedQuestion = questionRepository.save(question);
+
+        return QuestionMapper.mapToQuestionDTO(savedQuestion);
     }
 
     @Override

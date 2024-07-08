@@ -57,43 +57,64 @@ public class QuizServiceImpl implements QuizService {
 
 
     @Override
-    public Quiz generateQuizForChapter(int chapterId, int questionPerTopic, int timeLimit) {
+    public Quiz generateQuizForChapter(int chapterId , int numberOfQuestions, int timeLimit) {
+        int questionPerTopic = 10;
         Chapter chapter = chapterRepository.findById(chapterId)
                 .orElseThrow(() -> new EntityNotFoundException("Chapter not found"));
         List<QuestionDTO> quizQuestions = new ArrayList<>();
+        int questionsAdded = 0;
+
         for (Topic topic : chapter.getTopics()) {
+            if (questionsAdded >= numberOfQuestions) {
+                break;
+            }
+
             List<Question> questions = questionRepository.findByTopic(topic);
             Collections.shuffle(questions);
-            List<Question> selectedQuestions = questions.subList(0, Math.min(questionPerTopic, questions.size()));
+            int remainingQuestions = numberOfQuestions - questionsAdded;
+            List<Question> selectedQuestions = questions.subList(0, Math.min(Math.min(questionPerTopic, questions.size()), remainingQuestions));
+
             quizQuestions.addAll(selectedQuestions.stream()
                     .map(QuestionMapper::mapToQuestionDTO)
                     .collect(Collectors.toList()));
+
+            questionsAdded += selectedQuestions.size();
         }
+
         Quiz quiz = new Quiz();
         quiz.setQuestions(quizQuestions);
-        quiz.setNumberOfQuestions(questionPerTopic);
+        quiz.setNumberOfQuestions(quizQuestions.size());
         quiz.setTimeLimit(timeLimit);
         return quiz;
     }
 
+
+
     @Override
-    public Quiz generateQuizForCourse(int courseId, int questionPerChapter, int timeLimit) {
+    public Quiz generateQuizForCourse(int courseId, int numberOfQuestions, int timeLimit) {
+        int questionPerChapter = 10;
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new EntityNotFoundException("Không tìm thấy khóa học"));
-
         List<Question> quizQuestions = new ArrayList<>();
+        int questionsAdded = 0;
 
         for (Chapter chapter : course.getChapters()) {
+            if (questionsAdded >= numberOfQuestions) {
+                break;
+            }
+
             List<QuestionDTO> chapterQuestions = questionService.getQuestionsByChapterId(chapter.getChapter_id());
             Collections.shuffle(chapterQuestions);
-
-            List<QuestionDTO> selectedQuestions = chapterQuestions.subList(0, Math.min(questionPerChapter, chapterQuestions.size()));
+            int remainingQuestions = numberOfQuestions - questionsAdded;
+            List<QuestionDTO> selectedQuestions = chapterQuestions.subList(0, Math.min(Math.min(questionPerChapter, chapterQuestions.size()), remainingQuestions));
 
             quizQuestions.addAll(
                     selectedQuestions.stream()
                             .map(QuestionMapper::mapToQuestion)
                             .collect(Collectors.toList())
             );
+
+            questionsAdded += selectedQuestions.size();
         }
 
         Quiz quiz = new Quiz();
@@ -107,6 +128,7 @@ public class QuizServiceImpl implements QuizService {
 
         return quiz;
     }
+
 
 
 

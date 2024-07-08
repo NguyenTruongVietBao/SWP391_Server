@@ -4,6 +4,8 @@ package com.math.mathcha.controller.QuestionController;
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.dto.request.TopicDTO;
+import com.math.mathcha.entity.Question.Question;
+import com.math.mathcha.mapper.QuestionMapper;
 import com.math.mathcha.service.questionService.QuestionService;
 import com.math.mathcha.service.topicService.TopicService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -68,12 +70,13 @@ public class QuestionController {
     }
 
    // @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    @PutMapping("/{question_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public ResponseEntity<QuestionDTO> updateQuestion (@RequestBody QuestionDTO updatedQuestion, @PathVariable("question_id") Integer questionId){
-        QuestionDTO questionDTO = questionService.updateQuestion(updatedQuestion, questionId );
-        return ResponseEntity.ok(questionDTO);
-    }
+   @PutMapping("/{question_id}")
+   @PreAuthorize("hasRole('CONTENT_MANAGER')")
+   public ResponseEntity<QuestionDTO> updateQuestion(@RequestBody QuestionDTO updatedQuestionDTO, @PathVariable("question_id") Integer questionId) {
+       Question updatedQuestion = QuestionMapper.mapToQuestion(updatedQuestionDTO);
+       QuestionDTO questionDTO = questionService.updateQuestion(updatedQuestion, questionId);
+       return ResponseEntity.ok(questionDTO);
+   }
 
   //     @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @DeleteMapping("/{question_id}")
