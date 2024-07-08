@@ -1,6 +1,7 @@
 package com.math.mathcha.service.questionService;
 
 import com.math.mathcha.dto.request.QuestionDTO;
+import com.math.mathcha.entity.Question.Question;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface QuestionService {
 
     List<QuestionDTO> getQuestionsByTopicId(int question_id);
 
-    QuestionDTO updateQuestion(QuestionDTO questionDTO, Integer question_id);
+    public QuestionDTO updateQuestion(Question updatedQuestion, Integer questionId);
 
     void deleteQuestion(Integer question_id);
 
