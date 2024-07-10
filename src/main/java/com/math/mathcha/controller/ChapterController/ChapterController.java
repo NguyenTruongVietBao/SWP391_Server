@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/chapter")
 @SecurityRequirement(name = "api")
-public class ChapterController {
+public class  ChapterController {
     private static final Logger log = LoggerFactory.getLogger(ChapterController.class);
     private ChapterService chapterService;
     private CourseService courseService;
