@@ -27,20 +27,20 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws IdInvalidException {
         CategoryDTO savedCategory = categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/get/{category_id}")
     public ResponseEntity<CategoryDTO> getUserById (@PathVariable("category_id") Integer category_id) throws IdInvalidException{
         CategoryDTO categoryDTO = categoryService.getCategoryById(category_id);
         return ResponseEntity.status(HttpStatus.OK).body(categoryDTO);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER') ")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/get/all")
     public ResponseEntity<List<CategoryDTO>> getUserAll(){
         List<CategoryDTO> categoryDTOS = categoryService.getCategoryAll();

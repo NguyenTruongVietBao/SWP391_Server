@@ -1,13 +1,12 @@
 package com.math.mathcha.controller.QuizController;
 
-import com.math.mathcha.dto.request.EvaluateQuizRequest;
-import com.math.mathcha.dto.request.GenerateQuizRequest;
-import com.math.mathcha.dto.request.QuestionDTO;
+import com.math.mathcha.dto.request.*;
 import com.math.mathcha.dto.response.ResQuizResultDTO;
 import com.math.mathcha.entity.Quiz;
 import com.math.mathcha.service.quizService.QuizService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +57,21 @@ public class QuizController {
                                          @PathVariable int enrollment_id,
                                          @RequestBody EvaluateQuizRequest request) {
         return quizService.evaluateQuiz( enrollment_id, request.getQuizDTO());
+    }
+
+    @PostMapping("/save")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
+    public ResponseEntity<QuizResultDTO> saveQuiz(@RequestBody SaveQuizRequestDTO saveQuizRequestDTO) {
+        int enrollment_id = saveQuizRequestDTO.getEnrollment_id();
+        int score = saveQuizRequestDTO.getScore();
+        QuizResultDTO quizResultDTO = quizService.saveQuiz(enrollment_id, score);
+        return ResponseEntity.ok(quizResultDTO);
+    }
+    @PostMapping("/results")
+    public ResponseEntity<List<QuizResultDTO>> getQuizResultsByEnrollmentId(@RequestBody EnrollmentRequestDTO enrollmentRequestDTO) {
+        int enrollment_id = enrollmentRequestDTO.getEnrollment_id();
+        List<QuizResultDTO> quizResults = quizService.getQuizResultByEnrollmentId(enrollment_id);
+        return ResponseEntity.ok(quizResults);
     }
 }
 
