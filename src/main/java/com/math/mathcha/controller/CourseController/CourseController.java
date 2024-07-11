@@ -23,11 +23,11 @@ public class CourseController {
 
     private CourseService courseService;
 
-    @PostMapping("/user/{user_id}/{category_id}")
+    @PostMapping("/user/{user_id}")
     @PreAuthorize("hasRole('CONTENT_MANAGER')")
-    public ResponseEntity<CourseDTO> createCourse(@PathVariable("user_id") Integer user_id,@PathVariable("category_id") Integer category_id,
+    public ResponseEntity<CourseDTO> createCourse(@PathVariable("user_id") Integer user_id,
                                                 @RequestBody CourseDTO courseDTO) throws IdInvalidException {
-        CourseDTO savedCourse = courseService.createCourse(courseDTO, user_id, category_id);
+        CourseDTO savedCourse = courseService.createCourse(courseDTO, user_id);
         return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
     }
 

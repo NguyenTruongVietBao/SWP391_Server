@@ -172,6 +172,7 @@ public class PaymentService {
         res.setTotal_money(paymentDTO.getTotal_money());
         res.setPayment_method(paymentDTO.getPayment_method());
         res.setOrderId(paymentDTO.getOrderId());
+
         return res;
     }
     public List<ResPaymentDTO> getPaymetsByCourseId(int course_id) throws RuntimeException {
@@ -183,4 +184,13 @@ public class PaymentService {
                 .map(this::convertToResPaymentDTO)
                 .collect(Collectors.toList());
     }
+    public List<PaymentDTO> getPaymentsByUserIdAndPaymentDate(int user_id, String payment_date) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() ->  new RuntimeException("User ID is invalid"));
+        List<Payment> payments = paymentRepository.findPaymentsByUserIdAndPaymentDate(user_id,payment_date);
+        return payments.stream()
+                .map(PaymentMapper::mapToPaymentDTO)
+                .collect(Collectors.toList());
+    }
+
 }
