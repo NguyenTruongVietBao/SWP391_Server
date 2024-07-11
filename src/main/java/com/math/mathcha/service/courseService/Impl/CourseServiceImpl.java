@@ -1,20 +1,19 @@
 package com.math.mathcha.service.courseService.Impl;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
-import com.math.mathcha.dto.request.ChapterDTO;
+import com.math.mathcha.dto.request.CategoryDTO;
 import com.math.mathcha.dto.request.CourseDTO;
-import com.math.mathcha.dto.request.StudentDTO;
 import com.math.mathcha.entity.Category;
 import com.math.mathcha.entity.Course;
 import com.math.mathcha.entity.Student;
 import com.math.mathcha.entity.User;
+import com.math.mathcha.mapper.ChapterMapper;
 import com.math.mathcha.mapper.CourseMapper;
-import com.math.mathcha.mapper.StudentMapper;
-import com.math.mathcha.mapper.TopicMapper;
 import com.math.mathcha.repository.CategoryRepository;
 import com.math.mathcha.repository.CourseRepository.CourseRepository;
 import com.math.mathcha.repository.StudentRepository.StudentRepository;
 import com.math.mathcha.repository.UserRepository.UserRepository;
+import com.math.mathcha.service.CategoryService;
 import com.math.mathcha.service.courseService.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,7 @@ public class CourseServiceImpl implements CourseService {
     private UserRepository userRepository;
     private StudentRepository studentRepository;
     private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
 
     @Override
     public CourseDTO createCourse(CourseDTO courseDTO, Integer user_id) throws IdInvalidException {
@@ -108,7 +108,16 @@ public class CourseServiceImpl implements CourseService {
                 .map(CourseMapper::mapToCourseDTO)
                 .collect(Collectors.toList());
     }
-
+    public List<CourseDTO> getCourseByCategoryId(int category_id) throws IdInvalidException {
+        List<Course> courses = courseRepository.findCourseByCategoryId(category_id);
+        CategoryDTO categoryDTO = categoryService.getCategoryById(category_id);
+        if (categoryDTO == null) {
+            throw new IdInvalidException("Trong course id = " + category_id + " hiện không có chapter");
+        }
+        return courses.stream().map(
+                (course) -> CourseMapper.mapToCourseDTO(course)).collect(Collectors.toList()
+        );
+    }
 
 
 }

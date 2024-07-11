@@ -2,7 +2,6 @@ package com.math.mathcha.controller.CourseController;
 
 import com.math.mathcha.Util.Error.IdInvalidException;
 import com.math.mathcha.dto.request.CourseDTO;
-import com.math.mathcha.dto.request.TopicDTO;
 import com.math.mathcha.service.courseService.CourseService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -69,6 +68,13 @@ public class CourseController {
     public ResponseEntity<List<CourseDTO>> getCoursesNotBoughtByParent(@PathVariable("user_id") int user_id) {
         List<CourseDTO> courses = courseService.getCoursesNotBoughtByParent(user_id);
         return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/category/{category_id}")
+
+    public ResponseEntity<List<CourseDTO>> getCourseByCategoryId(@PathVariable("category_id") int category_id) throws IdInvalidException {
+        List<CourseDTO> courseDTOS = courseService.getCourseByCategoryId(category_id);
+        return ResponseEntity.ok(courseDTOS);
     }
 
 }

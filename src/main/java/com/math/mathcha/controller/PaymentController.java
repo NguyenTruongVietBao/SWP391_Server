@@ -50,9 +50,24 @@ public class PaymentController {
         return ResponseEntity.ok(paymentDTOS);
     }
     @GetMapping("/user/{user_id}/date/{payment_date}")
+    @PreAuthorize("hasAnyRole('PARENT','MANAGER')")
     public ResponseEntity<List<PaymentDTO>> getPaymentsByUserIdAndPaymentDate(@PathVariable int user_id,
                                                                               @PathVariable String payment_date) {
         List<PaymentDTO> payments = paymentService.getPaymentsByUserIdAndPaymentDate(user_id, payment_date);
+        return ResponseEntity.ok(payments);
+    }
+    @GetMapping("/user/{user_id}/month/{payment_month}")
+    @PreAuthorize("hasAnyRole('PARENT','MANAGER')")
+    public ResponseEntity<List<PaymentDTO>> getPaymentsByUserIdAndPaymentMonth(@PathVariable int user_id,
+                                                                              @PathVariable String payment_month) {
+        List<PaymentDTO> payments = paymentService.getPaymentsByUserIdAndPaymentMonth(user_id, payment_month);
+        return ResponseEntity.ok(payments);
+    }
+    @GetMapping("/user/{user_id}/year/{payment_year}")
+    @PreAuthorize("hasAnyRole('PARENT','MANAGER')")
+    public ResponseEntity<List<PaymentDTO>> getPaymentsByUserIdAndPaymentYear(@PathVariable int user_id,
+                                                                              @PathVariable String payment_year) {
+        List<PaymentDTO> payments = paymentService.getPaymentsByUserIdAndPaymentYear(user_id, payment_year);
         return ResponseEntity.ok(payments);
     }
 }
