@@ -26,11 +26,7 @@ public class Payment {
     @Column(name = "payment_method")
     private String payment_method;
 
-    @Column(name = "tmnCode")
-    private String tmnCode;
 
-    @Column(name = "currCode")
-    private String currCode;
 
     @Column(name = "orderId")
     private String orderId;
