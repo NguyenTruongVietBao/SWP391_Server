@@ -29,4 +29,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     @Query("SELECT SUM(p.total_money) FROM Payment p WHERE p.user.user_id = :user_id")
     Double findTotalSpentByUserId(@Param("user_id") int user_id);
+
+    @Query(value = "SELECT p.* FROM payment p JOIN enrollment e ON p.enrollment_id = e.enrollment_id " +
+            "WHERE p.user_id = :user_id AND " +
+            "DATE_FORMAT(p.payment_date, '%Y%m%d') = :payment_date", nativeQuery = true)
+    List<Payment> findPaymentsByUserIdAndPaymentDate(@Param("user_id") int user_id,
+                                                     @Param("payment_date") String payment_date);
 }

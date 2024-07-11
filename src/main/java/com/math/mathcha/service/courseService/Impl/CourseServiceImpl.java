@@ -32,13 +32,14 @@ public class CourseServiceImpl implements CourseService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public CourseDTO createCourse(CourseDTO courseDTO, Integer user_id, Integer category_id) throws IdInvalidException {
+    public CourseDTO createCourse(CourseDTO courseDTO, Integer user_id) throws IdInvalidException {
         Course course = CourseMapper.mapToCourse(courseDTO);
         User user = userRepository.findById(user_id)
                 .orElseThrow(() -> new IdInvalidException("User: "+user_id+" not found"));
-        Category category = categoryRepository.findById(category_id).orElseThrow(() -> new RuntimeException("Category not found"));
-        course.setCategory(category);
+        Category category = categoryRepository.findById(courseDTO.getCategory_id())
+                .orElseThrow(() -> new IdInvalidException("Category ID " + courseDTO.getCategory_id() + " not found"));
         course.setUser(user);
+        course.setCategory(category);
         Course savedCourse = courseRepository.save(course);
         return CourseMapper.mapToCourseDTO(savedCourse);
     }
