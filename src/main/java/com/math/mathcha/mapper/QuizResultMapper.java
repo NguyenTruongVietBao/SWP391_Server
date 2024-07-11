@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class QuizResultMapper {
 
-    public static QuizResultDTO mapToQuizResultDTO(QuizResult quizResult){
+    public QuizResultDTO mapToQuizResultDTO(QuizResult quizResult){
         QuizResultDTO quizResultDTO = new QuizResultDTO();
         quizResultDTO.setQuizResult_id(quizResult.getQuizResult_id());
         quizResultDTO.setScore(quizResult.getScore());
@@ -30,5 +30,7 @@ public class QuizResultMapper {
 
         return quizResult;
     }
+
+
 }
 

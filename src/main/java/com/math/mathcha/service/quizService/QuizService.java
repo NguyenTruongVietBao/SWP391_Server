@@ -2,6 +2,7 @@ package com.math.mathcha.service.quizService;
 
 import com.math.mathcha.dto.request.QuestionDTO;
 import com.math.mathcha.dto.request.QuizDTO;
+import com.math.mathcha.dto.request.QuizResultDTO;
 import com.math.mathcha.dto.response.ResQuizResultDTO;
 import com.math.mathcha.entity.Quiz;
 
@@ -19,4 +20,7 @@ public Quiz generateQuizForCourse(int courseId, int numberOfQuestion, int timeLi
 
     public ResQuizResultDTO evaluateQuiz( int enrollment_id, QuizDTO quizDTO);
 
+    public List<QuizResultDTO> getQuizResultByEnrollmentId(int enrollment_id);
+
+    public QuizResultDTO saveQuiz(int enrollment_id, int score);
 }

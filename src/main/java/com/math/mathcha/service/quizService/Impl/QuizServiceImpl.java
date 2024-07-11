@@ -39,6 +39,7 @@ public class QuizServiceImpl implements QuizService {
     private final TopicRepository topicRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final QuestionService questionService;
+
     @Autowired
     private CourseRepository courseRepository;
 
@@ -148,6 +149,31 @@ public class QuizServiceImpl implements QuizService {
         quiz.setNumberOfQuestions(numberOfQuestions);
         quiz.setTimeLimit(timeLimit);
         return quiz;
+    }
+
+    public QuizResultDTO saveQuiz(int enrollment_id, int score) {
+        // Create a new QuizResultDTO
+        QuizResultMapper quizResultMapper = new QuizResultMapper();
+        QuizResultDTO quizResultDTO = new QuizResultDTO();
+        quizResultDTO.setEnrollment_id(enrollment_id);
+        quizResultDTO.setScore(score);
+        quizResultDTO.setDate(LocalDateTime.now());
+        QuizResult quizResult = quizResultMapper.mapToQuizResult(quizResultDTO);
+        Enrollment enrollment = enrollmentRepository.findById(enrollment_id)
+                .orElseThrow(() -> new EntityNotFoundException("Enrollment not found"));
+        quizResult.setEnrollment(enrollment);
+        quizResult = quizResultRepository.save(quizResult);
+        quizResultDTO.setQuizResult_id(quizResult.getQuizResult_id());
+
+        return quizResultDTO;
+    }
+
+    public List<QuizResultDTO> getQuizResultByEnrollmentId(int enrollment_id) {
+        QuizResultMapper quizResultMapper = new QuizResultMapper();
+        List<QuizResult> quizResults = quizResultRepository.findByEnrollment_id(enrollment_id);
+        return quizResults.stream()
+                .map(quizResultMapper::mapToQuizResultDTO)
+                .collect(Collectors.toList());
     }
 
 
