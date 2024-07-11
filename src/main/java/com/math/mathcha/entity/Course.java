@@ -47,6 +47,7 @@ public class Course {
 //
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore//findPaymentsByUserIdAndPaymentDate
     private List<Enrollment> enrollments;
 
     @JsonIgnore
