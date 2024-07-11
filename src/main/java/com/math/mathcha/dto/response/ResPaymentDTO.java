@@ -10,4 +10,6 @@ public class ResPaymentDTO {
     private String payment_date;
     private String payment_method;
     private double total_money;
+
+    private String orderId;
 }

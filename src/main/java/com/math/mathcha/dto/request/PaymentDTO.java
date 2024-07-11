@@ -18,4 +18,5 @@ public class PaymentDTO {
     private double total_money;
     private Student student;
     private Course course;
+    private String orderId;
 }

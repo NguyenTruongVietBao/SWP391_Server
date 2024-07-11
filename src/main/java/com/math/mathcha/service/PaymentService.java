@@ -143,6 +143,7 @@ public class PaymentService {
             payment.setTotal_money(Double.parseDouble(rechargeRequestDTO.getAmount())/100);
             payment.setPayment_date(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
             payment.setPayment_method("VNPAY");
+            payment.setOrderId(UUID.randomUUID().toString().substring(0, 6));
             payment.setUser(user);
             payment.setEnrollment(enrollment);
             paymentRepository.save(payment);
@@ -170,6 +171,7 @@ public class PaymentService {
         res.setPayment_id(paymentDTO.getPayment_id());
         res.setTotal_money(paymentDTO.getTotal_money());
         res.setPayment_method(paymentDTO.getPayment_method());
+        res.setOrderId(paymentDTO.getOrderId());
         return res;
     }
     public List<ResPaymentDTO> getPaymetsByCourseId(int course_id) throws RuntimeException {

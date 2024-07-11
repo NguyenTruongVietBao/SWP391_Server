@@ -22,7 +22,7 @@ public class Category {
     private int category_id;
 
     @Column(name = "category_name")
-    private String category_name;
+    private String categoryName;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Course> courses ;
