@@ -14,6 +14,7 @@ public class PaymentMapper {
         paymentDTO.setOrderId(payment.getOrderId());
         paymentDTO.setStudent(payment.getEnrollment().getStudent());
         paymentDTO.setCourse(payment.getEnrollment().getCourse());
+        paymentDTO.setUser(payment.getUser());
         return paymentDTO;
     }
 
@@ -24,6 +25,7 @@ public class PaymentMapper {
         payment.setPayment_method(paymentDTO.getPayment_method());
         payment.setPayment_date(paymentDTO.getPayment_date());
         payment.setOrderId(paymentDTO.getOrderId());
+        payment.setUser(paymentDTO.getUser());
         return payment;
     }
 }
