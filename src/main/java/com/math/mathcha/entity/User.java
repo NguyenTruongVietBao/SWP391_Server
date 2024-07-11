@@ -51,6 +51,7 @@ public class User {
     private List<Course> courses;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore//getPaymetsByCourseId
     private List<Payment> payments;
 
 //    @ElementCollection(fetch = FetchType.EAGER)

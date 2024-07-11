@@ -172,7 +172,7 @@ public class PaymentService {
         res.setTotal_money(paymentDTO.getTotal_money());
         res.setPayment_method(paymentDTO.getPayment_method());
         res.setOrderId(paymentDTO.getOrderId());
-
+        res.setUser(paymentDTO.getUser());
         return res;
     }
     public List<ResPaymentDTO> getPaymetsByCourseId(int course_id) throws RuntimeException {

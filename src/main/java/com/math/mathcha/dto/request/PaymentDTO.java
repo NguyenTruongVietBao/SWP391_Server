@@ -2,6 +2,7 @@ package com.math.mathcha.dto.request;
 
 import com.math.mathcha.entity.Course;
 import com.math.mathcha.entity.Student;
+import com.math.mathcha.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class PaymentDTO {
     private String orderId;
     private Student student;
     private Course course;
+    private User user;
 
 }
