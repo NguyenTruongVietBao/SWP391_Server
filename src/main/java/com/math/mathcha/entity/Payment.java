@@ -26,8 +26,13 @@ public class Payment {
     @Column(name = "payment_method")
     private String payment_method;
 
+
+
+    @Column(name = "orderId")
+    private String orderId;
 //    @Enumerated(EnumType.STRING)
 //    TransactionEnums transaction;
+
 
     @Column(name = "total_money")
     private double total_money;

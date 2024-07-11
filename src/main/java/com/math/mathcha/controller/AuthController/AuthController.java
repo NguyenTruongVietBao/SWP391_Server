@@ -42,7 +42,7 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO, @RequestParam String otp) throws IdInvalidException {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws IdInvalidException {
 //        boolean isOtpValid = otpService.validateOtp(userDTO.getPhone(), otp);
 //        if (!isOtpValid) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
