@@ -9,7 +9,9 @@ import com.math.mathcha.mapper.QuestionMapper;
 import com.math.mathcha.service.questionService.QuestionService;
 import com.math.mathcha.service.topicService.TopicService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -92,7 +94,7 @@ public class QuestionController {
     }
 
     @PostMapping("/upload/{topic_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')") // can xem lai
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<String> uploadQuestionsFromExcel(@RequestParam("file") MultipartFile file, @PathVariable("topic_id") Integer topicId) {
         List<QuestionDTO> questions = new ArrayList<>();
 
@@ -111,15 +113,15 @@ public class QuestionController {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 QuestionDTO questionDTO = new QuestionDTO();
-                questionDTO.setContent(row.getCell(0).toString());
-                questionDTO.setTitle(row.getCell(1).toString());
+                questionDTO.setContent(getCellValueAsString(row.getCell(0)));
+                questionDTO.setTitle(getCellValueAsString(row.getCell(1)));
                 questionDTO.setOption(Arrays.asList(
-                        row.getCell(2).toString(),
-                        row.getCell(3).toString(),
-                        row.getCell(4).toString(),
-                        row.getCell(5).toString()
+                        getCellValueAsString(row.getCell(2)),
+                        getCellValueAsString(row.getCell(3)),
+                        getCellValueAsString(row.getCell(4)),
+                        getCellValueAsString(row.getCell(5))
                 ));
-                questionDTO.setCorrectAnswer(row.getCell(6).toString());
+                questionDTO.setCorrectAnswer(getCellValueAsString(row.getCell(6)));
                 questions.add(questionDTO);
             }
 
@@ -132,50 +134,14 @@ public class QuestionController {
         return ResponseEntity.ok("File uploaded and questions saved");
     }
 
-    @GetMapping("/download-template/{topic_id}")
-    public ResponseEntity<byte[]> downloadTemplate(@PathVariable("topic_id") Integer topicId) throws IOException, IdInvalidException {
+    private String getCellValueAsString(Cell cell) {
+        return cell != null ? cell.toString() : "";
+    }
+
+    @GetMapping("/export/{topic_id}")
+    @PreAuthorize("hasRole('CONTENT_MANAGER')") // can xem lai
+    public void exportQuestionsToExcel(HttpServletResponse response, @PathVariable("topic_id") Integer topicId) {
         List<QuestionDTO> questions = questionService.getQuestionsByTopicId(topicId);
-        TopicDTO topicDTO = topicService.getTopicById(topicId);
-
-        if (topicDTO == null) {
-            throw new IdInvalidException("Topic with id = " + topicId + " does not exist");
-        }
-
-        try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Questions");
-
-            Row headerRow = sheet.createRow(0);
-            headerRow.createCell(0).setCellValue("Content");
-            headerRow.createCell(1).setCellValue("Title");
-            headerRow.createCell(2).setCellValue("Option 1");
-            headerRow.createCell(3).setCellValue("Option 2");
-            headerRow.createCell(4).setCellValue("Option 3");
-            headerRow.createCell(5).setCellValue("Option 4");
-            headerRow.createCell(6).setCellValue("Correct Answer");
-
-            int rowNum = 1;
-            for (QuestionDTO question : questions) {
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(question.getContent());
-                row.createCell(1).setCellValue(question.getTitle());
-                List<String> options = question.getOption();
-                row.createCell(2).setCellValue(options.get(0));
-                row.createCell(3).setCellValue(options.get(1));
-                row.createCell(4).setCellValue(options.get(2));
-                row.createCell(5).setCellValue(options.get(3));
-                row.createCell(6).setCellValue(question.getCorrectAnswer());
-            }
-
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            workbook.write(outputStream);
-
-            byte[] bytes = outputStream.toByteArray();
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDispositionFormData("attachment", "questions_template.xlsx");
-
-            return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
-        }
+        questionService.exportQuestionsToExcel(questions, response);
     }
 }
