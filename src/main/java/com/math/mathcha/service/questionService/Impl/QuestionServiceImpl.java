@@ -9,9 +9,16 @@ import com.math.mathcha.repository.QuestionRepository.QuestionOptionRepository;
 import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
 import com.math.mathcha.service.questionService.QuestionService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -96,6 +103,40 @@ private final QuestionOptionRepository questionOptionRepository;
             questionRepository.save(question);
         }
     }
+    public void exportQuestionsToExcel(List<QuestionDTO> questions, HttpServletResponse response) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Questions");
+            Row headerRow = sheet.createRow(0);
+            headerRow.createCell(0).setCellValue("Content");
+            headerRow.createCell(1).setCellValue("Title");
+            headerRow.createCell(2).setCellValue("Option 1");
+            headerRow.createCell(3).setCellValue("Option 2");
+            headerRow.createCell(4).setCellValue("Option 3");
+            headerRow.createCell(5).setCellValue("Option 4");
+            headerRow.createCell(6).setCellValue("Correct Answer");
+
+            int rowIndex = 1;
+            for (QuestionDTO question : questions) {
+                Row row = sheet.createRow(rowIndex++);
+                row.createCell(0).setCellValue(question.getContent());
+                row.createCell(1).setCellValue(question.getTitle());
+                List<String> options = question.getOption();
+                row.createCell(2).setCellValue(options.size() > 0 ? options.get(0) : "");
+                row.createCell(3).setCellValue(options.size() > 1 ? options.get(1) : "");
+                row.createCell(4).setCellValue(options.size() > 2 ? options.get(2) : "");
+                row.createCell(5).setCellValue(options.size() > 3 ? options.get(3) : "");
+                row.createCell(6).setCellValue(question.getCorrectAnswer());
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=questions.xlsx");
+            workbook.write(response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 
