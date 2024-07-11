@@ -10,6 +10,7 @@ import com.math.mathcha.repository.QuestionRepository.QuestionRepository;
 import com.math.mathcha.repository.TopicRepository.TopicRepository;
 import com.math.mathcha.service.questionService.QuestionService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -93,16 +94,31 @@ private final QuestionOptionRepository questionOptionRepository;
         questionRepository.deleteById(question_id);
     }
 
+    @Transactional
     @Override
     public void saveQuestionsFromExcel(List<QuestionDTO> questions, Integer topicId) {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new RuntimeException("Topic: " + topicId + " not found"));
+
+        // Lấy tất cả các câu hỏi cũ theo topic
+        List<Question> oldQuestions = questionRepository.findByTopic(topic);
+
+        // Xóa tất cả các tùy chọn câu hỏi cũ liên quan đến các câu hỏi cũ
+        for (Question question : oldQuestions) {
+            questionOptionRepository.deleteByQuestion(question);
+        }
+
+        // Xóa tất cả câu hỏi cũ trong topic
+        questionRepository.deleteByTopic(topic);
+
+        // Lưu các câu hỏi mới từ Excel
         for (QuestionDTO questionDTO : questions) {
             Question question = QuestionMapper.mapToQuestion(questionDTO);
             question.setTopic(topic);
             questionRepository.save(question);
         }
     }
+
     public void exportQuestionsToExcel(List<QuestionDTO> questions, HttpServletResponse response) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Questions");

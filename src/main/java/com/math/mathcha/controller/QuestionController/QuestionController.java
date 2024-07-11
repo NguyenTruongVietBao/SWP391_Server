@@ -11,6 +11,7 @@ import com.math.mathcha.service.topicService.TopicService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -93,7 +94,7 @@ public class QuestionController {
     }
 
     @PostMapping("/upload/{topic_id}")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')") // can xem lai
+    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     public ResponseEntity<String> uploadQuestionsFromExcel(@RequestParam("file") MultipartFile file, @PathVariable("topic_id") Integer topicId) {
         List<QuestionDTO> questions = new ArrayList<>();
 
@@ -112,15 +113,15 @@ public class QuestionController {
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 QuestionDTO questionDTO = new QuestionDTO();
-                questionDTO.setContent(row.getCell(0).toString());
-                questionDTO.setTitle(row.getCell(1).toString());
+                questionDTO.setContent(getCellValueAsString(row.getCell(0)));
+                questionDTO.setTitle(getCellValueAsString(row.getCell(1)));
                 questionDTO.setOption(Arrays.asList(
-                        row.getCell(2).toString(),
-                        row.getCell(3).toString(),
-                        row.getCell(4).toString(),
-                        row.getCell(5).toString()
+                        getCellValueAsString(row.getCell(2)),
+                        getCellValueAsString(row.getCell(3)),
+                        getCellValueAsString(row.getCell(4)),
+                        getCellValueAsString(row.getCell(5))
                 ));
-                questionDTO.setCorrectAnswer(row.getCell(6).toString());
+                questionDTO.setCorrectAnswer(getCellValueAsString(row.getCell(6)));
                 questions.add(questionDTO);
             }
 
@@ -131,6 +132,10 @@ public class QuestionController {
         }
 
         return ResponseEntity.ok("File uploaded and questions saved");
+    }
+
+    private String getCellValueAsString(Cell cell) {
+        return cell != null ? cell.toString() : "";
     }
 
     @GetMapping("/export/{topic_id}")
