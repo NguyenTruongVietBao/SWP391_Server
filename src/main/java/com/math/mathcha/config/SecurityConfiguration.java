@@ -45,7 +45,8 @@ public class SecurityConfiguration {
             "/course/{course_id}",
             "/chapter/course/{course_id}",
             "/topic/chapter/{chapter_id}",
-            "/lessons/topic/{topic_id}"
+            "/lessons/topic/{topic_id}",
+            "/course/category/{category_id}"
     };
 
 

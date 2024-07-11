@@ -35,4 +35,15 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             "DATE_FORMAT(p.payment_date, '%Y%m%d') = :payment_date", nativeQuery = true)
     List<Payment> findPaymentsByUserIdAndPaymentDate(@Param("user_id") int user_id,
                                                      @Param("payment_date") String payment_date);
+
+    @Query(value = "SELECT p.* FROM payment p JOIN enrollment e ON p.enrollment_id = e.enrollment_id " +
+            "WHERE p.user_id = :user_id AND " +
+            "DATE_FORMAT(p.payment_date, '%Y%m') = :payment_month", nativeQuery = true)
+    List<Payment> findPaymentsByUserIdAndPaymentMonth(@Param("user_id") int user_id,
+                                                     @Param("payment_month") String payment_month);
+    @Query(value = "SELECT p.* FROM payment p JOIN enrollment e ON p.enrollment_id = e.enrollment_id " +
+            "WHERE p.user_id = :user_id AND " +
+            "DATE_FORMAT(p.payment_date, '%Y') = :payment_year", nativeQuery = true)
+    List<Payment> findPaymentsByUserIdAndPaymentYear(@Param("user_id") int user_id,
+                                                     @Param("payment_year") String payment_year);
 }

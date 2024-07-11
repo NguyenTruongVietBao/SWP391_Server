@@ -192,5 +192,21 @@ public class PaymentService {
                 .map(PaymentMapper::mapToPaymentDTO)
                 .collect(Collectors.toList());
     }
+    public List<PaymentDTO> getPaymentsByUserIdAndPaymentMonth(int user_id, String payment_month) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() ->  new RuntimeException("User ID is invalid"));
+        List<Payment> payments = paymentRepository.findPaymentsByUserIdAndPaymentMonth(user_id,payment_month);
+        return payments.stream()
+                .map(PaymentMapper::mapToPaymentDTO)
+                .collect(Collectors.toList());
+    }
+    public List<PaymentDTO> getPaymentsByUserIdAndPaymentYear(int user_id, String payment_year) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() ->  new RuntimeException("User ID is invalid"));
+        List<Payment> payments = paymentRepository.findPaymentsByUserIdAndPaymentYear(user_id,payment_year);
+        return payments.stream()
+                .map(PaymentMapper::mapToPaymentDTO)
+                .collect(Collectors.toList());
+    }
 
 }
