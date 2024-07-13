@@ -10,6 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaveQuizRequestDTO {
+
     private int enrollment_id;
+    private String quiz_name;
     private int score;
 }

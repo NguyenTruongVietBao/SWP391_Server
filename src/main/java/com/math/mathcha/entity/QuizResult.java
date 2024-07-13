@@ -15,6 +15,9 @@ public class QuizResult {
     @Column(name = "quizResult_id")
     private int quizResult_id;
 
+    @Column(name = "quiz_name", nullable = false)
+    private String quiz_name;
+
     @Column(name = "score", nullable = false)
     private int score;
 

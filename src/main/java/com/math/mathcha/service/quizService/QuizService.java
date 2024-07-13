@@ -22,5 +22,5 @@ public Quiz generateQuizForCourse(int courseId, int numberOfQuestion, int timeLi
 
     public List<QuizResultDTO> getQuizResultByEnrollmentId(int enrollment_id);
 
-    public QuizResultDTO saveQuiz(int enrollment_id, int score);
+    public QuizResultDTO saveQuiz(int enrollment_id, int score, String quiz_name);
 }

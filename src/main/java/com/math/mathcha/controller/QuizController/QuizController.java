@@ -59,19 +59,21 @@ public class QuizController {
         return quizService.evaluateQuiz( enrollment_id, request.getQuizDTO());
     }
 
+    @GetMapping("/results/{enrollment_id}")
+    public ResponseEntity<List<QuizResultDTO>> getQuizResultsByEnrollmentId(@PathVariable int enrollment_id) {
+        List<QuizResultDTO> quizResults = quizService.getQuizResultByEnrollmentId(enrollment_id);
+        return ResponseEntity.ok(quizResults);
+    }
+
     @PostMapping("/save")
     @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public ResponseEntity<QuizResultDTO> saveQuiz(@RequestBody SaveQuizRequestDTO saveQuizRequestDTO) {
         int enrollment_id = saveQuizRequestDTO.getEnrollment_id();
         int score = saveQuizRequestDTO.getScore();
-        QuizResultDTO quizResultDTO = quizService.saveQuiz(enrollment_id, score);
+        String quiz_name = saveQuizRequestDTO.getQuiz_name();
+        QuizResultDTO quizResultDTO = quizService.saveQuiz(enrollment_id, score, quiz_name );
         return ResponseEntity.ok(quizResultDTO);
     }
-    @PostMapping("/results")
-    public ResponseEntity<List<QuizResultDTO>> getQuizResultsByEnrollmentId(@RequestBody EnrollmentRequestDTO enrollmentRequestDTO) {
-        int enrollment_id = enrollmentRequestDTO.getEnrollment_id();
-        List<QuizResultDTO> quizResults = quizService.getQuizResultByEnrollmentId(enrollment_id);
-        return ResponseEntity.ok(quizResults);
-    }
+
 }
 
