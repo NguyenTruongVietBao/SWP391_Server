@@ -1,5 +1,6 @@
 package com.math.mathcha.dto.request;
 
+import com.math.mathcha.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,4 @@ public class CourseDTO {
     private Boolean is_deleted;
     private Boolean status;
     private int category_id;
-
 }

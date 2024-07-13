@@ -21,4 +21,7 @@ public interface CourseService {
     List<CourseDTO> getCoursesBoughtByParent(int userId);
 
     List<CourseDTO> getCoursesNotBoughtByParent(int userId);
+
+    List<CourseDTO> getCourseByCategoryId(int category_id) throws IdInvalidException;
+
 }

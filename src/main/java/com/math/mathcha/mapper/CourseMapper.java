@@ -15,6 +15,7 @@ public class CourseMapper {
         courseDTO.setIs_deleted(course.getIs_deleted());
         courseDTO.setStatus(course.getStatus());
         courseDTO.setCategory_id(course.getCategory().getCategory_id());
+
         return courseDTO;
     }
 

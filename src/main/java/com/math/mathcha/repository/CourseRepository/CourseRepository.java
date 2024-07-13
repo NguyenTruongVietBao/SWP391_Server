@@ -29,7 +29,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Query("SELECT c FROM Course c JOIN c.enrollments e JOIN e.payments p WHERE p.payment_date BETWEEN :startDate AND :endDate")
     List<Course> findCoursesByPaymentDates(String startDate, String endDate);
 
-
+    @Query("SELECT c FROM Course c WHERE c.category.category_id = :category_id")
+    List<Course> findCourseByCategoryId(@Param(value = "category_id") int category_id);
 
 //    @Query("SELECT c FROM Course c WHERE c.course_id = :course_id")
 //    Course findCourseById(@Param("course_id") int course_id);

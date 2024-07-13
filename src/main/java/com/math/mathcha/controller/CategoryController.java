@@ -32,17 +32,13 @@ public class CategoryController {
         CategoryDTO savedCategory = categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
-
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/get/{category_id}")
-    public ResponseEntity<CategoryDTO> getUserById (@PathVariable("category_id") Integer category_id) throws IdInvalidException{
+    public ResponseEntity<CategoryDTO> getCategoryById (@PathVariable("category_id") Integer category_id) throws IdInvalidException{
         CategoryDTO categoryDTO = categoryService.getCategoryById(category_id);
         return ResponseEntity.status(HttpStatus.OK).body(categoryDTO);
     }
-
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
     @GetMapping("/get/all")
-    public ResponseEntity<List<CategoryDTO>> getUserAll(){
+    public ResponseEntity<List<CategoryDTO>> getCategoryAll(){
         List<CategoryDTO> categoryDTOS = categoryService.getCategoryAll();
         return ResponseEntity.ok(categoryDTOS);
     }
