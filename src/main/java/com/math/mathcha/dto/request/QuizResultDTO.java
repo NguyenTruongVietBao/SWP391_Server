@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class QuizResultDTO {
     private int quizResult_id;
+    private String quiz_name;
     private int score;
     private LocalDateTime date;
     private int enrollment_id;

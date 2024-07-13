@@ -151,10 +151,11 @@ public class QuizServiceImpl implements QuizService {
         return quiz;
     }
 
-    public QuizResultDTO saveQuiz(int enrollment_id, int score) {
+    public QuizResultDTO saveQuiz(int enrollment_id, int score, String quiz_name) {
         // Create a new QuizResultDTO
         QuizResultMapper quizResultMapper = new QuizResultMapper();
         QuizResultDTO quizResultDTO = new QuizResultDTO();
+        quizResultDTO.setQuiz_name(quiz_name);
         quizResultDTO.setEnrollment_id(enrollment_id);
         quizResultDTO.setScore(score);
         quizResultDTO.setDate(LocalDateTime.now());
