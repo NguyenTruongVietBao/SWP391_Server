@@ -22,7 +22,7 @@ public class QuizController {
     private QuizService quizService;
 
     @GetMapping("/questions")
-    @PreAuthorize("hasRole('CONTENT_MANAGER')")
+    @PreAuthorize("hasAnyRole('CONTENT_MANAGER', 'STUDENT')")
     public List<QuestionDTO> getQuizQuestions() {
         return quizService.getQuizQuestions();
     }

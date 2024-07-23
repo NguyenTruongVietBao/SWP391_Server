@@ -52,7 +52,7 @@ public class StudentController {
     }
 
     @PutMapping("/{student_id}")
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasAnyRole('PARENT', 'STUDENT')")
     public ResponseEntity<StudentDTO> updateStudent (@RequestBody StudentDTO updatedStudent, @PathVariable("student_id") Integer studentId) throws IdInvalidException {
         StudentDTO studentDTO = studentService.updateStudent(updatedStudent, studentId );
         return ResponseEntity.ok(studentDTO);
